@@ -2386,7 +2386,10 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
 .rtable{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
 .rtable td{padding:7px 8px;border-bottom:1px solid var(--line)}
 .rtable td.n{color:var(--gold2);font-weight:800;text-align:right}
-.team .rp{font-size:11px;color:var(--muted);min-width:44px;text-align:right}
+.team .rp{font-size:10px;color:var(--muted);text-align:right;white-space:nowrap}
+.team .nm{min-width:70px}
+.team .ed{display:none;gap:3px}
+.team:hover .ed{display:flex}
 .qi .n{width:22px;text-align:right;color:var(--muted);font-size:12px}
 .qi .lbl{flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qi .qa{display:none;gap:2px}
@@ -2394,6 +2397,18 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
 .qi .qa button{padding:2px 6px;font-size:11px;border-radius:6px}
 .badge{font-size:10px;font-weight:800;letter-spacing:.06em;border-radius:6px;padding:3px 6px;border:1px solid var(--gold3);color:var(--gold2)}
 .badge.qcm{border-color:#41536b;color:#9db4d6}
+.badge.open{border-color:#5d4a6b;color:#c9a8e0}
+.qi .wn{color:#e0a85a;font-size:12px}
+.implist{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:12px;background:#0d0d0f}
+.imp{display:flex;gap:10px;padding:8px 12px;border-bottom:1px solid #1d1d21;font-size:13px;align-items:flex-start}
+.imp:last-child{border-bottom:0}
+.imp.r{background:#16130b}
+.imp .body{flex:1;min-width:0}
+.imp .w{color:#e0a85a;font-size:12px;margin-top:2px}
+.imp .o{color:var(--muted);font-size:12px;margin-top:2px}
+.imp .o b{color:#9fe0b6;font-weight:600}
+.drop{border:1.5px dashed var(--gold3);border-radius:14px;padding:18px;text-align:center;margin-top:12px;color:var(--muted);transition:.15s}
+.drop.over{border-color:var(--gold2);background:#1a160d;color:var(--gold2)}
 .mid{background:radial-gradient(ellipse at top,#16130c 0%,transparent 60%)}
 .live{padding:18px 22px}
 .live .meta{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -2603,8 +2618,9 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
       <div class="tools">
         <button class="sm" data-act="newBT">+ Blind test</button>
         <button class="sm" data-act="newQCM">+ QCM</button>
-        <button class="sm" data-act="bulk">Import en masse</button>
+        <button class="sm" data-act="newOpen">+ Question</button>
         <button class="sm" data-act="newRound">+ Manche</button>
+        <button class="sm gold" data-act="bulk">📄 Importer (PDF, Word, texte)</button>
       </div>
       <div id="bank" class="scroll"></div>
       <div class="colf">
@@ -2643,6 +2659,7 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
     </section>
   </main>
   <input type="file" id="sndIn" accept="audio/*" multiple class="hidden">
+  <input type="file" id="impIn" accept=".pdf,.txt,.md,.docx,.csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden">
   <div id="modal" class="modal hidden"><div class="mbox" id="mbox"></div></div>
   <div id="toast"></div>
 </div>
@@ -2678,14 +2695,19 @@ const MODE = P.get('mode') === 'ecran' ? 'ecran' : (P.get('c') ? 'jouer' : 'regi
 document.body.dataset.mode = MODE;
 
 const JOKERS = {
-  appel:  { icon: '📞', name: 'Appel à un ami', desc: 'Une 2ᵉ chance si vous vous trompez', bt: true, qcm: true },
+  appel:  { icon: '📞', name: 'Appel à un ami', desc: 'Une 2ᵉ chance si vous vous trompez', bt: true, qcm: true, open: true },
   choix4: { icon: '🔢', name: '4 propositions', desc: '4 réponses possibles s\'affichent sur votre téléphone', bt: true, qcm: false },
   choix2: { icon: '✌️', name: '2 propositions', desc: 'Seulement 2 réponses possibles (50/50)', bt: true, qcm: true },
-  vol:    { icon: '🗡️', name: '−1 point à un adversaire', desc: 'Retirez 1 point à l\'équipe de votre choix', bt: true, qcm: true, target: true },
-  bonus:  { icon: '⭐', name: '+2 points', desc: '2 points de plus si vous trouvez', bt: true, qcm: true },
-  bloque: { icon: '⛔', name: 'Bloquer une équipe', desc: 'Une équipe ne peut pas jouer ce tour', bt: true, qcm: true, target: true }
+  vol:    { icon: '🗡️', name: '−1 point à un adversaire', desc: 'Retirez 1 point à l\'équipe de votre choix', bt: true, qcm: true, open: true, target: true },
+  bonus:  { icon: '⭐', name: '+2 points', desc: '2 points de plus si vous trouvez', bt: true, qcm: true, open: true },
+  bloque: { icon: '⛔', name: 'Bloquer une équipe', desc: 'Une équipe ne peut pas jouer ce tour', bt: true, qcm: true, open: true, target: true }
 };
 const JK = Object.keys(JOKERS);
+const TYPE_NAME = { bt: 'Blind test', qcm: 'Quiz', open: 'Question' };
+const isBuzz = q => !!q && (q.type === 'bt' || q.type === 'open');
+const PDFJS_URL = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
+const PDFJS_WORKER = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
+const MAMMOTH_URL = 'https://cdn.jsdelivr.net/npm/mammoth@1.13.0/mammoth.browser.min.js';
 
 function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
 function qrSvg(text) {
@@ -2706,6 +2728,166 @@ async function spMeta(uri) {
 const btLabel = q => (q.title || '').trim() + (q.artist ? ' — ' + q.artist.trim() : '');
 function joinUrlFor(code) { return location.origin + location.pathname + '?c=' + code; }
 function plural(n, w) { return n + ' ' + w + (Math.abs(n) > 1 ? 's' : ''); }
+/* ---------- Analyse d'un fichier de partie (PDF / TXT) ---------- */
+function parseProgram(raw) {
+  const items = [], ignored = [];
+  const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const SPOT = /(https?:\/\/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\/[A-Za-z0-9]{22}[^\s;|]*|spotify:track:[A-Za-z0-9]{22})/;
+  const ROUND = /^(?:#+\s*)?(manche|round|partie|th[eè]me|cat[ée]gorie|categorie)\b\s*(?:n[°ºo]\s*)?([0-9]+|[ivx]+\b)?\s*[:\-–—.)]*\s*(.*)$/i;
+  const OPT = /^[(\[]?([A-Da-d])\s*[).:\]\-–]\s*(.+)$/;
+  const ANS = /^(?:la\s+)?(?:bonne\s+)?(?:r[ée]ponses?|r[ée]p\.?|rep|sol(?:ution)?|answer|correction)\s*[:=\-–>]+\s*(.+)$/i;
+  const ARROW = /^(?:→|=>|->|r\s*[:=])\s*(.+)$/i;
+  const QNUM = /^(?:q(?:uestion)?\s*)?(\d{1,3})\s*[.)\-:–]\s*(.+)$/i;
+  const QLAB = /^q(?:uestion)?\s*(?:n[°ºo]\s*)?\d*\s*[:.)\-–]\s*(.+)$/i;
+  const MARK = /\s*(?:\*+|✓|✔|✅|☑|\(x\)|\[x\]|\(\s*bonne\s+r[ée]ponse\s*\)|<-+|←)\s*$/i;
+  const LEADMARK = /^(?:\*+|✓|✔|✅|☑|\[x\]|\(x\))\s*/i;
+  const TA = /^[^?]{1,70}\s[-–—]\s[^?]{1,70}$/;
+  const splitTA = s => s.split(/\s*(?:;|\||\t|\s[-–—]\s|\s\/\s)\s*/).map(x => x.trim()).filter(Boolean);
+  let q = null, defBT = false, lastBT = null, roundCount = 0;
+
+  function flush() {
+    if (!q) return;
+    const it = q; q = null;
+    const text = it.text.trim();
+    if (it.options.length >= 2) {
+      let c = it.correct;
+      if (c == null && it.answer) {
+        const a = it.answer.trim();
+        const m = /^([A-Da-d])\s*(?:[).:\-–]|$)/.exec(a);
+        if (m) c = 'ABCD'.indexOf(m[1].toUpperCase());
+        else {
+          const na = norm(a);
+          c = it.options.findIndex(o => norm(o) === na);
+          if (c < 0) c = it.options.findIndex(o => na && (norm(o).includes(na) || na.includes(norm(o))));
+          if (c < 0) c = null;
+        }
+        if (c != null && c >= it.options.length) c = null;
+      }
+      const warn = [];
+      if (c == null) warn.push('Bonne réponse non trouvée');
+      if (it.options.length > 4) warn.push('Plus de 4 propositions : seules les 4 premières sont gardées');
+      if (c != null && c > 3) warn.push('La bonne réponse était au-delà de la 4ᵉ proposition');
+      items.push({ type: 'qcm', text, options: it.options.slice(0, 4), correct: c != null && c < 4 ? c : 0, warn: warn.join(' · ') });
+    } else {
+      items.push({ type: 'open', text, answer: (it.answer || '').trim(), warn: it.answer ? '' : 'Réponse non trouvée' });
+    }
+  }
+  function newQ(text) {
+    flush(); lastBT = null;
+    let answer = null;
+    const m = /^(.*?)\s*[(\[]?\s*(?:r[ée]ponse|r[ée]p\.?|rep|sol(?:ution)?)\s*[:=]\s*([^)\]]+?)\s*[)\]]?\s*$/i.exec(text)
+      || /^(.*?\?)\s*(?:→|=>|->)\s*(.+)$/.exec(text);
+    if (m && m[1].trim()) { text = m[1].trim(); answer = m[2].trim(); }
+    q = { text, options: [], correct: null, answer };
+    // propositions sur la même ligne : "Question ? A) x B) y C) z"
+    const inl = splitInline(text);
+    if (inl) { q.text = inl.head; inl.opts.forEach(addOpt); }
+  }
+  function splitInline(line) {
+    const re = /(?:^|\s)[(\[]?([A-D])\s*[).:\]]\s+/g; const hits = [];
+    let m; while ((m = re.exec(line))) hits.push({ i: m.index, end: re.lastIndex, L: m[1] });
+    if (hits.length < 2 || hits[0].L !== 'A' || hits[1].L !== 'B') return null;
+    const opts = hits.map((h, k) => line.slice(h.end, k + 1 < hits.length ? hits[k + 1].i : line.length).trim());
+    return { head: line.slice(0, hits[0].i).trim(), opts };
+  }
+  function addOpt(t) {
+    let correct = false;
+    if (MARK.test(t)) { t = t.replace(MARK, ''); correct = true; }
+    if (LEADMARK.test(t)) { t = t.replace(LEADMARK, ''); correct = true; }
+    const ia = /^(.*?)\s*[(\[]?\s*(?:bonne r[ée]ponse|vrai|correct)\s*[)\]]?$/i.exec(t);
+    if (ia && ia[1] && ia[1] !== t) { t = ia[1]; correct = true; }
+    if (correct && q.correct == null) q.correct = q.options.length;
+    q.options.push(t.trim());
+  }
+  function addBT(rest, uri) {
+    flush();
+    rest = rest.replace(/^(?:\d{1,3}\s*[.)\-:–]\s*)/, '').replace(/^[-•*·–]\s*/, '').trim();
+    const ans = ANS.exec(rest); if (ans) rest = ans[1];
+    const p = splitTA(rest);
+    lastBT = { type: 'bt', uri: uri || '', title: p[0] || '', artist: p.slice(1).join(' - ') || '', warn: '' };
+    items.push(lastBT);
+    return lastBT;
+  }
+
+  const lines = String(raw || '').replace(/\r/g, '').replace(/ /g, ' ').split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim());
+  for (let line of lines) {
+    if (!line || /^[-_=*·•.]{3,}$/.test(line) || /^(page\s*)?\d+(\s*\/\s*\d+)?$/i.test(line)) continue;
+    line = line.replace(/^[•·▪◦●○■□➤►▶-]\s+/, '');
+
+    // Manche
+    const r = ROUND.exec(line);
+    const isMd = /^#+\s+\S/.test(line);
+    const isCaps = line.length <= 60 && !/[?]/.test(line) && !SPOT.test(line) && /[A-ZÀ-Ý]{4}/.test(line) && line === line.toUpperCase() && !OPT.test(line) && !QNUM.test(line);
+    if ((r && line.length <= 90 && !/\?\s*$/.test(line)) || isMd || isCaps) {
+      flush(); lastBT = null; roundCount++;
+      let name = r ? (r[3] || '').trim() : line.replace(/^#+\s*/, '').trim();
+      name = name.replace(/^[:\-–—.\s]+|[:\-–—.\s]+$/g, '');
+      if (r && !name && !r[2]) name = r[1];
+      defBT = /blind|musique|music|chanson|titre|playlist|son\b|sons\b|tube|\bbt\b/i.test(line);
+      items.push({ type: 'round', name: name.slice(0, 40) });
+      continue;
+    }
+    // Lien Spotify => blind test
+    const sm = SPOT.exec(line);
+    if (sm) {
+      const uri = spUri(sm[1]);
+      addBT(line.replace(sm[0], ' ').replace(/\s+/g, ' ').trim(), uri);
+      continue;
+    }
+    // Format une ligne "question ; A ; B ; C ; D ; lettre"
+    const parts = line.split(/\s*(?:;|\||\t)\s*/).filter(Boolean);
+    if (parts.length >= 4 && /^[A-Da-d]$/.test(parts[parts.length - 1])) {
+      flush(); lastBT = null;
+      const opts = parts.slice(1, -1); const c = 'ABCD'.indexOf(parts[parts.length - 1].toUpperCase());
+      items.push({ type: 'qcm', text: parts[0], options: opts.slice(0, 4), correct: c < opts.length ? c : 0, warn: c >= opts.length ? 'Bonne réponse non trouvée' : '' });
+      continue;
+    }
+    // Réponse
+    const a = ANS.exec(line) || ARROW.exec(line);
+    if (a) {
+      if (q) { if (q.answer == null) q.answer = a[1]; else q.answer += ' ' + a[1]; }
+      else if (lastBT && !lastBT.title) { const p = splitTA(a[1]); lastBT.title = p[0] || ''; lastBT.artist = p.slice(1).join(' - '); }
+      else ignored.push(line);
+      continue;
+    }
+    // Proposition
+    const o = OPT.exec(line);
+    if (o && q && q.answer == null) {
+      const inl = splitInline(line);
+      if (inl && !inl.head) inl.opts.forEach(addOpt); else addOpt(o[2]);
+      continue;
+    }
+    // Question numérotée / étiquetée
+    const n = QNUM.exec(line) || QLAB.exec(line);
+    if (n) {
+      const body = (n[2] || n[1]).trim();
+      const qish = /^q/i.test(line) || /\?/.test(body) || body.length > 70 || /^(qu|qui|quel|quelle|quels|quelles|combien|o[uù]|quand|comment|pourquoi|en quelle|dans quel|citez|nommez|trouvez|vrai ou faux)\b/i.test(body);
+      if (!qish && (defBT || TA.test(body))) { addBT(body, ''); continue; }
+      newQ(body); continue;
+    }
+    if (q && !q.options.length && q.answer == null && !/\?/.test(q.text)) { q.text += ' ' + line; continue; }
+    if (/\?\s*$/.test(line) || /\?\s*(?:→|=>|->|\(|\[|r[ée]ponse)/i.test(line)) { newQ(line); continue; }
+    // Ligne "Titre - Artiste"
+    if ((defBT || lastBT) && (!q || q.answer != null || q.options.length) && TA.test(line) && line.length < 100) { addBT(line, ''); continue; }
+    if (defBT && /\s[-–—]\s/.test(line) && !q) { addBT(line, ''); continue; }
+    if (defBT && q == null && line.length < 80) { addBT(line, ''); continue; }
+    // Suite d'une question sur plusieurs lignes
+    if (q && !q.options.length && q.answer == null) { q.text += ' ' + line; continue; }
+    if (q && q.answer != null && !q.options.length && line.length < 120) { q.answer += ' ' + line; continue; }
+    ignored.push(line);
+  }
+  flush();
+  for (const it of items) if (it.type === 'bt') {
+    const w = [];
+    if (!it.uri) w.push('Lien Spotify à ajouter');
+    if (!it.title) w.push('Titre manquant');
+    it.warn = w.join(' · ');
+  }
+  // supprime les manches vides consécutives en double
+  const out = items.filter((it, i) => !(it.type === 'round' && items[i + 1] && items[i + 1].type === 'round' && !it.name));
+  return { items: out, ignored, rounds: roundCount };
+}
+
 let toastT;
 function toast(msg) { const t = $('#toast'); if (!t) return; t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
@@ -2833,11 +3015,12 @@ function initRegie() {
     });
   }
   function spLoad(q) {
-    if (!q || !q.uri) return;
+    if (!q || !q.uri) { spPause(); return; }
     spWant = q.uri;
     if (sp) sp.loadUri(q.uri, false, q.start || 0); else spCreate();
   }
   function spPlay(q) {
+    if (!q.uri) { toast('Pas de lien Spotify : lance le morceau depuis ton logiciel DJ'); return; }
     if (!sp) { toast('Lecteur Spotify pas encore prêt – clique « Pause / lecture » dans 2 s'); return; }
     if (spWant !== q.uri) spLoad(q);
     setTimeout(() => {
@@ -2846,8 +3029,9 @@ function initRegie() {
     }, spWant === q.uri ? 0 : 500);
   }
   const spPause = () => { try { sp && sp.pause(); } catch (e) {} };
-  const spResume = () => { try { sp && (sp.resume ? sp.resume() : sp.togglePlay()); } catch (e) {} };
-  const spToggle = () => { try { sp && sp.togglePlay(); } catch (e) {} };
+  const hasMusic = () => { const q = cur(); return !!(q && q.type === 'bt' && q.uri); };
+  const spResume = () => { if (!hasMusic()) return; try { sp && (sp.resume ? sp.resume() : sp.togglePlay()); } catch (e) {} };
+  const spToggle = () => { if (!hasMusic()) return; try { sp && sp.togglePlay(); } catch (e) {} };
 
   /* ---------- Sons : synthèse + sons perso ---------- */
   const BUILTIN = { buzz: 'Buzzer', good: 'Bonne réponse', bad: 'Erreur', start: 'Top départ', end: 'Fin du temps', joker: 'Magie (joker)', drum: 'Roulement de tambour', fanfare: 'Fanfare', applause: 'Applaudissements', sad: 'Trombone triste', klaxon: 'Klaxon', suspense: 'Suspense' };
@@ -2952,6 +3136,7 @@ function initRegie() {
       if (!q.title) return false;
       if (btDistractors(q).length < (k === 'choix4' ? 3 : 1)) return false;
     }
+    if (q.type === 'qcm' && k === 'choix2' && q.options.length < 3) return false;
     if (JOKERS[k].target && Object.keys(S.teams).length < 2) return false;
     return true;
   }
@@ -3029,9 +3214,9 @@ function initRegie() {
       else if (p.j === 'bloque') { if (!G.blocked.includes(p.target)) G.blocked.push(p.target); G.feed.push(`⛔ ${T.name} bloque ${tname(p.target)}`); }
       else G.feed.push(`${JOKERS[p.j].icon} ${T.name} : ${JOKERS[p.j].name}`);
     }
-    if (q.type === 'bt') {
+    if (isBuzz(q)) {
       const corr = btLabel(q);
-      if (q.title) {
+      if (q.type === 'bt' && q.title) {
         const labels = shuffle([corr, ...shuffle(btDistractors(q)).slice(0, 3)]);
         G.btOpts = { labels, correct: labels.indexOf(corr) };
         for (const [tid, a] of Object.entries(G.active)) {
@@ -3039,9 +3224,9 @@ function initRegie() {
           if (a.j === 'choix2') { const w = shuffle(labels.map((_, i) => i).filter(i => i !== G.btOpts.correct))[0]; G.btShow[tid] = [G.btOpts.correct, w].sort((x, y) => x - y); }
         }
       }
-      G.phase = 'bt_play'; spPlay(q);
+      G.phase = 'bt_play'; if (q.type === 'bt') spPlay(q);
     } else {
-      for (const [tid, a] of Object.entries(G.active)) if (a.j === 'choix2') { const w = shuffle([0, 1, 2, 3].filter(i => i !== q.correct))[0]; G.q2[tid] = [q.correct, w].sort((x, y) => x - y); }
+      for (const [tid, a] of Object.entries(G.active)) if (a.j === 'choix2') { const w = shuffle(q.options.map((_, i) => i).filter(i => i !== q.correct))[0]; G.q2[tid] = [q.correct, w].sort((x, y) => x - y); }
       G.phase = 'qcm_ask'; G.startedAt = Date.now(); G.endsAt = G.startedAt + q.dur * 1000;
       qTimer = setInterval(() => { if (Date.now() >= G.endsAt) qClose(); else tickTimer(G.endsAt); }, 250);
       if (!anyJ) sfx('start');
@@ -3086,7 +3271,7 @@ function initRegie() {
   }
   function reveal() {
     const q = cur(); if (!q) return;
-    if (q.type === 'bt') {
+    if (isBuzz(q)) {
       if (!['bt_play', 'bt_buzzed'].includes(G.phase)) return;
       if (G.phase === 'bt_buzzed') spResume();
       G.buzz = null; G.appelNow = false; G.result = { gains: {} }; G.phase = 'bt_reveal'; sfx('reveal'); renderAll();
@@ -3110,7 +3295,7 @@ function initRegie() {
     if (G.phase !== 'qcm_ask') return;
     G.phase = 'qcm_closed'; sfx('end'); renderAll();
   }
-  const qAllowed = tid => G.q2[tid] || [0, 1, 2, 3];
+  const qAllowed = tid => G.q2[tid] || (cur() && cur().options ? cur().options.map((_, i) => i) : []);
   const answerDone = tid => { const a = G.answers[tid]; if (!a) return false; return !(G.active[tid] && G.active[tid].j === 'appel') || a.choice2 != null; };
   function onAnswer(tid, choice) {
     if (G.phase !== 'qcm_ask' || G.blocked.includes(tid)) return;
@@ -3162,7 +3347,7 @@ function initRegie() {
     const on = connectedTids();
     return {
       screen: G.screen, phase: G.phase, num: G.idx + 1, total: S.bank.length,
-      q: q ? { type: q.type, title: q.title, artist: q.artist, cover: q.cover, text: q.text, options: q.options, correct: q.correct, dur: q.dur, pts: q.pts } : null,
+      q: q ? { type: q.type, title: q.title, artist: q.artist, cover: q.cover, text: q.text, answer: q.answer, options: q.options, correct: q.correct, dur: q.dur, pts: q.pts } : null,
       buzzName: G.buzz ? tname(G.buzz) : null, appelNow: G.appelNow,
       lockedNames: G.locked.map(tname), blockedNames: G.blocked.map(tname),
       answered: Object.keys(G.answers).length, nTeams: Object.keys(S.teams).length,
@@ -3191,12 +3376,13 @@ function initRegie() {
       v.targets = Object.keys(S.teams).filter(x => x !== tid).map(x => ({ id: x, name: tname(x) }));
       v.jRem = Math.max(0, G.jokerEnds - Date.now());
     }
-    if (q && q.type === 'bt') {
+    if (isBuzz(q)) {
+      if (q.type === 'open' && ['bt_play', 'bt_buzzed', 'bt_reveal'].includes(ph)) v.text = q.text;
       v.locked = G.locked.includes(tid); v.iBuzzed = G.buzz === tid; v.appel = G.appelNow && G.buzz === tid;
       v.buzzName = G.buzz ? tname(G.buzz) : null;
       if (ph === 'bt_play' && G.btShow[tid] && !v.locked && !v.blocked) v.choices = G.btShow[tid].map(i => ({ i, label: G.btOpts.labels[i] }));
       if (G.lastWrong && G.lastWrong.name === t.name && v.locked) v.wrongLabel = G.lastWrong.label;
-      if (ph === 'bt_reveal') { v.title = q.title; v.artist = q.artist; v.gain = (G.result && G.result.gains[tid]) || 0; }
+      if (ph === 'bt_reveal') { v.title = q.title; v.artist = q.artist; v.answer = q.answer; v.gain = (G.result && G.result.gains[tid]) || 0; }
     }
     if (q && q.type === 'qcm' && ['qcm_ask', 'qcm_closed', 'qcm_reveal'].includes(ph)) {
       v.text = q.text; v.options = q.options; v.qidx = qAllowed(tid);
@@ -3241,9 +3427,10 @@ function initRegie() {
           <span class="qa"><button data-act="up" data-i="${i}" title="Monter">↑</button><button data-act="down" data-i="${i}" title="Descendre">↓</button><button data-act="edit" data-i="${i}" title="Renommer">✎</button><button data-act="del" data-i="${i}" title="Supprimer la manche (garde les questions)">✕</button></span></div>`;
       }
       const lbl = q.type === 'bt' ? (q.title ? btLabel(q) : '(titre à compléter)') : (q.text || '(question vide)');
+      const wn = q.type === 'bt' && !q.uri ? '<span class="wn" title="Pas de lien Spotify : tu joueras le morceau depuis ton logiciel DJ">⚠</span>' : '';
       return `<div class="qi ${i === G.idx ? 'on' : ''} ${G.played[q.id] && i !== G.idx ? 'done' : ''}" data-act="sel" data-i="${i}">
-        <span class="n">${num[i] || i + 1}</span><span class="badge ${q.type}">${q.type === 'bt' ? '♪ BT' : 'QCM'}</span>
-        <span class="lbl">${esc(lbl)}</span>
+        <span class="n">${num[i] || i + 1}</span><span class="badge ${q.type}">${({ bt: '♪ BT', qcm: 'QCM', open: '? Q' })[q.type]}</span>
+        <span class="lbl">${esc(lbl)}</span>${wn}
         <span class="qa"><button data-act="up" data-i="${i}" title="Monter">↑</button><button data-act="down" data-i="${i}" title="Descendre">↓</button><button data-act="edit" data-i="${i}" title="Modifier">✎</button><button data-act="del" data-i="${i}" title="Supprimer">✕</button></span>
       </div>`;
     }).join('');
@@ -3297,8 +3484,11 @@ function initRegie() {
     const ph = G.phase; const rv = roundView();
     const num = rv ? (hasRounds() ? `Manche ${rv.num} · ` : '') + `Question ${rv.qn}/${rv.nq}` : `Question ${G.idx + 1}`;
     let h = '';
-    if (q.type === 'bt') {
-      h += `<div class="meta">${num} · Blind test · ${plural(q.pts, 'pt')}</div>
+    if (q.type === 'open') {
+      h += `<div class="meta">${num} · Question ouverte · ${plural(q.pts, 'pt')}</div><h1>${esc(q.text)}</h1>
+        <div class="answerbox"><div><div class="muted" style="font-size:12px">Réponse attendue</div><div class="t">${esc(q.answer || '(non renseignée)')}</div></div></div>`;
+    } else if (q.type === 'bt') {
+      h += `<div class="meta">${num} · Blind test · ${plural(q.pts, 'pt')}</div>${q.uri ? '' : `<div class="hint" style="margin:8px 0;color:#e0a85a">⚠ Pas de lien Spotify : lance le morceau depuis ton logiciel DJ, ou <a href="https://open.spotify.com/search/${encodeURIComponent(btLabel(q).replace(' — ', ' '))}" target="_blank" rel="noopener" style="color:var(--gold2)">cherche-le sur Spotify ↗</a> et ajoute le lien avec ✎.</div>`}
         <div class="answerbox" style="margin-top:10px">${q.cover ? `<img src="${esc(q.cover)}" alt="">` : ''}<div><div class="t">${esc(q.title || '(titre non renseigné)')}</div><div class="muted">${esc(q.artist || '')}</div>${q.start ? `<div class="muted" style="font-size:12px">Démarre à ${q.start}s</div>` : ''}</div></div>`;
     } else {
       h += `<div class="meta">${num} · QCM · ${plural(q.pts, 'pt')}${q.bonus ? ' + bonus rapidité' : ''} · ${q.dur}s</div><h1>${esc(q.text)}</h1>`;
@@ -3307,7 +3497,7 @@ function initRegie() {
     }
     const jkOn = S.settings.jokers && Object.keys(S.teams).some(t => availJ(t, q).length);
     if (ph === 'ready') {
-      h += `<div class="ctrl"><button class="gold" data-act="start">${jkOn ? '🃏 Ouvrir le choix des jokers' : (q.type === 'bt' ? '▶ Lancer l\'extrait' : `▶ Lancer la question (${q.dur}s)`)}</button>${jkOn ? `<button class="ghost" data-act="skipJ">Lancer sans jokers</button>` : ''}</div><div class="kbd"><b>Espace</b> lancer · <b>→</b> question suivante</div>`;
+      h += `<div class="ctrl"><button class="gold" data-act="start">${jkOn ? '🃏 Ouvrir le choix des jokers' : (q.type === 'bt' ? '▶ Lancer l\'extrait' : q.type === 'open' ? '▶ Poser la question (buzzers ouverts)' : `▶ Lancer la question (${q.dur}s)`)}</button>${jkOn ? `<button class="ghost" data-act="skipJ">Lancer sans jokers</button>` : ''}</div><div class="kbd"><b>Espace</b> lancer · <b>→</b> question suivante</div>`;
     }
     if (ph === 'jokers') {
       const on = connectedTids(); const ids = Object.keys(S.teams);
@@ -3321,9 +3511,9 @@ function initRegie() {
         }).join('')}</div>
         <div class="ctrl"><button class="gold" data-act="launch">▶ Lancer maintenant</button></div><div class="kbd"><b>Espace</b> lancer maintenant</div>`;
     }
-    if (q.type === 'bt') {
+    if (isBuzz(q)) {
       if (ph === 'bt_play') {
-        h += `<div class="ctrl"><button data-act="toggle">⏯ Pause / lecture</button><button data-act="reveal">Révéler la réponse</button><button class="ghost" data-act="next">Passer ▶</button></div>
+        h += `<div class="ctrl">${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button data-act="reveal">Révéler la réponse</button><button class="ghost" data-act="next">Passer ▶</button></div>
           <div class="muted">🔔 Buzzers ouverts — en attente d'un buzz…</div>`;
         const chips = [...G.locked.map(t => `<span class="chip bad">${esc(tname(t))} hors-jeu</span>`), ...G.blocked.map(t => `<span class="chip bad">⛔ ${esc(tname(t))} bloquée</span>`), ...Object.keys(G.btShow).filter(t => !G.locked.includes(t)).map(t => `<span class="chip jk">${JOKERS[G.active[t].j].icon} ${esc(tname(t))} choisit sur son tél.</span>`)];
         if (chips.length) h += `<div class="anslist">${chips.join('')}</div>`;
@@ -3337,7 +3527,7 @@ function initRegie() {
       }
       if (ph === 'bt_reveal') {
         const w = Object.entries((G.result && G.result.gains) || {});
-        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button><button data-act="toggle">⏯ Pause / lecture</button><button class="ghost" data-act="scr" data-s="scores">Afficher le classement</button></div>
+        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button>${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button class="ghost" data-act="scr" data-s="scores">Afficher le classement</button></div>
           <div class="muted">${w.length ? 'Points : ' + w.map(([t, p]) => esc(tname(t)) + ' +' + p).join(', ') : 'Personne n\'a trouvé.'}</div>`;
       }
     } else {
@@ -3368,13 +3558,13 @@ function initRegie() {
       const isOn = online.has(t.id);
       const dot = t.phone ? `<span class="dot ${isOn ? 'ok' : ''}" title="${isOn ? 'Connecté' : 'Déconnecté'}"></span>` : '<span title="Sans téléphone">✋</span>';
       let extra = '';
-      if (q && q.type === 'bt' && canBuzz(t.id) && !G.btShow[t.id]) extra = `<button class="sm" data-act="mbuzz" data-t="${t.id}" title="Buzz manuel">🔔</button>`;
+      if (isBuzz(q) && canBuzz(t.id) && !G.btShow[t.id]) extra = `<button class="sm" data-act="mbuzz" data-t="${t.id}" title="Buzz manuel">🔔</button>`;
       if (q && q.type === 'qcm' && G.phase === 'qcm_ask' && !answerDone(t.id) && !isOn && !G.blocked.includes(t.id)) extra = qAllowed(t.id).map(k => `<button class="sm" data-act="mans" data-t="${t.id}" data-i="${k}">${LETTERS[k]}</button>`).join('');
       const jc = jokerCount(t);
       return `<div class="team ${G.locked.includes(t.id) || G.blocked.includes(t.id) ? 'locked' : ''} ${G.buzz === t.id ? 'buzzed' : ''}">
         <span class="muted" style="width:18px;font-size:12px">${i + 1}</span>${dot}<span class="nm" title="${esc(t.name)}">${G.active[t.id] ? JOKERS[G.active[t.id].j].icon + ' ' : ''}${esc(t.name)}</span>
-        <span class="tb">${extra}</span>${S.settings.jokers ? `<button class="sm ghost" data-act="tjk" data-t="${t.id}" title="Jokers de l'équipe">🃏${jc}</button>` : ''}${hasRounds() && G.rid ? `<span class="rp" title="Points dans la manche en cours">+${rpts(t, G.rid)} m.</span>` : ''}<span class="sc">${t.score}</span>
-        <span class="tb"><button class="sm" data-act="pts" data-t="${t.id}" data-d="-1">−</button><button class="sm" data-act="pts" data-t="${t.id}" data-d="1">+</button><button class="sm ghost" data-act="ren" data-t="${t.id}" title="Renommer">✎</button><button class="sm ghost" data-act="kick" data-t="${t.id}" title="Retirer">✕</button></span>
+        <span class="tb">${extra}</span>${S.settings.jokers ? `<button class="sm ghost" data-act="tjk" data-t="${t.id}" title="Jokers de l'équipe">🃏${jc}</button>` : ''}${hasRounds() && G.rid ? `<span class="rp" title="Points dans la manche en cours">+${rpts(t, G.rid)}</span>` : ''}<span class="sc">${t.score}</span>
+        <span class="tb"><button class="sm" data-act="pts" data-t="${t.id}" data-d="-1">−</button><button class="sm" data-act="pts" data-t="${t.id}" data-d="1">+</button></span><span class="ed"><button class="sm ghost" data-act="ren" data-t="${t.id}" title="Renommer">✎</button><button class="sm ghost" data-act="kick" data-t="${t.id}" title="Retirer">✕</button></span>
       </div>`;
     }).join('');
   }
@@ -3382,6 +3572,7 @@ function initRegie() {
   /* ---------- Modales ---------- */
   let ED = null, MODAL = null;
   const newBT = o => Object.assign({ id: uid(), type: 'bt', uri: '', title: '', artist: '', cover: '', start: 0, pts: S.settings.btPts }, o);
+  const newOpen = o => Object.assign({ id: uid(), type: 'open', text: '', answer: '', pts: S.settings.qcmPts }, o);
   const newQCM = o => Object.assign({ id: uid(), type: 'qcm', text: '', options: ['', '', '', ''], correct: 0, dur: S.settings.qcmDur, pts: S.settings.qcmPts, bonus: false }, o);
   function modal(html, kind) { MODAL = kind || null; $('#mbox').innerHTML = html; $('#modal').classList.remove('hidden'); const f = $('#mbox input:not([type=checkbox]):not([type=range]), #mbox textarea'); if (f && kind !== 'settings' && kind !== 'sounds' && kind !== 'tjk') f.focus(); }
   function closeModal() { $('#modal').classList.add('hidden'); ED = null; MODAL = null; }
@@ -3396,21 +3587,28 @@ function initRegie() {
       else { const at = G.idx >= 0 ? G.idx + 1 : S.bank.length; S.bank.splice(at, 0, { id: uid(), type: 'round', name: n.trim().slice(0, 40) }); if (G.idx >= at) G.idx++; }
       renderAll(); return;
     }
-    const q = i != null ? S.bank[i] : (type === 'bt' ? newBT() : newQCM());
+    const q = i != null ? S.bank[i] : (type === 'bt' ? newBT() : type === 'open' ? newOpen() : newQCM());
     ED = { i, q: JSON.parse(JSON.stringify(q)), coverFor: q.uri || null };
     if (q.type === 'bt') {
       modal(`<h3>${i != null ? 'Modifier' : 'Nouveau'} blind test</h3>
-        <label class="f">Lien Spotify du morceau</label>
-        <div class="row"><input id="f-uri" placeholder="https://open.spotify.com/track/…" value="${esc(q.uri ? 'https://open.spotify.com/track/' + q.uri.split(':')[2] : '')}"><button data-act="autofill">Auto-remplir</button></div>
+        <label class="f">Lien Spotify du morceau (facultatif)</label>
+        <div class="row"><input id="f-uri" placeholder="https://open.spotify.com/track/…" value="${esc(q.uri ? 'https://open.spotify.com/track/' + q.uri.split(':')[2] : '')}"><button data-act="autofill">Auto-remplir</button><button class="ghost" data-act="spSearch" title="Chercher le titre sur Spotify">🔍 Spotify</button></div>
         <div class="g2"><div><label class="f">Titre</label><input id="f-title" value="${esc(q.title)}"></div><div><label class="f">Artiste</label><input id="f-artist" value="${esc(q.artist)}"></div></div>
         <div class="g3"><div><label class="f">Démarrer à (secondes)</label><input id="f-start" type="number" min="0" value="${q.start || 0}"></div><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div><div></div></div>
-        <div class="hint">Dans Spotify : clic droit sur le titre → Partager → Copier le lien du titre. « Auto-remplir » récupère le titre et la pochette ; l'artiste est à saisir.<br>Les jokers « 2 / 4 propositions » piochent les fausses réponses parmi les autres morceaux de ton programme : renseigne bien titre et artiste.</div>
+        <div class="hint">Dans Spotify : clic droit sur le titre → Partager → Copier le lien du titre. « Auto-remplir » récupère le titre et la pochette ; l'artiste est à saisir. Sans lien, tu lances le morceau depuis ton logiciel DJ.<br>Les jokers « 2 / 4 propositions » piochent les fausses réponses parmi les autres morceaux de ton programme : renseigne bien titre et artiste.</div>
+        <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
+    } else if (q.type === 'open') {
+      modal(`<h3>${i != null ? 'Modifier' : 'Nouvelle'} question ouverte</h3>
+        <label class="f">Question</label><textarea id="f-text" rows="2">${esc(q.text)}</textarea>
+        <label class="f">Réponse attendue</label><input id="f-answer" value="${esc(q.answer)}">
+        <div class="g3"><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div><div></div><div></div></div>
+        <div class="hint">Les équipes buzzent sur leur téléphone et répondent à l'oral, puis tu valides ✓ ou ✗ comme pour un blind test.</div>
         <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
     } else {
       modal(`<h3>${i != null ? 'Modifier' : 'Nouvelle'} question QCM</h3>
         <label class="f">Question</label><textarea id="f-text" rows="2">${esc(q.text)}</textarea>
         <label class="f">Réponses (coche la bonne)</label>
-        ${q.options.map((o, k) => `<div class="optedit"><input type="radio" name="f-corr" value="${k}" ${q.correct === k ? 'checked' : ''}><span class="badge" style="border-color:${COLORS[k]};color:${COLORS[k]}">${LETTERS[k]}</span><input id="f-o${k}" value="${esc(o)}"></div>`).join('')}
+        ${[0, 1, 2, 3].map(k => q.options[k] || '').map((o, k) => `<div class="optedit"><input type="radio" name="f-corr" value="${k}" ${q.correct === k ? 'checked' : ''}><span class="badge" style="border-color:${COLORS[k]};color:${COLORS[k]}">${LETTERS[k]}</span><input id="f-o${k}" value="${esc(o)}" placeholder="${k > 1 ? 'Facultatif' : ''}"></div>`).join('')}
         <div class="g3"><div><label class="f">Durée (s)</label><input id="f-dur" type="number" min="5" value="${q.dur}"></div><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div>
         <div><label class="f">Bonus rapidité</label><label class="row" style="gap:8px;padding-top:8px"><input type="checkbox" id="f-bonus" ${q.bonus ? 'checked' : ''}> jusqu'à ×2</label></div></div>
         <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
@@ -3430,17 +3628,22 @@ function initRegie() {
     if (!ED) return;
     const q = ED.q;
     if (q.type === 'bt') {
-      const uri = spUri($('#f-uri').value);
-      if (!uri) { toast('Colle un lien Spotify de morceau valide'); return; }
+      const raw = $('#f-uri').value.trim(); const uri = raw ? spUri(raw) : '';
+      if (raw && !uri) { toast('Ce lien n\'est pas un lien de morceau Spotify'); return; }
       if (ED.coverFor !== uri) q.cover = '';
       q.uri = uri; q.title = $('#f-title').value.trim(); q.artist = $('#f-artist').value.trim();
       q.start = Math.max(0, parseInt($('#f-start').value) || 0); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0);
+    } else if (q.type === 'open') {
+      q.text = $('#f-text').value.trim(); q.answer = $('#f-answer').value.trim(); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0);
+      if (!q.text) { toast('Écris la question'); return; }
     } else {
       q.text = $('#f-text').value.trim();
-      q.options = [0, 1, 2, 3].map(k => $('#f-o' + k).value.trim());
-      const c = document.querySelector('input[name=f-corr]:checked'); q.correct = c ? +c.value : 0;
+      const raw = [0, 1, 2, 3].map(k => $('#f-o' + k).value.trim());
+      const c = document.querySelector('input[name=f-corr]:checked'); const ci = c ? +c.value : 0;
+      if (!q.text || raw.filter(Boolean).length < 2) { toast('Remplis la question et au moins 2 réponses'); return; }
+      if (!raw[ci]) { toast('La bonne réponse cochée est vide'); return; }
+      q.options = raw.filter(Boolean); q.correct = raw.slice(0, ci).filter(Boolean).length;
       q.dur = Math.max(5, parseInt($('#f-dur').value) || 20); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0); q.bonus = $('#f-bonus').checked;
-      if (!q.text || q.options.some(o => !o)) { toast('Remplis la question et les 4 réponses'); return; }
     }
     if (ED.i != null) S.bank[ED.i] = q; else S.bank.push(q);
     closeModal(); renderAll();
@@ -3449,47 +3652,173 @@ function initRegie() {
   }
   async function fillMeta(items) {
     for (const q of items) {
-      if (q.type !== 'bt' || (q.cover && q.title)) continue;
+      if (q.type !== 'bt' || !q.uri || (q.cover && q.title)) continue;
       try { const m = await spMeta(q.uri); if (!q.title && m.title) q.title = m.title; if (!q.cover && m.thumbnail_url) q.cover = m.thumbnail_url; renderAll(); } catch (e) {}
       await new Promise(r => setTimeout(r, 150));
     }
   }
-  function openBulk() {
-    modal(`<h3>Import en masse</h3>
-      <div class="row" style="gap:18px;margin-top:6px"><label class="row" style="gap:6px"><input type="radio" name="bk" value="bt" checked> Blind test</label><label class="row" style="gap:6px"><input type="radio" name="bk" value="qcm"> QCM</label></div>
-      <textarea id="bk-txt" rows="10" style="margin-top:12px;font-family:ui-monospace,Menlo,monospace;font-size:12px" placeholder="Une ligne par question…"></textarea>
-      <div class="hint" id="bk-hint"></div>
-      <label class="row" style="gap:8px;margin-top:12px;font-size:14px"><input type="checkbox" id="bk-round"> Créer une nouvelle manche pour ces questions</label>
-      <input id="bk-rname" placeholder="Nom de la manche (facultatif)" style="margin-top:8px" class="hidden">
-      <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="bulkGo">Importer</button></div>`, 'bulk');
-    $('#bk-round').onchange = e => $('#bk-rname').classList.toggle('hidden', !e.target.checked);
-    const hints = {
-      bt: '<b>Blind test</b> — une ligne par morceau : <code>lien spotify ; titre ; artiste</code> (titre et artiste facultatifs).<br>💡 Astuce playlist : dans l\'app Spotify, ouvre ta playlist, sélectionne tout (Ctrl/Cmd+A), copie (Ctrl/Cmd+C) et colle ici : tous les liens arrivent d\'un coup, titres et pochettes se remplissent automatiquement.',
-      qcm: '<b>QCM</b> — une ligne par question : <code>question ; réponse A ; réponse B ; réponse C ; réponse D ; bonne lettre</code><br>Ex : <code>Capitale de l\'Australie ? ; Sydney ; Canberra ; Melbourne ; Perth ; B</code><br>Séparateurs acceptés : point-virgule, barre verticale | ou tabulation (copier-coller depuis Excel).'
-    };
-    const upd = () => { $('#bk-hint').innerHTML = hints[document.querySelector('input[name=bk]:checked').value]; };
-    document.querySelectorAll('input[name=bk]').forEach(r => r.onchange = upd); upd();
-  }
-  function bulkGo() {
-    const type = document.querySelector('input[name=bk]:checked').value;
-    const out = []; let bad = 0;
-    for (const line of $('#bk-txt').value.split(/\r?\n/)) {
-      const l = line.trim(); if (!l) continue;
-      const parts = l.split(/\s*(?:;|\||\t)\s*/);
-      if (type === 'bt') {
-        const uri = spUri(parts[0]); if (!uri) { bad++; continue; }
-        out.push(newBT({ uri, title: parts[1] || '', artist: parts[2] || '' }));
-      } else {
-        if (parts.length < 6) { bad++; continue; }
-        const c = LETTERS.indexOf((parts[5] || '').trim().toUpperCase());
-        out.push(newQCM({ text: parts[0], options: parts.slice(1, 5), correct: c < 0 ? 0 : c }));
+  /* ---------- Import intelligent (PDF / Word / texte) ---------- */
+  let IMP = null;
+  function loadScript(src) { return new Promise((res, rej) => { if (document.querySelector(`script[src="${src}"]`)) return res(); const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+  async function fileToText(f) {
+    const ext = (f.name.split('.').pop() || '').toLowerCase();
+    if (ext === 'pdf' || f.type === 'application/pdf') {
+      const pdfjs = await import(PDFJS_URL);
+      pdfjs.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      const doc = await pdfjs.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise;
+      const out = [];
+      for (let p = 1; p <= doc.numPages; p++) {
+        const page = await doc.getPage(p);
+        const tc = await page.getTextContent();
+        const rows = [];
+        for (const it of tc.items) {
+          if (!('str' in it) || !it.str) continue;
+          const y = it.transform[5], x = it.transform[4];
+          let row = rows.find(r => Math.abs(r.y - y) <= 3);
+          if (!row) { row = { y, parts: [] }; rows.push(row); }
+          row.parts.push({ x, w: it.width || 0, s: it.str });
+        }
+        try {
+          for (const a of await page.getAnnotations()) {
+            const url = a.url || a.unsafeUrl; if (!url || !/spotify/.test(url) || !a.rect) continue;
+            const yc = (a.rect[1] + a.rect[3]) / 2;
+            let best = null; for (const r of rows) if (!best || Math.abs(r.y - yc) < Math.abs(best.y - yc)) best = r;
+            if (best && !best.parts.some(pp => pp.s.includes(url))) best.parts.push({ x: 1e6, w: 0, s: ' ' + url });
+          }
+        } catch (e) {}
+        rows.sort((a, b) => b.y - a.y);
+        for (const r of rows) {
+          r.parts.sort((a, b) => a.x - b.x);
+          let line = '', end = null;
+          for (const pp of r.parts) { if (end != null && pp.x - end > 1.5 && !/\s$/.test(line) && !/^\s/.test(pp.s)) line += ' '; line += pp.s; end = pp.x + pp.w; }
+          out.push(line.replace(/\s+/g, ' ').trim());
+        }
+        out.push('');
       }
+      return out.join('\n');
     }
-    if (!out.length) { toast('Aucune ligne reconnue – vérifie le format'); return; }
-    if ($('#bk-round').checked) S.bank.push({ id: uid(), type: 'round', name: $('#bk-rname').value.trim().slice(0, 40) });
-    S.bank.push(...out); closeModal(); renderAll();
-    toast(plural(out.length, 'question') + ' importée(s)' + (bad ? ` · ${bad} ligne(s) ignorée(s)` : ''));
-    fillMeta(out);
+    if (ext === 'docx') {
+      await loadScript(MAMMOTH_URL);
+      const r = await window.mammoth.convertToHtml({ arrayBuffer: await f.arrayBuffer() });
+      const d = new DOMParser().parseFromString(r.value, 'text/html');
+      d.querySelectorAll('a[href]').forEach(a => { const h = a.getAttribute('href') || ''; if (/spotify/.test(h) && !a.textContent.includes(h)) a.append(' ' + h); });
+      return [...d.body.querySelectorAll('h1,h2,h3,h4,h5,h6,p,li,td')].filter(e => !e.querySelector('p,li')).map(e => (/^H\d$/.test(e.tagName) ? '# ' : '') + e.textContent.trim()).join('\n');
+    }
+    return await f.text();
+  }
+  function openImport(text) {
+    modal(`<h3>Importer une partie</h3>
+      <div class="muted" style="font-size:13px;line-height:1.5">Dépose un fichier <b>PDF</b>, <b>Word (.docx)</b> ou <b>texte</b> avec tes manches et tes questions, ou colle le texte ci-dessous. L'appli repère les <b>manches</b>, les <b>blind tests</b> (avec ou sans lien Spotify), les <b>QCM</b> et les <b>questions ouvertes</b> avec leurs réponses. Tu vérifies tout avant d'importer.</div>
+      <div class="drop" id="impDrop">📄 Glisse ton fichier ici ou <button class="sm" data-act="impFile">choisis un fichier</button> <span id="impFileName" class="gold-t" style="font-size:12px;margin-left:6px"></span></div>
+      <textarea id="imp-txt" rows="9" style="margin-top:12px;font-family:ui-monospace,Menlo,monospace;font-size:12px" placeholder="…ou colle ici ton texte. Une playlist copiée depuis l'app Spotify (Ctrl/Cmd+A puis Ctrl/Cmd+C) fonctionne aussi.">${esc(text || '')}</textarea>
+      <div class="hint">Ce qui est reconnu : <b>Manche 1 : Nom</b> (ou Thème, Partie, un titre en MAJUSCULES ou un titre Word) · questions numérotées ou finissant par « ? » · propositions <b>A) B) C) D)</b> · <b>Réponse : B</b> ou <b>Réponse : Canberra</b> · une proposition marquée <b>*</b> ou <b>✓</b> · liens Spotify · lignes « Titre - Artiste » dans une manche blind test. <a href="#" data-act="impTemplate" style="color:var(--gold2)">Télécharger un modèle</a></div>
+      <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="impParse">Analyser →</button></div>`, 'import');
+    const dz = $('#impDrop');
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f) readImportFile(f); });
+  }
+  async function readImportFile(f) {
+    const nm = $('#impFileName'); if (nm) nm.textContent = 'Lecture de ' + f.name + '…';
+    try {
+      const txt = await fileToText(f);
+      if (!txt.trim()) { if (nm) nm.textContent = ''; toast('Aucun texte trouvé dans ce fichier (PDF scanné ?)'); return; }
+      if ($('#imp-txt')) $('#imp-txt').value = txt;
+      doParse(txt, f.name);
+    } catch (e) { if (nm) nm.textContent = ''; toast('Impossible de lire ce fichier (connexion internet nécessaire pour les PDF et Word)'); }
+  }
+  function doParse(text, fileName) {
+    if (!text || !text.trim()) { toast('Choisis un fichier ou colle du texte'); return; }
+    const r = parseProgram(text);
+    IMP = { text, fileName, items: r.items, ignored: r.ignored };
+    if (!r.items.some(it => it.type !== 'round')) { toast('Aucune question reconnue – vérifie le format ou télécharge le modèle'); return; }
+    openPreview();
+  }
+  function openPreview() {
+    const its = IMP.items;
+    const c = t => its.filter(x => x.type === t).length;
+    const noLink = its.filter(x => x.type === 'bt' && !x.uri).length;
+    const warns = its.filter(x => x.warn && !(x.type === 'bt' && x.warn === 'Lien Spotify à ajouter')).length;
+    const parts = [c('round') && plural(c('round'), 'manche'), c('bt') && plural(c('bt'), 'blind test') + (noLink ? ` (${noLink} sans lien Spotify)` : ''), c('qcm') && plural(c('qcm'), 'QCM').replace('QCMs', 'QCM'), c('open') && (c('open') + (c('open') > 1 ? ' questions ouvertes' : ' question ouverte'))].filter(Boolean);
+    let rn = 0;
+    const row = (it, i) => {
+      const cb = `<input type="checkbox" data-imp="${i}" checked>`;
+      if (it.type === 'round') { rn++; return `<div class="imp r">${cb}<span class="rtag">MANCHE ${rn}</span><div class="body"><b class="gold-t">${esc(it.name || '')}</b></div></div>`; }
+      const w = it.warn ? `<div class="w">⚠ ${esc(it.warn)}</div>` : '';
+      if (it.type === 'bt') return `<div class="imp">${cb}<span class="badge bt">♪ BT</span><div class="body"><div class="bt-l" data-t="${esc(it.title)}" data-a="${esc(it.artist)}">${esc(it.title || '?')}${it.artist ? ' — ' + esc(it.artist) : ''}</div>${w}</div></div>`;
+      if (it.type === 'qcm') return `<div class="imp">${cb}<span class="badge qcm">QCM</span><div class="body"><div>${esc(it.text)}</div><div class="o">${it.options.map((o, k) => k === it.correct ? `<b>${LETTERS[k]}) ${esc(o)} ✓</b>` : `${LETTERS[k]}) ${esc(o)}`).join(' · ')}</div>${w}</div></div>`;
+      return `<div class="imp">${cb}<span class="badge open">? Q</span><div class="body"><div>${esc(it.text)}</div>${it.answer ? `<div class="o">Réponse : <b>${esc(it.answer)}</b></div>` : ''}${w}</div></div>`;
+    };
+    const hasRoundItems = c('round') > 0;
+    modal(`<h3>Vérifie l'import</h3>
+      <div class="muted" style="font-size:14px">${IMP.fileName ? esc(IMP.fileName) + ' · ' : ''}${parts.join(' · ')}${warns ? ` · <span style="color:#e0a85a">${plural(warns, 'point')} à vérifier</span>` : ''}</div>
+      ${c('bt') ? `<label class="row" style="gap:8px;margin-top:10px;font-size:13px"><input type="checkbox" id="imp-swap"> Inverser titre et artiste des blind tests (si ton fichier est au format « Artiste - Titre »)</label>` : ''}
+      <div class="implist">${its.map(row).join('')}</div>
+      ${IMP.ignored.length ? `<details style="margin-top:8px;font-size:12px" class="muted"><summary>${plural(IMP.ignored.length, 'ligne')} non utilisée(s)</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(IMP.ignored.slice(0, 60).join('\n'))}</pre></details>` : ''}
+      ${hasRoundItems ? '' : `<label class="row" style="gap:8px;margin-top:12px;font-size:13px"><input type="checkbox" id="imp-round"> Mettre ces questions dans une nouvelle manche</label><input id="imp-rname" placeholder="Nom de la manche (facultatif)" style="margin-top:6px">`}
+      <div class="row" style="gap:18px;margin-top:12px;font-size:13px"><label class="row" style="gap:6px"><input type="radio" name="imp-mode" value="append" checked> Ajouter à la suite du programme</label><label class="row" style="gap:6px"><input type="radio" name="imp-mode" value="replace"> Remplacer tout le programme</label></div>
+      <div class="hint">Les points à vérifier pourront être corrigés après l'import avec ✎ dans le programme. Les blind tests sans lien Spotify se jouent depuis ton logiciel DJ, ou tu ajoutes le lien plus tard.</div>
+      <div class="mact"><button class="ghost" data-act="impBack">← Modifier le texte</button><div class="grow"></div><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="impGo">Importer</button></div>`, 'preview');
+    const sw = $('#imp-swap');
+    if (sw) sw.onchange = () => document.querySelectorAll('.bt-l').forEach(el => { const t = el.dataset.t, a = el.dataset.a; el.textContent = sw.checked ? (a || '?') + (t ? ' — ' + t : '') : (t || '?') + (a ? ' — ' + a : ''); });
+  }
+  function importGo() {
+    if (!IMP) return;
+    const keep = new Set([...document.querySelectorAll('[data-imp]')].filter(x => x.checked).map(x => +x.dataset.imp));
+    const swap = $('#imp-swap') && $('#imp-swap').checked;
+    const out = [];
+    if ($('#imp-round') && $('#imp-round').checked) out.push({ id: uid(), type: 'round', name: ($('#imp-rname').value || '').trim().slice(0, 40) });
+    IMP.items.forEach((it, i) => {
+      if (!keep.has(i)) return;
+      if (it.type === 'round') out.push({ id: uid(), type: 'round', name: (it.name || '').slice(0, 40) });
+      else if (it.type === 'bt') out.push(newBT({ uri: it.uri || '', title: swap ? it.artist : it.title, artist: swap ? it.title : it.artist }));
+      else if (it.type === 'qcm') out.push(newQCM({ text: it.text, options: it.options, correct: it.correct }));
+      else out.push(newOpen({ text: it.text, answer: it.answer }));
+    });
+    const clean = out.filter((it, i) => !(it.type === 'round' && (!out[i + 1] || out[i + 1].type === 'round')));
+    if (!clean.some(isQ)) { toast('Rien à importer'); return; }
+    const replace = document.querySelector('input[name=imp-mode]:checked').value === 'replace';
+    if (replace) { if (S.bank.length && !confirm('Remplacer tout le programme actuel ?')) return; S.bank = clean; G.idx = -1; G.phase = 'idle'; G.rid = null; resetRound(); }
+    else S.bank.push(...clean);
+    closeModal(); renderAll();
+    toast(plural(clean.filter(isQ).length, 'question') + ' importée(s)');
+    fillMeta(clean.filter(q => q.type === 'bt' && q.uri));
+    IMP = null;
+  }
+  function downloadTemplate(e) {
+    const txt = `MANCHE 1 : Blind test années 80
+https://open.spotify.com/track/2WfaOiMkCvy7F5fcp2zZ8L - Take On Me - a-ha
+https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC - Never Gonna Give You Up - Rick Astley
+Billie Jean - Michael Jackson
+
+MANCHE 2 : Culture générale
+1. Quelle est la capitale de l'Australie ?
+A) Sydney
+B) Canberra
+C) Melbourne
+D) Perth
+Réponse : B
+
+2. Quel est le plus grand océan ?
+A) Atlantique
+B) Indien
+C) Pacifique *
+D) Arctique
+
+3. Combien de joueurs dans une équipe de foot ?
+Réponse : 11
+
+MANCHE 3 : Spécial mariés
+Où se sont rencontrés les mariés ?
+A) À la fac
+B) Au travail
+C) En soirée
+Réponse : En soirée
+
+Qui a fait sa demande ?
+Réponse : Thomas, à Venise
+`;
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], { type: 'text/plain;charset=utf-8' })); a.download = 'modele-quiz-adevents.txt'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
   }
   function openSettings() {
     const s = S.settings;
@@ -3529,13 +3858,14 @@ function initRegie() {
   const A = {
     sel: d => selectQ(+d.i), start, next, reveal, launch, good: btGood, bad: btBad, close: qClose, toggle: spToggle,
     skipJ: () => { const q = cur(); if (!q) return; resetRound(); G.screen = null; G.picks = {}; launch(); },
-    startGame: () => { if (!S.bank.length) { toast('Ajoute d\'abord des questions dans le programme'); openBulk(); return; } if (G.idx >= 0 && !confirm('Recommencer depuis le début du programme ? (les scores ne sont pas remis à zéro : utilise « Nouvelle partie » pour ça)')) return; G.played = {}; G.prevRanks = {}; selectQ(0); },
+    startGame: () => { if (!S.bank.length) { toast('Ajoute d\'abord des questions dans le programme'); openImport(); return; } if (G.idx >= 0 && !confirm('Recommencer depuis le début du programme ? (les scores ne sont pas remis à zéro : utilise « Nouvelle partie » pour ça)')) return; G.played = {}; G.prevRanks = {}; selectQ(0); },
     up: d => { const i = +d.i; if (i > 0) { [S.bank[i - 1], S.bank[i]] = [S.bank[i], S.bank[i - 1]]; if (G.idx === i) G.idx--; else if (G.idx === i - 1) G.idx++; renderAll(); } },
     down: d => { const i = +d.i; if (i < S.bank.length - 1) { [S.bank[i + 1], S.bank[i]] = [S.bank[i], S.bank[i + 1]]; if (G.idx === i) G.idx++; else if (G.idx === i + 1) G.idx--; renderAll(); } },
     edit: d => openEditor(null, +d.i),
     del: d => { const i = +d.i; if (!confirm(S.bank[i].type === 'round' ? 'Supprimer ce séparateur de manche ? (les questions sont conservées)' : 'Supprimer cette question ?')) return; S.bank.splice(i, 1); if (G.idx === i) { G.idx = -1; G.phase = 'idle'; resetRound(); } else if (G.idx > i) G.idx--; renderAll(); },
-    newBT: () => openEditor('bt'), newQCM: () => openEditor('qcm'), newRound: () => openEditor('round'),
-    showRound: d => { G.rid = d.r; G.screen = 'roundScores'; renderAll(); }, bulk: openBulk, bulkGo,
+    newBT: () => openEditor('bt'), newQCM: () => openEditor('qcm'), newRound: () => openEditor('round'), newOpen: () => openEditor('open'),
+    spSearch: () => { const t = [$('#f-title') && $('#f-title').value, $('#f-artist') && $('#f-artist').value].filter(Boolean).join(' '); window.open('https://open.spotify.com/search/' + encodeURIComponent(t), '_blank', 'noopener'); },
+    showRound: d => { G.rid = d.r; G.screen = 'roundScores'; renderAll(); }, bulk: () => openImport(), impFile: () => $('#impIn').click(), impParse: () => doParse($('#imp-txt').value), impBack: () => openImport(IMP && IMP.text), impGo: importGo, impTemplate: downloadTemplate,
     autofill, msave: saveEditor, mclose: () => { const k = MODAL; closeModal(); if (k === 'settings' || k === 'tjk') renderAll(); },
     exportJSON: () => {
       const blob = new Blob([JSON.stringify({ app: 'adevents-quiz', v: 1, bank: S.bank }, null, 2)], { type: 'application/json' });
@@ -3567,7 +3897,7 @@ function initRegie() {
   };
   $('#regie').addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
-    const f = A[b.dataset.act]; if (f) { e.stopPropagation(); f(b.dataset); }
+    const f = A[b.dataset.act]; if (f) { e.stopPropagation(); if (b.tagName === 'A') e.preventDefault(); f(b.dataset); }
   });
   $('#regie').addEventListener('change', async e => {
     const el = e.target;
@@ -3593,12 +3923,13 @@ function initRegie() {
     }
     await loadCustom(); openSounds(); toast(plural(files.length, 'son') + ' ajouté(s)');
   };
+  $('#impIn').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) readImportFile(f); };
   $('#fileIn').onchange = async e => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
     try {
       const j = JSON.parse(await f.text()); const items = Array.isArray(j) ? j : j.bank;
       if (!Array.isArray(items)) throw 0;
-      const clean = items.filter(q => q && ['bt', 'qcm', 'round'].includes(q.type)).map(q => q.type === 'round' ? { id: uid(), type: 'round', name: String(q.name || '').slice(0, 40) } : q.type === 'bt' ? newBT({ ...q, id: uid() }) : newQCM({ ...q, id: uid() }));
+      const clean = items.filter(q => q && ['bt', 'qcm', 'open', 'round'].includes(q.type)).map(q => q.type === 'round' ? { id: uid(), type: 'round', name: String(q.name || '').slice(0, 40) } : q.type === 'bt' ? newBT({ ...q, id: uid() }) : q.type === 'open' ? newOpen({ ...q, id: uid() }) : newQCM({ ...q, id: uid() }));
       const replace = S.bank.length && confirm('Remplacer le programme actuel ? (Annuler = ajouter à la suite)');
       if (replace) { S.bank = clean; G.idx = -1; G.phase = 'idle'; resetRound(); } else S.bank.push(...clean);
       renderAll(); toast(plural(clean.length, 'question') + ' importée(s)');
@@ -3680,18 +4011,20 @@ function initEcran() {
       h = `<div class="e-kicker">Manche ${D.round.num} / ${D.round.total}</div><div class="e-big" style="font-size:12vw">Manche ${D.round.num}</div>${D.round.name ? `<div class="e-title" style="font-size:6vw;color:var(--gold2)">${esc(D.round.name)}</div>` : ''}<div class="e-sub" style="margin-top:2vh">${D.round.nq} question${D.round.nq > 1 ? 's' : ''} · Préparez-vous !</div>`;
     } else if (q) {
       const ph = D.phase; const pos = D.round ? (D.multi ? `Manche ${D.round.num} · ` : '') + `${D.round.qn}/${D.round.nq}` : D.num;
-      const kick = `${q.type === 'bt' ? 'Blind test' : 'Quiz'} · ${pos}`;
+      const kick = `${TYPE_NAME[q.type]} · ${pos}`;
       const qn = D.round ? D.round.qn : D.num;
       const showLive = D.liveRank && D.teams.length && D.teams.some(t => t.score !== 0);
-      if (ph === 'ready' && showLive) h = `<div class="e-live"><div class="left"><div class="e-kicker">${D.round && D.multi ? 'Manche ' + D.round.num : 'Classement en direct'}</div><div class="e-big" style="font-size:7vw;margin:2vh 0">${q.type === 'bt' ? 'Morceau' : 'Question'} ${qn}</div><div class="e-sub">${q.type === 'bt' ? 'Blind test' : 'Quiz'} · Préparez-vous…</div></div>
+      if (ph === 'ready' && showLive) h = `<div class="e-live"><div class="left"><div class="e-kicker">${D.round && D.multi ? 'Manche ' + D.round.num : 'Classement en direct'}</div><div class="e-big" style="font-size:7vw;margin:2vh 0">${q.type === 'bt' ? 'Morceau' : 'Question'} ${qn}</div><div class="e-sub">${TYPE_NAME[q.type]} · Préparez-vous…</div></div>
           <div class="e-board">${board(D.teams, 8, t => t.score, true)}</div></div>`;
-      else if (ph === 'ready') h = `<div class="e-kicker">${D.round && D.multi ? 'Manche ' + D.round.num + ' · ' : ''}${q.type === 'bt' ? 'Blind test' : 'Quiz'}</div><div class="e-big">${q.type === 'bt' ? 'Morceau' : 'Question'} ${qn}</div><div class="e-sub" style="margin-top:3vh">Préparez-vous…</div>`;
+      else if (ph === 'ready') h = `<div class="e-kicker">${D.round && D.multi ? 'Manche ' + D.round.num + ' · ' : ''}${TYPE_NAME[q.type]}</div><div class="e-big">${q.type === 'bt' ? 'Morceau' : 'Question'} ${qn}</div><div class="e-sub" style="margin-top:3vh">Préparez-vous…</div>`;
       else if (ph === 'jokers') h = `${ring(D.jokerEnds, Math.max(1, Math.round((D.jokerEnds - Date.now()) / 1000)))}<div class="e-kicker">${kick}</div><div style="font-size:12vh;margin-top:2vh">🃏</div><div class="e-title" style="font-size:6vw">Jouez vos jokers !</div><div class="e-sub">Choisissez sur votre téléphone · ${D.ready.filter(r => r.ok).length}/${D.ready.length} équipes prêtes</div>
           <div class="e-chips">${D.ready.map(r => `<span class="${r.ok ? 'ready' : ''}">${r.ok ? '✓ ' : ''}${esc(r.name)}</span>`).join('')}</div>`;
+      else if (ph === 'bt_play' && q.type === 'open') h = `<div class="e-kicker">${kick}</div><div class="e-q" style="margin:4vh 0 3vh">${esc(q.text)}</div><div class="e-title" style="font-size:4.5vw;color:var(--gold2)">🔔 Buzzez pour répondre !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${strip}`;
       else if (ph === 'bt_play') h = `<div class="e-kicker">${kick}</div><div class="eq">${Array.from({ length: 22 }, (_, i) => `<i style="animation-delay:${(i * 137 % 900) / 1000}s;animation-duration:${0.6 + (i * 53 % 50) / 100}s"></i>`).join('')}</div><div class="e-title" style="font-size:5vw">À vos buzzers !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${D.lastWrong ? `<div class="e-wrong">✗ ${esc(D.lastWrong.name)} : « ${esc(D.lastWrong.label)} »</div>` : ''}${strip}`;
       else if (ph === 'bt_buzzed') h = D.appelNow
         ? `<div class="e-kicker">${kick}</div><div style="font-size:12vh">📞</div><div class="e-title" style="font-size:6vw;margin:1vh 0">Appel à un ami !</div><div class="e-big" style="font-size:6vw">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a droit à une 2ᵉ chance</div>${strip}`
         : `<div class="e-kicker">${kick}</div><div style="font-size:10vh">🔔</div><div class="e-big">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a buzzé ! Votre réponse ?</div>${strip}`;
+      else if (ph === 'bt_reveal' && q.type === 'open') h = `<div class="e-kicker">${kick} · La réponse</div><div class="e-sub" style="margin:3vh 0 1vh;max-width:80vw">${esc(q.text)}</div><div class="e-title" style="font-size:6vw;color:var(--gold2)">${esc(q.answer || '—')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${D.winners.map(w => esc(w.name) + ' +' + w.pts).join(' · ')}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}${strip}`;
       else if (ph === 'bt_reveal') h = `<div class="e-kicker">${kick} · La réponse</div><div class="e-reveal" style="margin-top:4vh">${q.cover ? `<img class="e-cover" src="${esc(q.cover)}" alt="">` : ''}<div><div class="e-title" style="font-size:5.5vw;margin:0">${esc(q.title || '—')}</div><div class="e-sub gold-t" style="font-size:3vw;margin-top:1vh">${esc(q.artist || '')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${D.winners.map(w => esc(w.name) + ' +' + w.pts).join(' · ')}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}</div></div>${strip}`;
       else if (ph.startsWith('qcm')) {
         const rev = ph === 'qcm_reveal'; const tot = Math.max(1, D.counts.reduce((a, b) => a + b, 0));
@@ -3813,9 +4146,9 @@ function initJoueur() {
     } else if (ph === 'idle' || (scr && !live)) {
       h = `<div class="j-title">Vous êtes dans la partie !</div><div class="j-txt muted">Regardez l'écran, la prochaine manche arrive…</div>${nInv ? '<div class="j-txt muted" style="font-size:14px">Vos jokers</div>' + invHtml(st.inv) : ''}`;
     } else if (ph === 'ready') {
-      h = `<div class="j-txt muted">${st.qtype === 'bt' ? 'Blind test' : 'Quiz'} · ${pos}</div><div class="j-title">Préparez-vous…</div>${nInv ? '<div class="j-txt muted" style="font-size:14px">Vos jokers</div>' + invHtml(st.inv) : ''}`;
+      h = `<div class="j-txt muted">${TYPE_NAME[st.qtype] || ''} · ${pos}</div><div class="j-title">Préparez-vous…</div>${nInv ? '<div class="j-txt muted" style="font-size:14px">Vos jokers</div>' + invHtml(st.inv) : ''}`;
     } else if (ph === 'jokers') {
-      const head = `<div class="j-txt muted">${st.qtype === 'bt' ? 'Blind test' : 'Quiz'} · ${pos} · <b class="gold-t" id="jjt"></b></div>`;
+      const head = `<div class="j-txt muted">${TYPE_NAME[st.qtype] || ''} · ${pos} · <b class="gold-t" id="jjt"></b></div>`;
       if (st.myPick && !changing) {
         const p = st.myPick;
         h = head + `<div style="font-size:54px">${p.j === 'none' ? '👍' : JOKERS[p.j].icon}</div><div class="j-title">${p.j === 'none' ? 'Pas de joker' : esc(JOKERS[p.j].name)}</div>${p.target ? `<div class="j-txt">contre <b class="gold-t">${esc((st.targets.find(t => t.id === p.target) || {}).name || '')}</b></div>` : ''}
@@ -3831,16 +4164,16 @@ function initJoueur() {
     } else if (st.blocked && ['bt_play', 'bt_buzzed', 'qcm_ask', 'qcm_closed'].includes(ph)) {
       h = `<div style="font-size:64px">⛔</div><div class="j-title res-bad">Bloqués ce tour !</div><div class="j-txt">${st.blockedBy ? esc(st.blockedBy) + ' vous a bloqués avec un joker.' : ''}</div><div class="j-txt muted">Vous rejouez à la prochaine question.</div>${stolen}`;
     } else if (ph === 'bt_play') {
-      if (st.locked) h = `<div class="j-title res-bad">Hors-jeu</div><div class="j-txt">${st.wrongLabel ? '« ' + esc(st.wrongLabel) + ' » n\'était pas la bonne réponse.' : 'Mauvaise réponse — vous ne pouvez plus jouer sur ce morceau.'}</div>${consolHtml}`;
+      if (st.locked) h = `<div class="j-title res-bad">Hors-jeu</div><div class="j-txt">${st.wrongLabel ? '« ' + esc(st.wrongLabel) + ' » n\'était pas la bonne réponse.' : (st.qtype === 'open' ? 'Mauvaise réponse — vous ne pouvez plus jouer sur cette question.' : 'Mauvaise réponse — vous ne pouvez plus jouer sur ce morceau.')}</div>${consolHtml}`;
       else if (pendingBuzz || pendingPick) h = `<div class="j-title">Envoyé…</div>`;
       else if (st.choices) h = `${activeBadge}<div class="j-title" style="font-size:30px">C'est quel titre ?</div><div class="j-txt muted" style="font-size:14px">Une seule tentative — le plus rapide gagne</div><div class="j-opts">${st.choices.map(c => `<button class="j-choice" data-bp="${c.i}">${esc(c.label)}</button>`).join('')}</div>`;
-      else h = `${activeBadge}<div class="j-txt muted">Blind test · ${pos}</div><button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
+      else h = `${activeBadge}<div class="j-txt muted">${TYPE_NAME[st.qtype]} · ${pos}</div>${st.text ? `<div class="j-q">${esc(st.text)}</div>` : ''}<button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
     } else if (ph === 'bt_buzzed') {
       if (st.appel) h = `<div style="font-size:60px">📞</div><div class="j-title gold-t">Appel à un ami !</div><div class="j-txt">Vous avez une 2ᵉ chance : demandez de l'aide autour de vous et redonnez une réponse à l'animateur.</div>`;
       else h = st.iBuzzed ? `<div style="font-size:60px">🎤</div><div class="j-title gold-t">Vous avez la main !</div><div class="j-txt">Donnez votre réponse à l'animateur.</div>${activeBadge}`
                           : `<div style="font-size:50px">🔔</div><div class="j-title">${esc(st.buzzName || '')}</div><div class="j-txt muted">a buzzé en premier…</div>`;
     } else if (ph === 'bt_reveal') {
-      h = (st.gain ? `<div class="j-title res-good">Bravo ! +${st.gain}</div>` : '') + `<div class="j-txt muted">La réponse</div><div class="j-title">${esc(st.title || '—')}</div><div class="j-txt gold-t">${esc(st.artist || '')}</div>${consolHtml}`;
+      h = (st.gain ? `<div class="j-title res-good">Bravo ! +${st.gain}</div>` : '') + `<div class="j-txt muted">La réponse</div>${st.qtype === 'open' ? `<div class="j-q">${esc(st.text || '')}</div><div class="j-title gold-t">${esc(st.answer || '—')}</div>` : `<div class="j-title">${esc(st.title || '—')}</div><div class="j-txt gold-t">${esc(st.artist || '')}</div>`}${consolHtml}`;
     } else if (ph === 'qcm_ask' || ph === 'qcm_closed') {
       const chosen = st.myChoice != null ? st.myChoice : pendingChoice;
       h = `${activeBadge}<div class="j-txt muted">Quiz · ${pos}${ph === 'qcm_ask' ? ' · <b class="gold-t" id="jt"></b>' : ''}</div><div class="j-q">${esc(st.text)}</div>`;
