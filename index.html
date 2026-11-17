@@ -2479,6 +2479,10 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .setrow .grow{min-width:0}
 .setrow select{width:220px;padding:6px 8px;font-size:13px}
 .setrow input[type=number]{width:80px;padding:6px 8px}
+.imgprev img{height:64px;max-width:140px;border-radius:8px;object-fit:cover;display:block}
+.optedit{grid-template-columns:auto auto 1fr auto!important}
+.optedit .oimg img{width:34px;height:34px;object-fit:cover;border-radius:6px;display:block}
+.live .qimg{max-height:150px;max-width:100%;border-radius:10px;margin:4px 0 10px;display:block}
 .snd{display:grid;grid-template-columns:1fr 120px auto auto;gap:8px;align-items:center;margin-bottom:6px}
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1d1a12;border:1px solid var(--gold3);color:var(--gold2);padding:10px 18px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:60}
 #toast.show{opacity:1}
@@ -2500,8 +2504,8 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .e-lobby .qrbox{width:28vh;height:28vh;padding:1.4vh;border-radius:1.6vh}
 .e-code{font-size:6vw;font-weight:800;letter-spacing:.25em;color:var(--gold2)}
 .e-chips{display:flex;flex-wrap:wrap;gap:1vw;justify-content:center;margin-top:4vh;max-width:84vw}
-.e-chips span{border:1px solid rgba(201,164,92,.5);border-radius:999px;padding:.8vh 1.6vw;font-size:1.7vw}
-.e-chips span.ready{background:rgba(201,164,92,.18);border-color:var(--gold2);color:var(--gold2)}
+.e-chips>span{border:1px solid rgba(201,164,92,.5);border-radius:999px;padding:.8vh 1.6vw;font-size:1.7vw}
+.e-chips>span.ready{background:rgba(201,164,92,.18);border-color:var(--gold2);color:var(--gold2)}
 .eq{display:flex;gap:.7vw;align-items:flex-end;height:22vh;margin:4vh 0}
 .eq i{height:12%;animation-fill-mode:both;width:1.6vw;background:linear-gradient(180deg,var(--gold2),var(--gold3));border-radius:.4vw;animation:eq 1s ease-in-out infinite alternate}
 @keyframes eq{0%{height:12%}100%{height:100%}}
@@ -2550,6 +2554,30 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .e-pod.p3 .blk{height:15vh;background:linear-gradient(180deg,#d9a273,#8b5a33)}
 .e-pod.p1 .nm{font-size:3.2vw;color:var(--gold2)}
 .e-rest{display:flex;flex-wrap:wrap;gap:1vw 2.5vw;justify-content:center;margin-top:3vh;font-size:1.7vw;color:var(--muted)}
+.av{display:inline-grid;place-items:center;width:1.7em;height:1.7em;border-radius:50%;object-fit:cover;flex:none;line-height:1;vertical-align:middle;overflow:hidden;font-style:normal}
+.team .av{width:28px;height:28px;font-size:16px}
+.e-row .av{width:6vh;height:6vh;font-size:3.6vh}
+.e-live .e-row .av{width:5vh;height:5vh;font-size:3vh}
+.e-chips>span{display:inline-flex;align-items:center;gap:.6vw}
+.e-chips .av{width:4.4vh;height:4.4vh;font-size:2.6vh}
+.e-bigav{width:28vh!important;height:28vh!important;font-size:16vh!important;margin-bottom:2vh;box-shadow:0 0 0 .6vh var(--gold2),0 0 8vh rgba(201,164,92,.5);animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+.e-pod .av{width:13vh;height:13vh;font-size:7.5vh;margin-bottom:1.5vh;box-shadow:0 0 0 .4vh rgba(255,255,255,.15)}
+.e-pod.p1 .av{width:17vh;height:17vh;font-size:10vh;box-shadow:0 0 0 .5vh var(--gold2),0 0 6vh rgba(201,164,92,.5)}
+.e-win{display:inline-flex;align-items:center;gap:.8vw;margin:0 .8vw}
+.e-win .av{width:6vh;height:6vh;font-size:3.6vh}
+.e-qimg{max-height:36vh;max-width:70vw;border-radius:1.6vh;box-shadow:0 2vh 6vh rgba(0,0,0,.6),0 0 0 1px rgba(201,164,92,.3);margin-bottom:3vh;object-fit:contain}
+.e-q.small{font-size:3vw;margin-bottom:3vh}
+.e-opt img{height:13vh;width:17vh;object-fit:cover;border-radius:1vh;flex:none}
+.e-opts.imgs .e-opt{padding:1.6vh 1.6vw}
+.e-prog{position:absolute;top:4vh;left:0;right:0;display:flex;justify-content:center;gap:1vw;align-items:center;z-index:2;font-size:1.25vw;color:var(--muted);pointer-events:none}
+.e-prog .rp{padding:.5vh 1.1vw;border-radius:999px;border:1px solid rgba(201,164,92,.25);white-space:nowrap}
+.e-prog .rp.cur{border-color:var(--gold2);color:var(--gold2);background:rgba(201,164,92,.12)}
+.e-prog .rp.done{opacity:.45}
+.e-dots{display:flex;gap:.45vw;margin-left:.6vw}
+.e-dots i{width:.9vw;height:.9vw;border-radius:50%;background:#2a2a2f}
+.e-dots i.done{background:var(--gold3)}
+.e-dots i.cur{background:var(--gold2);box-shadow:0 0 1vw var(--gold)}
 .e-hint{position:fixed;bottom:1vh;right:1vw;font-size:12px;color:#444;z-index:2}
 
 /* ============ JOUEUR ============ */
@@ -2558,6 +2586,20 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .j-top .brand{font-size:20px}
 .j-me{text-align:right;font-size:13px;color:var(--muted)}
 .j-me b{display:block;color:var(--text);font-size:15px}
+.j-me{display:flex;align-items:center;gap:10px}
+.j-me .av{width:40px;height:40px;font-size:22px;cursor:pointer;box-shadow:0 0 0 2px var(--gold3)}
+.j-avpick{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;max-width:400px}
+.j-avpick button{padding:0;border:2px solid transparent;border-radius:50%;background:none;aspect-ratio:1;display:grid;place-items:center}
+.j-avpick button .av{width:100%;height:100%;font-size:26px}
+.j-avpick button.on{border-color:var(--gold2);box-shadow:0 0 12px rgba(201,164,92,.6)}
+.j-avbig .av{width:110px;height:110px;font-size:62px;box-shadow:0 0 0 3px var(--gold2)}
+.j-photo{display:flex;gap:8px;width:100%;max-width:400px}
+.j-photo label{flex:1;text-align:center;padding:12px;border:1px solid var(--gold3);border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;color:var(--gold2)}
+.j-photo input{display:none}
+.j-qimg{max-width:100%;max-height:32vh;border-radius:12px;object-fit:contain}
+.j-opt img{width:64px;height:64px;object-fit:cover;border-radius:10px;flex:none}
+.j-choice .av,.j-tg .av{width:34px;height:34px;font-size:20px;margin-right:10px}
+.j-buzzav .av{width:96px;height:96px;font-size:54px}
 .j-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;text-align:center;gap:14px}
 .j-status{font-size:13px;color:var(--muted);text-align:center;padding:8px;min-height:32px}
 .j-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:600;line-height:1.05}
@@ -2616,6 +2658,7 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
     <button class="sm" data-act="scr" data-s="scores">Classement général</button>
     <button class="sm" data-act="scr" data-s="final">Podium final</button>
     <button class="sm" data-act="scr" data-s="pause">Logo / pause</button>
+    <button class="sm ghost" data-act="remoteScreen" title="Afficher l'écran de projection sur un autre appareil">📺 Sur un autre appareil</button>
     <div class="grow"></div>
     <label class="row muted" style="font-size:12px;gap:6px"><input type="checkbox" id="jkToggle"> Jokers</label>
     <label class="row muted" style="font-size:12px;gap:6px;margin-left:10px"><input type="checkbox" id="sfxToggle" checked> Sons automatiques</label>
@@ -2669,6 +2712,7 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
     </section>
   </main>
   <input type="file" id="sndIn" accept="audio/*" multiple class="hidden">
+  <input type="file" id="imgIn" accept="image/*" class="hidden">
   <input type="file" id="impIn" accept=".pdf,.txt,.md,.docx,.csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" class="hidden">
   <div id="modal" class="modal hidden"><div class="mbox" id="mbox"></div></div>
   <div id="toast"></div>
@@ -2676,6 +2720,7 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 
 <!-- ======================= ÉCRAN PUBLIC ======================= -->
 <div id="ecran" class="mode">
+  <div id="e-prog" class="e-prog"></div>
   <div id="e-stage" class="e-stage"></div>
   <div class="e-foot"><span class="brand serif">AD EVENTS</span><span id="e-footr"></span></div>
   <div class="e-hint">Clic = plein écran</div>
@@ -2701,7 +2746,7 @@ const COLORS = ['var(--A)','var(--B)','var(--C)','var(--D)'];
 const PREFIX = 'adevents-quiz-v1-';
 const CHANNEL = 'adevents-quiz-v1';
 const P = new URLSearchParams(location.search);
-const MODE = P.get('mode') === 'ecran' ? 'ecran' : (P.get('c') ? 'jouer' : 'regie');
+const MODE = (P.get('mode') === 'ecran' || P.get('ecran')) ? 'ecran' : (P.get('c') ? 'jouer' : 'regie');
 document.body.dataset.mode = MODE;
 
 const JOKERS = {
@@ -2898,6 +2943,41 @@ function parseProgram(raw) {
   return { items: out, ignored, rounds: roundCount };
 }
 
+const AVATARS = ['🦊', '🐸', '🦄', '🐼', '🐙', '🦖', '🐵', '🐧', '🦁', '🐯', '🐨', '🐷', '🤖', '👽', '👻', '🤠', '🥳', '😎', '🦩', '🐝', '🦉', '🐳', '🦥', '🍕'];
+const AV_COLORS = ['#c9a45c', '#6f8fb8', '#b8695c', '#6f9d7e', '#8e6fb8', '#b86f9d', '#5c9db8', '#b8a35c'];
+const randAv = () => ({ e: AVATARS[Math.floor(Math.random() * AVATARS.length)], c: AV_COLORS[Math.floor(Math.random() * AV_COLORS.length)] });
+function avHtml(av, get, cls = '') {
+  if (av && av.p) { const d = get && get(av.p); if (d) return `<img class="av ${cls}" src="${d}" alt="">`; return `<span class="av ${cls}" style="background:#2a2a2f">📷</span>`; }
+  if (av && av.e) return `<span class="av ${cls}" style="background:${/^#[0-9a-f]{6}$/i.test(av.c || '') ? av.c : '#2a2a2f'}">${esc(av.e)}</span>`;
+  return `<span class="av ${cls}" style="background:#2a2a2f">🙂</span>`;
+}
+function resizeImage(file, max, square, quality = 0.82) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = () => {
+      let w = img.naturalWidth, h = img.naturalHeight, sx = 0, sy = 0, sw = w, sh = h;
+      if (square) { const m = Math.min(w, h); sx = (w - m) / 2; sy = (h - m) / 2; sw = sh = m; w = h = Math.min(max, m); }
+      else { const r = Math.min(1, max / Math.max(w, h)); w = Math.round(w * r); h = Math.round(h * r); }
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', quality));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('image')); };
+    img.src = url;
+  });
+}
+function assetClient(send, onLoaded) {
+  const cache = new Map(), asked = new Set(); let pend = [], t = null;
+  return {
+    get(k) {
+      if (!k) return null; if (cache.has(k)) return cache.get(k);
+      if (!asked.has(k)) { asked.add(k); pend.push(k); clearTimeout(t); t = setTimeout(() => { const ks = pend; pend = []; if (ks.length && send({ t: 'need', keys: ks }) === false) ks.forEach(x => asked.delete(x)); }, 40); }
+      return null;
+    },
+    put(k, d) { if (typeof d === 'string' && d.startsWith('data:image/')) { cache.set(k, d); onLoaded(); } },
+    retry() { for (const k of [...asked]) if (!cache.has(k)) asked.delete(k); }
+  };
+}
 let toastT;
 function toast(msg) { const t = $('#toast'); if (!t) return; t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
@@ -2919,7 +2999,7 @@ function initRegie() {
   S.settings.jk = Object.assign({}, DEF.jk, S.settings.jk || {});
   S.settings.sounds = Object.assign({}, DEF.sounds, S.settings.sounds || {});
   const freshJokers = () => Object.fromEntries(JK.map(k => [k, S.settings.jk[k] ? S.settings.jokerStock : 0]));
-  for (const t of Object.values(S.teams)) if (!t.jokers) t.jokers = freshJokers();
+  for (const t of Object.values(S.teams)) { if (!t.jokers) t.jokers = freshJokers(); if (!t.av) t.av = randAv(); }
   const newCode = () => Array.from({ length: 5 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random() * 32)]).join('');
   if (!S.code) S.code = newCode();
   const save = () => ls(KEY, JSON.stringify(S));
@@ -2988,10 +3068,18 @@ function initRegie() {
   const safeSend = (conn, msg) => { try { if (conn.open) conn.send(msg); } catch (e) {} };
   const connectedTids = () => { const s = new Set(); for (const v of conns.values()) if (v.tid) s.add(v.tid); return s; };
 
+  function setAvatar(tid, av) {
+    const t = S.teams[tid]; if (!t || !av || typeof av !== 'object') return;
+    if (typeof av.photo === 'string' && /^data:image\/(jpeg|png|webp);base64,/.test(av.photo) && av.photo.length < 300000) {
+      const key = 'av_' + uid(); putAsset(key, av.photo); t.av = { p: key };
+    } else if (AVATARS.includes(av.e)) t.av = { e: av.e, c: AV_COLORS.includes(av.c) ? av.c : AV_COLORS[0] };
+  }
   function onPlayerMsg(conn, d) {
     if (!d || typeof d !== 'object') return;
     let c = conns.get(conn.connectionId);
     if (!c) { c = { conn, tid: null }; conns.set(conn.connectionId, c); }
+    if (d.t === 'need') { (Array.isArray(d.keys) ? d.keys : []).slice(0, 60).forEach(k => { const a = getA(k); if (a) safeSend(conn, { t: 'asset', key: k, data: a }); }); return; }
+    if (d.t === 'display-hello') { c.role = 'display'; safeSend(conn, { t: 'display', data: displayView() }); return; }
     if (d.t === 'join') {
       const pid = String(d.pid || '').slice(0, 40);
       const name = String(d.name || '').trim().slice(0, 24) || 'Équipe';
@@ -2999,8 +3087,9 @@ function initRegie() {
       const tid = 'p_' + pid;
       for (const [k, v] of conns) if (v.tid === tid && k !== conn.connectionId) { try { v.conn.close(); } catch (e) {} conns.delete(k); }
       c.tid = tid;
-      if (!S.teams[tid]) { S.teams[tid] = { name, score: 0, phone: true, at: Date.now(), jokers: freshJokers() }; toast('Nouvelle équipe : ' + name); }
+      if (!S.teams[tid]) { S.teams[tid] = { name, score: 0, phone: true, at: Date.now(), jokers: freshJokers(), av: randAv() }; toast('Nouvelle équipe : ' + name); }
       else S.teams[tid].name = name;
+      if (d.av) setAvatar(tid, d.av);
       renderAll(); checkAllPicked(); return;
     }
     const tid = c.tid;
@@ -3009,6 +3098,7 @@ function initRegie() {
     else if (d.t === 'answer') onAnswer(tid, d.choice);
     else if (d.t === 'joker') onJoker(tid, d.j, d.target);
     else if (d.t === 'btpick') onBtPick(tid, d.i);
+    else if (d.t === 'avatar') { setAvatar(tid, d.av); renderAll(); }
   }
 
   /* ---------- Spotify ---------- */
@@ -3087,11 +3177,28 @@ function initRegie() {
   let CUSTOM = [];
   const IDB = {
     db: null,
-    open() { return new Promise((res, rej) => { if (!window.indexedDB) return rej(); const r = indexedDB.open('adq_sounds', 1); r.onupgradeneeded = () => r.result.createObjectStore('s', { keyPath: 'id' }); r.onsuccess = () => { this.db = r.result; res(); }; r.onerror = () => rej(r.error); }); },
-    all() { return new Promise(res => { const out = []; const rq = this.db.transaction('s').objectStore('s').openCursor(); rq.onsuccess = e => { const c = e.target.result; if (c) { out.push(c.value); c.continue(); } else res(out); }; rq.onerror = () => res(out); }); },
-    put(v) { return new Promise(res => { const tx = this.db.transaction('s', 'readwrite'); tx.objectStore('s').put(v); tx.oncomplete = () => res(); tx.onerror = () => res(); }); },
-    del(id) { return new Promise(res => { const tx = this.db.transaction('s', 'readwrite'); tx.objectStore('s').delete(id); tx.oncomplete = () => res(); tx.onerror = () => res(); }); }
+    open() { if (this.db) return Promise.resolve(); return new Promise((res, rej) => { if (!window.indexedDB) return rej(); const r = indexedDB.open('adq_sounds', 2); r.onupgradeneeded = () => { const db = r.result; if (!db.objectStoreNames.contains('s')) db.createObjectStore('s', { keyPath: 'id' }); if (!db.objectStoreNames.contains('img')) db.createObjectStore('img', { keyPath: 'id' }); }; r.onsuccess = () => { this.db = r.result; res(); }; r.onerror = () => rej(r.error); }); },
+    all(st = 's') { return new Promise(res => { const out = []; const rq = this.db.transaction(st).objectStore(st).openCursor(); rq.onsuccess = e => { const c = e.target.result; if (c) { out.push(c.value); c.continue(); } else res(out); }; rq.onerror = () => res(out); }); },
+    put(v, st = 's') { return new Promise(res => { const tx = this.db.transaction(st, 'readwrite'); tx.objectStore(st).put(v); tx.oncomplete = () => res(); tx.onerror = () => res(); }); },
+    del(id, st = 's') { return new Promise(res => { const tx = this.db.transaction(st, 'readwrite'); tx.objectStore(st).delete(id); tx.oncomplete = () => res(); tx.onerror = () => res(); }); }
   };
+  const ASSETS = new Map();
+  const getA = k => ASSETS.get(k) || null;
+  function putAsset(key, data) { ASSETS.set(key, data); if (IDB.db) IDB.put({ id: key, data }, 'img'); }
+  function usedAssets() {
+    const u = new Set();
+    for (const q of S.bank) { if (q.img) u.add(q.img); (q.oimg || []).forEach(k => k && u.add(k)); }
+    for (const t of Object.values(S.teams)) if (t.av && t.av.p) u.add(t.av.p);
+    return u;
+  }
+  async function loadAssets() {
+    try {
+      await IDB.open();
+      const all = await IDB.all('img'); const used = usedAssets();
+      for (const a of all) { if (used.has(a.id) || ASSETS.has(a.id)) ASSETS.set(a.id, a.data); else IDB.del(a.id, 'img'); }
+    } catch (e) {}
+    renderAll();
+  }
   async function loadCustom() {
     try {
       await IDB.open();
@@ -3341,15 +3448,23 @@ function initRegie() {
   const optCounts = () => { const c = [0, 0, 0, 0]; for (const a of Object.values(G.answers)) { c[a.choice]++; if (a.choice2 != null) c[a.choice2]++; } return c; };
   const jokerCount = t => JK.reduce((s, k) => s + (S.settings.jk[k] ? (t.jokers[k] || 0) : 0), 0);
 
+  function progView() {
+    const rs = roundsInfo(); if (!rs.length || G.idx < 0) return null;
+    const cr = rs.find(r => r.id === G.rid);
+    return {
+      rounds: hasRounds() ? rs.map(r => ({ num: r.num, name: r.name, cur: r.id === G.rid, done: r.qs.length > 0 && r.qs.every(i => G.played[S.bank[i].id]) })) : [],
+      dots: cr ? cr.qs.map(i => (i === G.idx ? 2 : G.played[S.bank[i].id] ? 1 : 0)) : []
+    };
+  }
   function roundView() {
     const r = G.rid ? roundsInfo().find(x => x.id === G.rid) : null; if (!r) return null;
     const pos = r.qs.indexOf(G.idx);
     return { num: r.num, label: r.label, name: r.name, nq: r.qs.length, qn: pos + 1, total: roundsInfo().length,
-      teams: Object.entries(S.teams).map(([id, t]) => ({ name: t.name, rpts: rpts(t, r.id), score: t.score })).sort((a, b) => b.rpts - a.rpts || b.score - a.score) };
+      teams: Object.entries(S.teams).map(([id, t]) => ({ name: t.name, av: t.av, rpts: rpts(t, r.id), score: t.score })).sort((a, b) => b.rpts - a.rpts || b.score - a.score) };
   }
   function teamsWithMoves(gains = {}) {
     const now = rankMap();
-    return teamsSorted().map(t => ({ name: t.name, score: t.score, gain: gains[t.id] || 0, rank: now[t.id], mv: G.prevRanks[t.id] ? G.prevRanks[t.id] - now[t.id] : 0 }));
+    return teamsSorted().map(t => ({ name: t.name, av: t.av, score: t.score, gain: gains[t.id] || 0, rank: now[t.id], mv: G.prevRanks[t.id] ? G.prevRanks[t.id] - now[t.id] : 0 }));
   }
   function displayView() {
     const q = cur();
@@ -3357,15 +3472,16 @@ function initRegie() {
     const on = connectedTids();
     return {
       screen: G.screen, phase: G.phase, num: G.idx + 1, total: S.bank.length,
-      q: q ? { type: q.type, title: q.title, artist: q.artist, cover: q.cover, text: q.text, answer: q.answer, options: q.options, correct: q.correct, dur: q.dur, pts: q.pts } : null,
+      q: q ? { type: q.type, title: q.title, artist: q.artist, cover: q.cover, text: q.text, answer: q.answer, img: q.img || null, oimg: q.oimg || null, options: q.options, correct: q.correct, dur: q.dur, pts: q.pts } : null,
       buzzName: G.buzz ? tname(G.buzz) : null, appelNow: G.appelNow,
       lockedNames: G.locked.map(tname), blockedNames: G.blocked.map(tname),
       answered: Object.keys(G.answers).length, nTeams: Object.keys(S.teams).length,
       counts: optCounts(), endsAt: G.endsAt, jokerEnds: G.jokerEnds,
-      ready: Object.keys(S.teams).map(t => ({ name: tname(t), ok: !!G.picks[t] || !on.has(t) })),
+      ready: Object.keys(S.teams).map(t => ({ name: tname(t), av: S.teams[t].av, ok: !!G.picks[t] || !on.has(t) })),
+      buzzAv: G.buzz && S.teams[G.buzz] ? S.teams[G.buzz].av : null, prog: progView(),
       feed: G.feed.slice(-6),
       lastWrong: G.lastWrong && Date.now() - G.lastWrong.at < 6000 ? G.lastWrong : null,
-      winners: Object.entries(gains).map(([t, p]) => ({ name: tname(t), pts: p })),
+      winners: Object.entries(gains).map(([t, p]) => ({ name: tname(t), av: S.teams[t] && S.teams[t].av, pts: p })),
       teams: teamsWithMoves(gains),
       round: roundView(), multi: hasRounds(), liveRank: S.settings.liveRank !== false,
       joinUrl: joinUrlFor(S.code), code: S.code
@@ -3374,7 +3490,7 @@ function initRegie() {
   function playerView(tid) {
     const q = cur(); const t = S.teams[tid]; const ph = G.phase;
     const inv = {}; for (const k of JK) if (S.settings.jk[k] && t.jokers[k] > 0) inv[k] = t.jokers[k];
-    const v = { t: 'state', screen: G.screen, phase: ph, name: t.name, score: t.score, rank: rankOf(tid), nTeams: Object.keys(S.teams).length, num: G.idx + 1, total: S.bank.length, qtype: q ? q.type : null, inv: S.settings.jokers ? inv : {} };
+    const v = { t: 'state', screen: G.screen, phase: ph, name: t.name, av: t.av, score: t.score, rank: rankOf(tid), nTeams: Object.keys(S.teams).length, num: G.idx + 1, total: S.bank.length, qtype: q ? q.type : null, inv: S.settings.jokers ? inv : {} };
     const rv = roundView();
     if (rv) { v.round = { label: rv.label, num: rv.num, qn: rv.qn, nq: rv.nq }; v.multi = hasRounds(); const rr = rv.teams.findIndex(x => x.name === t.name); v.rRank = 1 + rv.teams.filter(x => x.rpts > rpts(t, G.rid)).length; v.rPts = rpts(t, G.rid); }
     if (G.active[tid]) v.active = G.active[tid].j;
@@ -3383,19 +3499,20 @@ function initRegie() {
     if (G.consol[tid]) v.consol = G.consol[tid];
     if (ph === 'jokers' && q) {
       v.avail = availJ(tid, q); v.myPick = G.picks[tid] || null;
-      v.targets = Object.keys(S.teams).filter(x => x !== tid).map(x => ({ id: x, name: tname(x) }));
+      v.targets = Object.keys(S.teams).filter(x => x !== tid).map(x => ({ id: x, name: tname(x), av: S.teams[x].av }));
       v.jRem = Math.max(0, G.jokerEnds - Date.now());
     }
     if (isBuzz(q)) {
       if (q.type === 'open' && ['bt_play', 'bt_buzzed', 'bt_reveal'].includes(ph)) v.text = q.text;
       v.locked = G.locked.includes(tid); v.iBuzzed = G.buzz === tid; v.appel = G.appelNow && G.buzz === tid;
-      v.buzzName = G.buzz ? tname(G.buzz) : null;
+      v.buzzName = G.buzz ? tname(G.buzz) : null; v.buzzAv = G.buzz && S.teams[G.buzz] ? S.teams[G.buzz].av : null;
+      if (q.type === 'open' && q.img && ['bt_play', 'bt_buzzed', 'bt_reveal'].includes(ph)) v.img = q.img;
       if (ph === 'bt_play' && G.btShow[tid] && !v.locked && !v.blocked) v.choices = G.btShow[tid].map(i => ({ i, label: G.btOpts.labels[i] }));
       if (G.lastWrong && G.lastWrong.name === t.name && v.locked) v.wrongLabel = G.lastWrong.label;
       if (ph === 'bt_reveal') { v.title = q.title; v.artist = q.artist; v.answer = q.answer; v.gain = (G.result && G.result.gains[tid]) || 0; }
     }
     if (q && q.type === 'qcm' && ['qcm_ask', 'qcm_closed', 'qcm_reveal'].includes(ph)) {
-      v.text = q.text; v.options = q.options; v.qidx = qAllowed(tid);
+      v.text = q.text; v.options = q.options; v.qidx = qAllowed(tid); v.img = q.img || null; v.oimg = q.oimg || null;
       const a = G.answers[tid];
       v.myChoice = a ? a.choice : null; v.myChoice2 = a ? a.choice2 : null;
       v.needSecond = ph === 'qcm_ask' && a && !answerDone(tid);
@@ -3405,11 +3522,19 @@ function initRegie() {
     return v;
   }
   const bc = 'BroadcastChannel' in window ? new BroadcastChannel(CHANNEL) : null;
-  if (bc) bc.onmessage = e => { if (e.data && e.data.type === 'hello') postDisplay(); };
-  function postDisplay() { if (bc) bc.postMessage({ type: 'display', data: displayView() }); }
+  if (bc) bc.onmessage = e => {
+    const m = e.data || {};
+    if (m.t === 'hello') postDisplay();
+    else if (m.t === 'need') (m.keys || []).slice(0, 60).forEach(k => { const a = getA(k); if (a) bc.postMessage({ t: 'asset', key: k, data: a }); });
+  };
+  function postDisplay() {
+    const data = displayView();
+    if (bc) bc.postMessage({ t: 'display', data });
+    for (const v of conns.values()) if (v.role === 'display') safeSend(v.conn, { t: 'display', data });
+  }
   function sendPlayers() {
-    for (const { conn, tid } of conns.values()) {
-      if (!tid) continue;
+    for (const { conn, tid, role } of conns.values()) {
+      if (!tid || role === 'display') continue;
       if (!S.teams[tid]) { safeSend(conn, { t: 'kicked' }); continue; }
       safeSend(conn, playerView(tid));
     }
@@ -3475,15 +3600,15 @@ function initRegie() {
     const num = rv ? (hasRounds() ? `Manche ${rv.num} · ` : '') + `Question ${rv.qn}/${rv.nq}` : `Question ${G.idx + 1}`;
     let h = '';
     if (q.type === 'open') {
-      h += `<div class="meta">${num} · Question ouverte · ${plural(q.pts, 'pt')}</div><h1>${esc(q.text)}</h1>
+      h += `<div class="meta">${num} · Question ouverte · ${plural(q.pts, 'pt')}</div><h1>${esc(q.text)}</h1>${q.img && getA(q.img) ? `<img class="qimg" src="${getA(q.img)}" alt="">` : ''}
         <div class="answerbox"><div><div class="muted" style="font-size:12px">Réponse attendue</div><div class="t">${esc(q.answer || '(non renseignée)')}</div></div></div>`;
     } else if (q.type === 'bt') {
       h += `<div class="meta">${num} · Blind test · ${plural(q.pts, 'pt')}</div>${q.uri ? '' : `<div class="hint" style="margin:8px 0;color:#e0a85a">⚠ Pas de lien Spotify : lance le morceau depuis ton logiciel DJ, ou <a href="https://open.spotify.com/search/${encodeURIComponent(btLabel(q).replace(' — ', ' '))}" target="_blank" rel="noopener" style="color:var(--gold2)">cherche-le sur Spotify ↗</a> et ajoute le lien avec ✎.</div>`}
         <div class="answerbox" style="margin-top:10px">${q.cover ? `<img src="${esc(q.cover)}" alt="">` : ''}<div><div class="t">${esc(q.title || '(titre non renseigné)')}</div><div class="muted">${esc(q.artist || '')}</div>${q.start ? `<div class="muted" style="font-size:12px">Démarre à ${q.start}s</div>` : ''}</div></div>`;
     } else {
-      h += `<div class="meta">${num} · QCM · ${plural(q.pts, 'pt')}${q.bonus ? ' + bonus rapidité' : ''} · ${q.dur}s</div><h1>${esc(q.text)}</h1>`;
+      h += `<div class="meta">${num} · QCM · ${plural(q.pts, 'pt')}${q.bonus ? ' + bonus rapidité' : ''} · ${q.dur}s</div><h1>${esc(q.text)}</h1>${q.img && getA(q.img) ? `<img class="qimg" src="${getA(q.img)}" alt="">` : ''}`;
       const cnt = optCounts(); const showCnt = !['ready', 'jokers'].includes(ph);
-      h += `<div class="opts">${q.options.map((o, i) => `<div class="opt ${i === q.correct ? 'good' : ''}"><span class="L" style="background:${COLORS[i]}">${LETTERS[i]}</span><span>${esc(o)}</span>${showCnt ? `<span class="cnt">${cnt[i]}</span>` : ''}</div>`).join('')}</div>`;
+      h += `<div class="opts">${q.options.map((o, i) => `<div class="opt ${i === q.correct ? 'good' : ''}"><span class="L" style="background:${COLORS[i]}">${LETTERS[i]}</span>${q.oimg && q.oimg[i] && getA(q.oimg[i]) ? `<img src="${getA(q.oimg[i])}" style="width:34px;height:34px;object-fit:cover;border-radius:6px">` : ''}<span>${esc(o)}</span>${showCnt ? `<span class="cnt">${cnt[i]}</span>` : ''}</div>`).join('')}</div>`;
     }
     const jkOn = S.settings.jokers && Object.keys(S.teams).some(t => availJ(t, q).length);
     if (ph === 'ready') {
@@ -3552,7 +3677,7 @@ function initRegie() {
       if (q && q.type === 'qcm' && G.phase === 'qcm_ask' && !answerDone(t.id) && !isOn && !G.blocked.includes(t.id)) extra = qAllowed(t.id).map(k => `<button class="sm" data-act="mans" data-t="${t.id}" data-i="${k}">${LETTERS[k]}</button>`).join('');
       const jc = jokerCount(t);
       return `<div class="team ${G.locked.includes(t.id) || G.blocked.includes(t.id) ? 'locked' : ''} ${G.buzz === t.id ? 'buzzed' : ''}">
-        <span class="muted" style="width:18px;font-size:12px">${i + 1}</span>${dot}<span class="nm" title="${esc(t.name)}">${G.active[t.id] ? JOKERS[G.active[t.id].j].icon + ' ' : ''}${esc(t.name)}</span>
+        <span class="muted" style="width:18px;font-size:12px">${i + 1}</span>${dot}${avHtml(t.av, getA)}<span class="nm" title="${esc(t.name)}">${G.active[t.id] ? JOKERS[G.active[t.id].j].icon + ' ' : ''}${esc(t.name)}</span>
         <span class="tb">${extra}</span>${S.settings.jokers ? `<button class="sm ghost" data-act="tjk" data-t="${t.id}" title="Jokers de l'équipe">🃏${jc}</button>` : ''}${hasRounds() && G.rid ? `<span class="rp" title="Points dans la manche en cours">+${rpts(t, G.rid)}</span>` : ''}<span class="sc">${t.score}</span>
         <span class="tb"><button class="sm" data-act="pts" data-t="${t.id}" data-d="-1">−</button><button class="sm" data-act="pts" data-t="${t.id}" data-d="1">+</button></span><span class="ed"><button class="sm ghost" data-act="ren" data-t="${t.id}" title="Renommer">✎</button><button class="sm ghost" data-act="kick" data-t="${t.id}" title="Retirer">✕</button></span>
       </div>`;
@@ -3591,19 +3716,39 @@ function initRegie() {
       modal(`<h3>${i != null ? 'Modifier' : 'Nouvelle'} question ouverte</h3>
         <label class="f">Question</label><textarea id="f-text" rows="2">${esc(q.text)}</textarea>
         <label class="f">Réponse attendue</label><input id="f-answer" value="${esc(q.answer)}">
+        <label class="f">Image (facultatif) — tu peux aussi la coller avec Ctrl/Cmd+V</label>
+        <div class="row"><div class="imgprev" id="f-imgprev">${q.img && getA(q.img) ? `<img src="${getA(q.img)}">` : '<span class="muted" style="font-size:12px">Aucune image</span>'}</div><button data-act="imgPick" data-slot="q">🖼 Choisir une image</button><button class="ghost" data-act="imgDel" data-slot="q">Retirer</button></div>
         <div class="g3"><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div><div></div><div></div></div>
         <div class="hint">Les équipes buzzent sur leur téléphone et répondent à l'oral, puis tu valides ✓ ou ✗ comme pour un blind test.</div>
         <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
     } else {
       modal(`<h3>${i != null ? 'Modifier' : 'Nouvelle'} question QCM</h3>
         <label class="f">Question</label><textarea id="f-text" rows="2">${esc(q.text)}</textarea>
+        <label class="f">Image (facultatif) — tu peux aussi la coller avec Ctrl/Cmd+V</label>
+        <div class="row"><div class="imgprev" id="f-imgprev">${q.img && getA(q.img) ? `<img src="${getA(q.img)}">` : '<span class="muted" style="font-size:12px">Aucune image</span>'}</div><button data-act="imgPick" data-slot="q">🖼 Choisir une image</button><button class="ghost" data-act="imgDel" data-slot="q">Retirer</button></div>
         <label class="f">Réponses (coche la bonne)</label>
-        ${[0, 1, 2, 3].map(k => q.options[k] || '').map((o, k) => `<div class="optedit"><input type="radio" name="f-corr" value="${k}" ${q.correct === k ? 'checked' : ''}><span class="badge" style="border-color:${COLORS[k]};color:${COLORS[k]}">${LETTERS[k]}</span><input id="f-o${k}" value="${esc(o)}" placeholder="${k > 1 ? 'Facultatif' : ''}"></div>`).join('')}
+        ${[0, 1, 2, 3].map(k => q.options[k] || '').map((o, k) => `<div class="optedit"><input type="radio" name="f-corr" value="${k}" ${q.correct === k ? 'checked' : ''}><span class="badge" style="border-color:${COLORS[k]};color:${COLORS[k]}">${LETTERS[k]}</span><input id="f-o${k}" value="${esc(o)}" placeholder="${k > 1 ? 'Facultatif' : 'Texte et/ou image'}"><button class="sm ghost oimg" data-act="imgPick" data-slot="${k}" title="Image pour cette réponse (clic droit ou Maj+clic pour retirer)">${q.oimg && q.oimg[k] && getA(q.oimg[k]) ? `<img src="${getA(q.oimg[k])}">` : '🖼'}</button></div>`).join('')}
         <div class="g3"><div><label class="f">Durée (s)</label><input id="f-dur" type="number" min="5" value="${q.dur}"></div><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div>
         <div><label class="f">Bonus rapidité</label><label class="row" style="gap:8px;padding-top:8px"><input type="checkbox" id="f-bonus" ${q.bonus ? 'checked' : ''}> jusqu'à ×2</label></div></div>
         <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
     }
   }
+  let imgSlot = null;
+  async function setEdImage(file, slot) {
+    if (!ED || !file || !/^image\//.test(file.type)) return;
+    try {
+      const data = await resizeImage(file, slot === 'q' ? 1280 : 640, false, 0.82);
+      const key = 'img_' + uid(); putAsset(key, data);
+      if (slot === 'q') { ED.q.img = key; const pv = $('#f-imgprev'); if (pv) pv.innerHTML = `<img src="${data}">`; }
+      else { const k = +slot; ED.q.oimg = [0, 1, 2, 3].map(x => (ED.q.oimg || [])[x] || null); ED.q.oimg[k] = key; const b = document.querySelector(`.oimg[data-slot="${k}"]`); if (b) b.innerHTML = `<img src="${data}">`; }
+    } catch (e) { toast('Image illisible'); }
+  }
+  $('#imgIn').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f && imgSlot != null) setEdImage(f, imgSlot); };
+  document.addEventListener('paste', e => {
+    if (MODAL !== 'edit' || !ED || ED.q.type === 'bt') return;
+    const it = [...(e.clipboardData ? e.clipboardData.items : [])].find(x => x.type.startsWith('image/'));
+    if (it) { e.preventDefault(); setEdImage(it.getAsFile(), 'q'); toast('Image collée'); }
+  });
   async function autofill() {
     const uri = spUri($('#f-uri').value);
     if (!uri) { toast('Lien Spotify invalide'); return; }
@@ -3630,9 +3775,12 @@ function initRegie() {
       q.text = $('#f-text').value.trim();
       const raw = [0, 1, 2, 3].map(k => $('#f-o' + k).value.trim());
       const c = document.querySelector('input[name=f-corr]:checked'); const ci = c ? +c.value : 0;
-      if (!q.text || raw.filter(Boolean).length < 2) { toast('Remplis la question et au moins 2 réponses'); return; }
-      if (!raw[ci]) { toast('La bonne réponse cochée est vide'); return; }
-      q.options = raw.filter(Boolean); q.correct = raw.slice(0, ci).filter(Boolean).length;
+      const oi = [0, 1, 2, 3].map(k => (ED.q.oimg || [])[k] || null);
+      const filled = raw.map((x, k) => !!(x || oi[k]));
+      if (!q.text || filled.filter(Boolean).length < 2) { toast('Remplis la question et au moins 2 réponses (texte ou image)'); return; }
+      if (!filled[ci]) { toast('La bonne réponse cochée est vide'); return; }
+      q.options = raw.filter((x, k) => filled[k]); q.correct = filled.slice(0, ci).filter(Boolean).length;
+      const ko = oi.filter((x, k) => filled[k]); q.oimg = ko.some(Boolean) ? ko : null;
       q.dur = Math.max(5, parseInt($('#f-dur').value) || 20); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0); q.bonus = $('#f-bonus').checked;
     }
     if (ED.i != null) S.bank[ED.i] = q; else S.bank.push(q);
@@ -3853,12 +4001,26 @@ Réponse : Thomas, à Venise
     down: d => { const i = +d.i; if (i < S.bank.length - 1) { [S.bank[i + 1], S.bank[i]] = [S.bank[i], S.bank[i + 1]]; if (G.idx === i) G.idx++; else if (G.idx === i + 1) G.idx--; renderAll(); } },
     edit: d => openEditor(null, +d.i),
     del: d => { const i = +d.i; if (!confirm(S.bank[i].type === 'round' ? 'Supprimer ce séparateur de manche ? (les questions sont conservées)' : 'Supprimer cette question ?')) return; S.bank.splice(i, 1); if (G.idx === i) { G.idx = -1; G.phase = 'idle'; resetRound(); } else if (G.idx > i) G.idx--; renderAll(); },
+    imgPick: (d, e) => {
+      if (d.slot !== 'q' && e && (e.shiftKey || e.button === 2) && ED) { ED.q.oimg = [0, 1, 2, 3].map(x => (ED.q.oimg || [])[x] || null); ED.q.oimg[+d.slot] = null; const b = document.querySelector(`.oimg[data-slot="${d.slot}"]`); if (b) b.textContent = '🖼'; return; }
+      imgSlot = d.slot; $('#imgIn').click();
+    },
+    imgDel: () => { if (!ED) return; ED.q.img = null; const pv = $('#f-imgprev'); if (pv) pv.innerHTML = '<span class="muted" style="font-size:12px">Aucune image</span>'; },
+    remoteScreen: () => { const url = location.origin + location.pathname + '?ecran=' + S.code; modal(`<h3>Écran de projection</h3>
+      <div class="muted" style="font-size:14px;line-height:1.55">L'écran de projection montre aux joueurs l'avancée de la partie : QR d'accès, questions, buzz, réponses, classements. Il est différent de ta régie.<br><br>
+      <b>Sur ce PC</b> (2ᵉ écran / vidéoprojecteur branché) : bouton <b>Écran public ↗</b>, puis glisse la fenêtre sur l'écran et clique dedans pour le plein écran.<br>
+      <b>Sur un autre appareil</b> (Smart TV, 2ᵉ ordinateur, tablette reliée au projecteur) : ouvre ce lien dans son navigateur ou scanne le QR code.</div>
+      <div class="row" style="gap:16px;margin-top:14px"><div class="qrbox" style="width:140px;height:140px">${qrSvg(url)}</div><div><div class="joinurl" style="font-size:14px;color:var(--gold2)">${esc(url)}</div><button class="sm" style="margin-top:8px" data-act="copyScreen">Copier le lien</button></div></div>
+      <div class="hint">Ne partage pas ce lien avec les joueurs : il affiche les réponses au moment de la révélation, comme l'écran public.</div>
+      <div class="mact"><button class="gold" data-act="mclose">Fermer</button></div>`, 'remote'); },
+    copyScreen: () => { navigator.clipboard && navigator.clipboard.writeText(location.origin + location.pathname + '?ecran=' + S.code).then(() => toast('Lien copié')); },
     newBT: () => openEditor('bt'), newQCM: () => openEditor('qcm'), newRound: () => openEditor('round'), newOpen: () => openEditor('open'),
     spSearch: () => { const t = [$('#f-title') && $('#f-title').value, $('#f-artist') && $('#f-artist').value].filter(Boolean).join(' '); window.open('https://open.spotify.com/search/' + encodeURIComponent(t), '_blank', 'noopener'); },
     showRound: d => { G.rid = d.r; G.screen = 'roundScores'; renderAll(); }, bulk: () => openImport(), impFile: () => $('#impIn').click(), impParse: () => doParse($('#imp-txt').value), impBack: () => openImport(IMP && IMP.text), impGo: importGo, impTemplate: downloadTemplate,
     autofill, msave: saveEditor, mclose: () => { const k = MODAL; closeModal(); if (k === 'settings' || k === 'tjk') renderAll(); },
     exportJSON: () => {
-      const blob = new Blob([JSON.stringify({ app: 'adevents-quiz', v: 1, bank: S.bank }, null, 2)], { type: 'application/json' });
+      const assets = {}; for (const q of S.bank) [q.img, ...(q.oimg || [])].forEach(k => { if (k && getA(k)) assets[k] = getA(k); });
+      const blob = new Blob([JSON.stringify({ app: 'adevents-quiz', v: 2, bank: S.bank, assets }, null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'programme-quiz-' + new Date().toISOString().slice(0, 10) + '.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     },
     importJSON: () => $('#fileIn').click(),
@@ -3867,7 +4029,7 @@ Réponse : Thomas, à Venise
     openScreen: () => { const w = window.open(location.pathname + '?mode=ecran', 'adq_ecran', 'popup,width=1280,height=720'); if (!w) toast('Autorise les pop-ups pour ouvrir l\'écran public'); setTimeout(postDisplay, 800); },
     testPlayer: () => window.open(location.pathname + '?c=' + S.code + '&test=1', '_blank'),
     copyUrl: () => { navigator.clipboard && navigator.clipboard.writeText(joinUrlFor(S.code)).then(() => toast('Lien copié')); },
-    addTeam: () => { const n = (prompt('Nom de l\'équipe (sans téléphone) :') || '').trim().slice(0, 24); if (!n) return; S.teams['m_' + uid()] = { name: n, score: 0, phone: false, at: Date.now(), jokers: freshJokers() }; renderAll(); },
+    addTeam: () => { const n = (prompt('Nom de l\'équipe (sans téléphone) :') || '').trim().slice(0, 24); if (!n) return; S.teams['m_' + uid()] = { name: n, score: 0, phone: false, at: Date.now(), jokers: freshJokers(), av: randAv() }; renderAll(); },
     pts: d => { if (S.teams[d.t]) { addPts(d.t, +d.d); renderAll(); } },
     ren: d => { const t = S.teams[d.t]; if (!t) return; const n = (prompt('Nouveau nom :', t.name) || '').trim().slice(0, 24); if (n) { t.name = n; renderAll(); } },
     kick: d => { const t = S.teams[d.t]; if (!t || !confirm('Retirer l\'équipe « ' + t.name + ' » ?')) return; delete S.teams[d.t]; renderAll(); },
@@ -4051,6 +4213,7 @@ Réponse : Thomas, à Venise
     const b = e.target.closest('[data-act]'); if (!b) return;
     const f = A[b.dataset.act]; if (f) { e.stopPropagation(); if (b.tagName === 'A') e.preventDefault(); f(b.dataset, e); }
   });
+  $('#regie').addEventListener('contextmenu', e => { const b = e.target.closest('.oimg[data-slot]'); if (b) { e.preventDefault(); A.imgPick(b.dataset, { button: 2 }); } });
   $('#regie').addEventListener('change', async e => {
     const el = e.target;
     if (el.dataset.sel === 'mj' && el.value) { const [j, target] = el.value.split('|'); onJoker(el.dataset.t, j, target || null); return; }
@@ -4080,6 +4243,7 @@ Réponse : Thomas, à Venise
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
     try {
       const j = JSON.parse(await f.text()); const items = Array.isArray(j) ? j : j.bank;
+      if (j && j.assets && typeof j.assets === 'object') for (const [k, v] of Object.entries(j.assets)) if (typeof v === 'string' && v.startsWith('data:image/')) putAsset(k, v);
       if (!Array.isArray(items)) throw 0;
       const clean = items.filter(q => q && ['bt', 'qcm', 'open', 'round'].includes(q.type)).map(q => q.type === 'round' ? { id: uid(), type: 'round', name: String(q.name || '').slice(0, 40) } : q.type === 'bt' ? newBT({ ...q, id: uid() }) : q.type === 'open' ? newOpen({ ...q, id: uid() }) : newQCM({ ...q, id: uid() }));
       const replace = S.bank.length && confirm('Remplacer le programme actuel ? (Annuler = ajouter à la suite)');
@@ -4104,7 +4268,7 @@ Réponse : Thomas, à Venise
   startPeer();
   renderAll();
   renderBoard();
-  loadCustom();
+  loadCustom().then(loadAssets);
   setInterval(() => { renderTop(); if (G.lastWrong && Date.now() - G.lastWrong.at > 6000 && Date.now() - G.lastWrong.at < 6500) postDisplay(); }, 500);
 }
 
@@ -4113,11 +4277,49 @@ Réponse : Thomas, à Venise
    ==================================================================== */
 function initEcran() {
   const stage = $('#e-stage'); let D = null; let lastKey = '';
-  const bc = 'BroadcastChannel' in window ? new BroadcastChannel(CHANNEL) : null;
-  if (!bc) { stage.innerHTML = '<div class="e-sub">Navigateur non compatible – utilise Chrome, Edge ou Firefox.</div>'; return; }
-  bc.onmessage = e => { if (e.data && e.data.type === 'display') { D = e.data.data; render(); } };
-  bc.postMessage({ type: 'hello' });
-  setInterval(() => { if (!D) bc.postMessage({ type: 'hello' }); }, 1000);
+  const remote = (P.get('ecran') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  let send = () => false;
+  const AC = assetClient(m => send(m), () => { lastKey = ''; render(); });
+  const getA = k => AC.get(k);
+  const onMsg = m => {
+    if (!m) return;
+    if (m.t === 'display') { D = m.data; render(); }
+    else if (m.t === 'asset') AC.put(m.key, m.data);
+  };
+  if (remote) {
+    let peer = null, conn = null, rt = null;
+    const retry = (fn, ms) => { clearTimeout(rt); rt = setTimeout(fn, ms); };
+    const status = t => { if (!D) stage.innerHTML = `<div class="e-kicker">AD Events</div><div class="e-title" style="font-size:5vw">${esc(t)}</div><div class="e-sub">Partie ${esc(remote)}</div>`; };
+    const connect = () => {
+      if (peer) { try { peer.destroy(); } catch (e) {} }
+      if (typeof Peer === 'undefined') { status('Connexion impossible'); retry(() => location.reload(), 5000); return; }
+      status('Connexion à la régie…');
+      const pp = new Peer({ debug: 0 }); peer = pp;
+      pp.on('open', () => { if (pp === peer) openConn(); });
+      pp.on('error', err => { if (pp !== peer) return; if (err.type === 'peer-unavailable') { status('En attente de la régie…'); retry(openConn, 3000); } else retry(connect, 3000); });
+      pp.on('disconnected', () => { if (pp === peer && !pp.destroyed) try { pp.reconnect(); } catch (e) { retry(connect, 3000); } });
+    };
+    const openConn = () => {
+      if (!peer || peer.destroyed) return connect();
+      if (conn) { try { conn.close(); } catch (e) {} }
+      const c = peer.connect(PREFIX + remote, { reliable: true }); conn = c;
+      c.on('open', () => { if (c !== conn) return; AC.retry(); c.send({ t: 'display-hello' }); });
+      c.on('data', d => { if (c === conn) onMsg(d); });
+      c.on('close', () => { if (c === conn) retry(openConn, 2000); });
+    };
+    send = m => { try { if (conn && conn.open) { conn.send(m); return true; } } catch (e) {} return false; };
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (!conn || !conn.open)) connect(); });
+    connect();
+  } else {
+    const bc = 'BroadcastChannel' in window ? new BroadcastChannel(CHANNEL) : null;
+    if (!bc) { stage.innerHTML = '<div class="e-sub">Navigateur non compatible – utilise Chrome, Edge ou Firefox.</div>'; return; }
+    send = m => { bc.postMessage(m); return true; };
+    bc.onmessage = e => onMsg(e.data);
+    bc.postMessage({ t: 'hello' });
+    setInterval(() => { if (!D) bc.postMessage({ t: 'hello' }); }, 1000);
+  }
+  const AV = (av, cls) => avHtml(av, getA, cls);
+  const winners = list => list.map(w => `<span class="e-win">${AV(w.av)}${esc(w.name)} +${w.pts}</span>`).join('');
   document.addEventListener('click', () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); });
   render();
 
@@ -4128,12 +4330,12 @@ function initEcran() {
     let rank = 0, prev = null;
     return list.slice(0, max).map((t, i) => {
       const v = val(t); if (v !== prev) { rank = i + 1; prev = v; }
-      return `<div class="e-row ${i === 0 ? 'top1' : ''}" style="animation-delay:${(n - i) * 0.1}s"><span class="rk">${rank}</span>${moves ? mvHtml(t.mv || 0) : ''}<span class="nm">${esc(t.name)}</span><span class="pt">${v}</span>${t.gain ? `<span class="gain">+${t.gain}</span>` : ''}${extra ? extra(t) : ''}</div>`;
+      return `<div class="e-row ${i === 0 ? 'top1' : ''}" style="animation-delay:${(n - i) * 0.1}s"><span class="rk">${rank}</span>${moves ? mvHtml(t.mv || 0) : ''}${AV(t.av)}<span class="nm">${esc(t.name)}</span><span class="pt">${v}</span>${t.gain ? `<span class="gain">+${t.gain}</span>` : ''}${extra ? extra(t) : ''}</div>`;
     }).join('');
   }
   const ring = (ends, dur) => `<div class="e-timer" data-ends="${ends}" data-dur="${dur}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#2a2a2f" stroke-width="7"/><circle class="ring" cx="50" cy="50" r="44" fill="none" stroke="var(--gold)" stroke-width="7" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg><div class="num">${dur}</div></div>`;
   function render() {
-    if (!D) { stage.innerHTML = '<div class="e-kicker">AD Events</div><div class="e-title">En attente de la régie…</div>'; return; }
+    if (!D) { if (!remote) stage.innerHTML = '<div class="e-kicker">AD Events</div><div class="e-title">En attente de la régie…</div>'; return; }
     const key = JSON.stringify(D);
     if (key === lastKey) return;
     const prevPhase = lastKey ? JSON.parse(lastKey).phase : null; lastKey = key;
@@ -4145,7 +4347,7 @@ function initEcran() {
       h = `<div class="e-kicker">Blind test &amp; Quiz</div><div class="e-title">Rejoignez la partie</div>
         <div class="e-lobby"><div class="qrbox">${qrSvg(D.joinUrl)}</div>
         <div style="text-align:left"><div class="e-sub">Scannez le QR code<br>ou allez sur</div><div class="e-sub gold-t" style="font-size:2vw;margin:1.5vh 0">${esc(D.joinUrl.replace(/^https?:\/\//, '').replace(/\?.*$/, ''))}</div><div class="e-sub">Code de la partie</div><div class="e-code">${esc(D.code)}</div></div></div>
-        ${D.teams.length ? `<div class="e-chips">${D.teams.map(t => `<span>${esc(t.name)}</span>`).join('')}</div>` : ''}`;
+        ${D.teams.length ? `<div class="e-chips">${D.teams.map(t => `<span>${AV(t.av)}${esc(t.name)}</span>`).join('')}</div>` : ''}`;
     } else if (scr === 'scores') {
       h = `<div class="e-kicker">${D.phase === 'final' ? 'Partie terminée' : 'Classement'}</div><div class="e-title" style="font-size:5vw">${D.phase === 'final' ? 'Classement final' : 'Classement général'}</div>
         <div class="e-board">${board(D.teams, 10, t => t.score, true)}</div>`;
@@ -4157,7 +4359,7 @@ function initEcran() {
     } else if (scr === 'final') {
       const tt = D.teams; const pod = [tt[1], tt[0], tt[2]];
       h = `<div class="e-kicker">Partie terminée</div><div class="e-title" style="font-size:5vw;margin-bottom:1vh">🏆 Classement final</div>
-        <div class="e-podium">${pod.map((t, k) => t ? `<div class="e-pod p${[2, 1, 3][k]}" style="animation-delay:${[1.2, 2.2, .3][k]}s"><div class="nm">${esc(t.name)}</div><div class="pt">${t.score} pt${t.score > 1 ? 's' : ''}${tt.indexOf(t) > 0 && tt[tt.indexOf(t) - 1].score === t.score ? ' · ex æquo' : ''}</div><div class="blk">${[2, 1, 3][k]}</div></div>` : '').join('')}</div>
+        <div class="e-podium">${pod.map((t, k) => t ? `<div class="e-pod p${[2, 1, 3][k]}" style="animation-delay:${[1.2, 2.2, .3][k]}s">${AV(t.av)}<div class="nm">${esc(t.name)}</div><div class="pt">${t.score} pt${t.score > 1 ? 's' : ''}${tt.indexOf(t) > 0 && tt[tt.indexOf(t) - 1].score === t.score ? ' · ex æquo' : ''}</div><div class="blk">${[2, 1, 3][k]}</div></div>` : '').join('')}</div>
         ${tt.length > 3 ? `<div class="e-rest">${tt.slice(3, 15).map((t, i) => `<span>${i + 4}. ${esc(t.name)} · ${t.score}</span>`).join('')}</div>` : ''}`;
     } else if (scr === 'pause') {
       h = `<div class="e-kicker">Animation</div><div class="e-title" style="font-size:9vw;letter-spacing:.12em;color:var(--gold2)">AD EVENTS</div><div class="e-sub">Blind test &amp; Quiz</div>`;
@@ -4172,25 +4374,28 @@ function initEcran() {
           <div class="e-board">${board(D.teams, 8, t => t.score, true)}</div></div>`;
       else if (ph === 'ready') h = `<div class="e-kicker">${D.round && D.multi ? 'Manche ' + D.round.num + ' · ' : ''}${TYPE_NAME[q.type]}</div><div class="e-big">${q.type === 'bt' ? 'Morceau' : 'Question'} ${qn}</div><div class="e-sub" style="margin-top:3vh">Préparez-vous…</div>`;
       else if (ph === 'jokers') h = `${ring(D.jokerEnds, Math.max(1, Math.round((D.jokerEnds - Date.now()) / 1000)))}<div class="e-kicker">${kick}</div><div style="font-size:12vh;margin-top:2vh">🃏</div><div class="e-title" style="font-size:6vw">Jouez vos jokers !</div><div class="e-sub">Choisissez sur votre téléphone · ${D.ready.filter(r => r.ok).length}/${D.ready.length} équipes prêtes</div>
-          <div class="e-chips">${D.ready.map(r => `<span class="${r.ok ? 'ready' : ''}">${r.ok ? '✓ ' : ''}${esc(r.name)}</span>`).join('')}</div>`;
-      else if (ph === 'bt_play' && q.type === 'open') h = `<div class="e-kicker">${kick}</div><div class="e-q" style="margin:4vh 0 3vh">${esc(q.text)}</div><div class="e-title" style="font-size:4.5vw;color:var(--gold2)">🔔 Buzzez pour répondre !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${strip}`;
+          <div class="e-chips">${D.ready.map(r => `<span class="${r.ok ? 'ready' : ''}">${AV(r.av)}${r.ok ? '✓ ' : ''}${esc(r.name)}</span>`).join('')}</div>`;
+      else if (ph === 'bt_play' && q.type === 'open') h = `<div class="e-kicker">${kick}</div>${q.img && getA(q.img) ? `<img class="e-qimg" src="${getA(q.img)}" alt="">` : ''}<div class="e-q ${q.img ? 'small' : ''}" style="margin:2vh 0 3vh">${esc(q.text)}</div><div class="e-title" style="font-size:4vw;color:var(--gold2)">🔔 Buzzez pour répondre !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${strip}`;
       else if (ph === 'bt_play') h = `<div class="e-kicker">${kick}</div><div class="eq">${Array.from({ length: 22 }, (_, i) => `<i style="animation-delay:${(i * 137 % 900) / 1000}s;animation-duration:${0.6 + (i * 53 % 50) / 100}s"></i>`).join('')}</div><div class="e-title" style="font-size:5vw">À vos buzzers !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${D.lastWrong ? `<div class="e-wrong">✗ ${esc(D.lastWrong.name)} : « ${esc(D.lastWrong.label)} »</div>` : ''}${strip}`;
       else if (ph === 'bt_buzzed') h = D.appelNow
-        ? `<div class="e-kicker">${kick}</div><div style="font-size:12vh">📞</div><div class="e-title" style="font-size:6vw;margin:1vh 0">Appel à un ami !</div><div class="e-big" style="font-size:6vw">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a droit à une 2ᵉ chance</div>${strip}`
-        : `<div class="e-kicker">${kick}</div><div style="font-size:10vh">🔔</div><div class="e-big">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a buzzé ! Votre réponse ?</div>${strip}`;
-      else if (ph === 'bt_reveal' && q.type === 'open') h = `<div class="e-kicker">${kick} · La réponse</div><div class="e-sub" style="margin:3vh 0 1vh;max-width:80vw">${esc(q.text)}</div><div class="e-title" style="font-size:6vw;color:var(--gold2)">${esc(q.answer || '—')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${D.winners.map(w => esc(w.name) + ' +' + w.pts).join(' · ')}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}${strip}`;
-      else if (ph === 'bt_reveal') h = `<div class="e-kicker">${kick} · La réponse</div><div class="e-reveal" style="margin-top:4vh">${q.cover ? `<img class="e-cover" src="${esc(q.cover)}" alt="">` : ''}<div><div class="e-title" style="font-size:5.5vw;margin:0">${esc(q.title || '—')}</div><div class="e-sub gold-t" style="font-size:3vw;margin-top:1vh">${esc(q.artist || '')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${D.winners.map(w => esc(w.name) + ' +' + w.pts).join(' · ')}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}</div></div>${strip}`;
+        ? `<div class="e-kicker">${kick}</div><div style="font-size:12vh">📞</div><div class="e-title" style="font-size:6vw;margin:1vh 0">Appel à un ami !</div>${AV(D.buzzAv, 'e-bigav')}<div class="e-big" style="font-size:6vw">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a droit à une 2ᵉ chance</div>${strip}`
+        : `<div class="e-kicker">${kick}</div>${AV(D.buzzAv, 'e-bigav')}<div class="e-big">🔔 ${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a buzzé ! Votre réponse ?</div>${strip}`;
+      else if (ph === 'bt_reveal' && q.type === 'open') h = `<div class="e-kicker">${kick} · La réponse</div>${q.img && getA(q.img) ? `<img class="e-qimg" style="max-height:26vh" src="${getA(q.img)}" alt="">` : ''}<div class="e-sub" style="margin:2vh 0 1vh;max-width:80vw">${esc(q.text)}</div><div class="e-title" style="font-size:6vw;color:var(--gold2)">${esc(q.answer || '—')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${winners(D.winners)}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}${strip}`;
+      else if (ph === 'bt_reveal') h = `<div class="e-kicker">${kick} · La réponse</div><div class="e-reveal" style="margin-top:4vh">${q.cover ? `<img class="e-cover" src="${esc(q.cover)}" alt="">` : ''}<div><div class="e-title" style="font-size:5.5vw;margin:0">${esc(q.title || '—')}</div><div class="e-sub gold-t" style="font-size:3vw;margin-top:1vh">${esc(q.artist || '')}</div>${D.winners.length ? `<div class="e-sub" style="margin-top:4vh">🏆 ${winners(D.winners)}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Personne n\'a trouvé !</div>'}</div></div>${strip}`;
       else if (ph.startsWith('qcm')) {
         const rev = ph === 'qcm_reveal'; const tot = Math.max(1, D.counts.reduce((a, b) => a + b, 0));
         h = `<div class="e-count">${kick} · ${D.answered}/${D.nTeams} réponses</div>
           ${ph === 'qcm_ask' ? ring(D.endsAt, q.dur) : ''}
           ${ph === 'qcm_closed' ? `<div class="e-timer"><div class="num" style="font-size:2.4vh">Temps<br>écoulé</div></div>` : ''}
-          <div class="e-q">${esc(q.text)}</div>
-          <div class="e-opts">${q.options.map((o, i) => `<div class="e-opt ${rev ? (i === q.correct ? 'good' : 'dim') : ''}"><span class="L" style="background:${COLORS[i]}">${SHAPES[i]}</span><span>${esc(o)}</span>${rev ? `<span class="cnt">${D.counts[i]}</span><span class="bar" style="width:${D.counts[i] / tot * 100}%"></span>` : ''}</div>`).join('')}</div>
-          ${rev ? `<div class="e-sub" style="margin-top:4vh">${D.winners.length ? '🏆 ' + D.winners.map(w => esc(w.name) + ' +' + w.pts).join(' · ') : 'Aucune bonne réponse !'}</div>` : ''}${strip}`;
+          ${q.img && getA(q.img) ? `<img class="e-qimg" src="${getA(q.img)}" alt="" style="max-height:${q.oimg ? 22 : 34}vh">` : ''}
+          <div class="e-q ${q.img || q.oimg ? 'small' : ''}">${esc(q.text)}</div>
+          <div class="e-opts ${q.oimg ? 'imgs' : ''}">${q.options.map((o, i) => `<div class="e-opt ${rev ? (i === q.correct ? 'good' : 'dim') : ''}"><span class="L" style="background:${COLORS[i]}">${SHAPES[i]}</span>${q.oimg && q.oimg[i] && getA(q.oimg[i]) ? `<img src="${getA(q.oimg[i])}" alt="">` : ''}<span>${esc(o)}</span>${rev ? `<span class="cnt">${D.counts[i]}</span><span class="bar" style="width:${D.counts[i] / tot * 100}%"></span>` : ''}</div>`).join('')}</div>
+          ${rev ? `<div class="e-sub" style="margin-top:4vh">${D.winners.length ? '🏆 ' + winners(D.winners) : 'Aucune bonne réponse !'}</div>` : ''}${strip}`;
       }
     } else h = `<div class="e-title" style="color:var(--gold2)">AD EVENTS</div>`;
     stage.innerHTML = h;
+    const pg = $('#e-prog'); const showProg = D.prog && !scr && !['round_end', 'final', 'idle'].includes(D.phase) && !(D.phase === 'ready' && D.liveRank && D.teams.some(t => t.score !== 0));
+    pg.innerHTML = showProg ? (D.prog.rounds.length > 1 ? D.prog.rounds.map(r => `<span class="rp ${r.cur ? 'cur' : ''} ${r.done && !r.cur ? 'done' : ''}">${r.done && !r.cur ? '✓ ' : ''}Manche ${r.num}${r.cur && r.name ? ' · ' + esc(r.name) : ''}</span>`).join('') : '') + (D.prog.dots.length ? `<span class="e-dots">${D.prog.dots.map(x => `<i class="${x === 2 ? 'cur' : x === 1 ? 'done' : ''}"></i>`).join('')}</span>` : '') : '';
     stage.classList.remove('flash');
     if (D.phase === 'bt_buzzed' && !D.screen && prevPhase !== 'bt_buzzed') { void stage.offsetWidth; stage.classList.add('flash'); }
   }
@@ -4224,6 +4429,32 @@ function initJoueur() {
   const setStatus = s => { status.textContent = s; };
   const send = m => { try { if (conn && conn.open) { conn.send(m); return true; } } catch (e) {} return false; };
   const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+  const AVKEY = 'adq_av' + (isTest ? '_' + pid : '');
+  let myAv = null; try { myAv = JSON.parse((isTest ? sessionStorage.getItem(AVKEY) : ls(AVKEY)) || 'null'); } catch (e) {}
+  if (!myAv) myAv = randAv();
+  const saveAv = () => { const v = JSON.stringify(myAv); if (isTest) sessionStorage.setItem(AVKEY, v); else ls(AVKEY, v); };
+  let editAv = false;
+  const AC = assetClient(m => send(m), () => render());
+  const getA = k => AC.get(k);
+  const myAvHtml = cls => myAv && myAv.photo ? `<img class="av ${cls || ''}" src="${myAv.photo}" alt="">` : avHtml(myAv, null, cls);
+  const AVP = av => avHtml(av, getA);
+  function pickerHtml() {
+    return `<div class="j-avbig">${myAvHtml()}</div>
+      <div class="j-txt muted" style="font-size:14px">Choisissez votre personnage…</div>
+      <div class="j-avpick">${AVATARS.map((e, i) => `<button type="button" data-av="${i}" class="${myAv && myAv.e === e ? 'on' : ''}">${avHtml({ e, c: AV_COLORS[i % AV_COLORS.length] })}</button>`).join('')}</div>
+      <div class="j-txt muted" style="font-size:14px">…ou mettez votre photo</div>
+      <div class="j-photo"><label>📷 Prendre une photo<input type="file" accept="image/*" capture="user" data-photo></label><label>🖼 Choisir une photo<input type="file" accept="image/*" data-photo></label></div>`;
+  }
+  function bindPicker() {
+    body.querySelectorAll('[data-av]').forEach(b => b.onclick = () => { const i = +b.dataset.av; myAv = { e: AVATARS[i], c: AV_COLORS[i % AV_COLORS.length] }; saveAv(); keepForm(); render(); });
+    body.querySelectorAll('[data-photo]').forEach(inp => inp.onchange = async () => {
+      const f = inp.files[0]; if (!f) return;
+      try { myAv = { photo: await resizeImage(f, 192, true, 0.8) }; saveAv(); keepForm(); render(); } catch (e) { setStatus('Photo illisible'); }
+    });
+  }
+  let draftName = null;
+  const keepForm = () => { const n = $('#jn'); if (n) draftName = n.value; };
+  const avPayload = () => myAv && myAv.photo ? { photo: myAv.photo } : { e: myAv.e, c: myAv.c };
 
   function retry(fn, ms) { clearTimeout(retryT); retryT = setTimeout(fn, ms); }
   function connect() {
@@ -4244,7 +4475,7 @@ function initJoueur() {
     if (!peer || peer.destroyed) return connect();
     if (conn) { try { conn.close(); } catch (e) {} }
     const c = peer.connect(PREFIX + code, { reliable: true }); conn = c;
-    c.on('open', () => { if (c !== conn) return; setStatus(''); if (name) send({ t: 'join', pid, name }); render(); });
+    c.on('open', () => { if (c !== conn) return; setStatus(''); AC.retry(); if (name) send({ t: 'join', pid, name, av: avPayload() }); render(); });
     c.on('data', d => {
       if (c !== conn || !d) return;
       if (d.t === 'state') {
@@ -4258,6 +4489,7 @@ function initJoueur() {
         render();
       }
       if (d.t === 'kicked') { st = null; name = ''; saveName(''); render(); }
+      if (d.t === 'asset') AC.put(d.key, d.data);
     });
     c.on('close', () => { if (c !== conn) return; setStatus('Reconnexion…'); retry(openConn, 2000); });
   }
@@ -4269,18 +4501,28 @@ function initJoueur() {
     if (!name || !st) {
       me.innerHTML = '';
       if (name && conn && conn.open) { body.innerHTML = '<div class="j-txt">Connexion de l\'équipe…</div>'; return; }
-      body.innerHTML = `<div class="j-title">Blind test &amp; Quiz</div><div class="j-txt muted">Partie <b class="gold-t">${esc(code)}</b></div>
-        <form class="j-form" id="jf"><input id="jn" maxlength="24" placeholder="Nom de votre équipe" value="${esc(name)}" autocomplete="off"><button class="gold" type="submit">Rejoindre la partie</button></form>`;
+      body.innerHTML = `<div class="j-title" style="font-size:32px">Blind test &amp; Quiz</div><div class="j-txt muted" style="font-size:14px">Partie <b class="gold-t">${esc(code)}</b></div>
+        ${pickerHtml()}
+        <form class="j-form" id="jf"><input id="jn" maxlength="24" placeholder="Nom de votre équipe" value="${esc(draftName != null ? draftName : name)}" autocomplete="off"><button class="gold" type="submit">Rejoindre la partie</button></form>`;
+      bindPicker();
       $('#jf').onsubmit = e => {
         e.preventDefault(); const n = $('#jn').value.trim().slice(0, 24); if (!n) return;
-        name = n; saveName(n);
-        if (!send({ t: 'join', pid, name })) setStatus('Pas encore connecté – patiente un instant…');
+        name = n; saveName(n); draftName = null;
+        if (!send({ t: 'join', pid, name, av: avPayload() })) setStatus('Pas encore connecté – patiente un instant…');
         render();
       };
       return;
     }
+    if (editAv) {
+      me.innerHTML = '';
+      body.innerHTML = `<div class="j-title" style="font-size:30px">Votre avatar</div>${pickerHtml()}<button class="gold" id="avok" style="width:100%;max-width:400px;padding:15px;font-size:17px">Valider</button>`;
+      bindPicker();
+      $('#avok').onclick = () => { editAv = false; send({ t: 'avatar', av: avPayload() }); render(); };
+      return;
+    }
     const nInv = Object.values(st.inv || {}).reduce((a, b) => a + b, 0);
-    me.innerHTML = `<b>${esc(st.name)}</b>${st.score} pt${st.score > 1 ? 's' : ''} · ${st.rank}${st.rank === 1 ? 'er' : 'e'}/${st.nTeams}${nInv ? ' · 🃏' + nInv : ''}`;
+    me.innerHTML = `${myAvHtml()}<div><b>${esc(st.name)}</b>${st.score} pt${st.score > 1 ? 's' : ''} · ${st.rank}${st.rank === 1 ? 'er' : 'e'}/${st.nTeams}${nInv ? ' · 🃏' + nInv : ''}</div>`;
+    const mav = me.querySelector('.av'); if (mav) mav.onclick = () => { editAv = true; render(); };
     const ph = st.phase; let h = '';
     const scr = st.screen;
     const pos = st.round ? (st.multi ? 'Manche ' + st.round.num + ' · ' : '') + st.round.qn + '/' + st.round.nq : st.num;
@@ -4309,7 +4551,7 @@ function initJoueur() {
           <div class="j-txt muted">Choix enregistré — ${st.qtype === 'bt' ? 'la musique' : 'la question'} démarre quand tout le monde est prêt</div>${st.avail.length ? '<button class="ghost" id="jchg">Changer</button>' : ''}`;
       } else if (pickTarget) {
         h = head + `<div class="j-title">${JOKERS[pickTarget].icon} ${esc(JOKERS[pickTarget].name)}</div><div class="j-txt">Quelle équipe visez-vous ?</div>
-          <div class="j-opts">${st.targets.map(t => `<button class="j-choice" data-tg="${esc(t.id)}">${esc(t.name)}</button>`).join('')}</div><button class="ghost" id="jback">← Retour</button>`;
+          <div class="j-opts">${st.targets.map(t => `<button class="j-choice j-tg" data-tg="${esc(t.id)}" style="display:flex;align-items:center">${AVP(t.av)}${esc(t.name)}</button>`).join('')}</div><button class="ghost" id="jback">← Retour</button>`;
       } else {
         h = head + `<div class="j-title">Jouer un joker ?</div>
           <div class="j-jokers">${JK.filter(k => (st.inv || {})[k] || st.avail.includes(k)).map(k => `<button class="j-jk" data-jk="${k}" ${st.avail.includes(k) ? '' : 'disabled'}><span class="ct">×${(st.inv || {})[k] || 0}</span><div class="ic">${JOKERS[k].icon}</div><div class="nm">${esc(JOKERS[k].name)}</div><div class="ds">${esc(st.avail.includes(k) ? JOKERS[k].desc : 'Pas disponible pour cette question')}</div></button>`).join('')}</div>
@@ -4321,17 +4563,18 @@ function initJoueur() {
       if (st.locked) h = `<div class="j-title res-bad">Hors-jeu</div><div class="j-txt">${st.wrongLabel ? '« ' + esc(st.wrongLabel) + ' » n\'était pas la bonne réponse.' : (st.qtype === 'open' ? 'Mauvaise réponse — vous ne pouvez plus jouer sur cette question.' : 'Mauvaise réponse — vous ne pouvez plus jouer sur ce morceau.')}</div>${consolHtml}`;
       else if (pendingBuzz || pendingPick) h = `<div class="j-title">Envoyé…</div>`;
       else if (st.choices) h = `${activeBadge}<div class="j-title" style="font-size:30px">C'est quel titre ?</div><div class="j-txt muted" style="font-size:14px">Une seule tentative — le plus rapide gagne</div><div class="j-opts">${st.choices.map(c => `<button class="j-choice" data-bp="${c.i}">${esc(c.label)}</button>`).join('')}</div>`;
-      else h = `${activeBadge}<div class="j-txt muted">${TYPE_NAME[st.qtype]} · ${pos}</div>${st.text ? `<div class="j-q">${esc(st.text)}</div>` : ''}<button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
+      else h = `${activeBadge}<div class="j-txt muted">${TYPE_NAME[st.qtype]} · ${pos}</div>${st.img && getA(st.img) ? `<img class="j-qimg" src="${getA(st.img)}" alt="">` : ''}${st.text ? `<div class="j-q">${esc(st.text)}</div>` : ''}<button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
     } else if (ph === 'bt_buzzed') {
       if (st.appel) h = `<div style="font-size:60px">📞</div><div class="j-title gold-t">Appel à un ami !</div><div class="j-txt">Vous avez une 2ᵉ chance : demandez de l'aide autour de vous et redonnez une réponse à l'animateur.</div>`;
       else h = st.iBuzzed ? `<div style="font-size:60px">🎤</div><div class="j-title gold-t">Vous avez la main !</div><div class="j-txt">Donnez votre réponse à l'animateur.</div>${activeBadge}`
-                          : `<div style="font-size:50px">🔔</div><div class="j-title">${esc(st.buzzName || '')}</div><div class="j-txt muted">a buzzé en premier…</div>`;
+                          : `<div class="j-buzzav">${AVP(st.buzzAv)}</div><div class="j-title">🔔 ${esc(st.buzzName || '')}</div><div class="j-txt muted">a buzzé en premier…</div>`;
     } else if (ph === 'bt_reveal') {
       h = (st.gain ? `<div class="j-title res-good">Bravo ! +${st.gain}</div>` : '') + `<div class="j-txt muted">La réponse</div>${st.qtype === 'open' ? `<div class="j-q">${esc(st.text || '')}</div><div class="j-title gold-t">${esc(st.answer || '—')}</div>` : `<div class="j-title">${esc(st.title || '—')}</div><div class="j-txt gold-t">${esc(st.artist || '')}</div>`}${consolHtml}`;
     } else if (ph === 'qcm_ask' || ph === 'qcm_closed') {
       const chosen = st.myChoice != null ? st.myChoice : pendingChoice;
-      h = `${activeBadge}<div class="j-txt muted">Quiz · ${pos}${ph === 'qcm_ask' ? ' · <b class="gold-t" id="jt"></b>' : ''}</div><div class="j-q">${esc(st.text)}</div>`;
-      const btn = i => `<button class="j-opt ${i === st.myChoice ? 'picked' : ''}" data-c="${i}" style="background:${COLORS[i]}" ${i === st.myChoice ? 'disabled' : ''}><span class="s">${SHAPES[i]}</span>${esc(st.options[i])}</button>`;
+      h = `${activeBadge}<div class="j-txt muted">Quiz · ${pos}${ph === 'qcm_ask' ? ' · <b class="gold-t" id="jt"></b>' : ''}</div>${st.img && getA(st.img) ? `<img class="j-qimg" src="${getA(st.img)}" alt="">` : ''}<div class="j-q">${esc(st.text)}</div>`;
+      const oim = i => st.oimg && st.oimg[i] && getA(st.oimg[i]) ? `<img src="${getA(st.oimg[i])}" alt="">` : '';
+      const btn = i => `<button class="j-opt ${i === st.myChoice ? 'picked' : ''}" data-c="${i}" style="background:${COLORS[i]}" ${i === st.myChoice ? 'disabled' : ''}><span class="s">${SHAPES[i]}</span>${oim(i)}${esc(st.options[i])}</button>`;
       if (ph === 'qcm_ask' && chosen == null) h += `<div class="j-opts">${st.qidx.map(btn).join('')}</div>`;
       else if (ph === 'qcm_ask' && st.needSecond) h += `<div class="j-active">📞 Appel à un ami : choisissez une 2ᵉ réponse</div><div class="j-opts">${st.qidx.map(btn).join('')}</div>`;
       else if (chosen != null) h += [chosen, st.myChoice2].filter(x => x != null).map(c => `<div class="j-opt" style="background:${COLORS[c]};width:100%;max-width:460px"><span class="s">${SHAPES[c]}</span>${esc(st.options[c])}</div>`).join('') + `<div class="j-txt muted">Réponse enregistrée — attendez la révélation</div>`;
