@@ -2593,6 +2593,37 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .e-callout{font-size:2.1vw;font-weight:700;padding:1vh 2vw;border-radius:999px;background:rgba(201,164,92,.14);border:1px solid rgba(201,164,92,.5);color:var(--gold2);opacity:0;animation:callin .6s cubic-bezier(.2,1.4,.4,1) both}
 @keyframes callin{from{opacity:0;transform:translateY(-2vh) scale(.8)}to{opacity:1;transform:none}}
 .e-more{font-size:1.6vw;color:var(--muted);margin-top:1.5vh}
+.f-place{font-family:'Cormorant Garamond',serif;font-size:10vh;color:var(--gold2);font-weight:700;line-height:1}
+.f-q{width:26vh;height:26vh;border-radius:50%;display:grid;place-items:center;font-size:14vh;font-weight:800;color:var(--gold2);background:radial-gradient(circle,#2a2416,#121212);animation:qpulse .5s ease-in-out infinite alternate}
+@keyframes qpulse{from{transform:scale(.94);box-shadow:0 0 0 .5vh rgba(201,164,92,.3),0 0 2vh rgba(201,164,92,.1)}to{transform:scale(1.05);box-shadow:0 0 0 .8vh rgba(201,164,92,.75),0 0 8vh rgba(201,164,92,.45)}}
+.f-card .av{width:26vh;height:26vh;font-size:15vh;animation:pop .7s cubic-bezier(.2,1.6,.4,1) both;box-shadow:0 0 0 .6vh var(--gold2),0 0 6vh rgba(201,164,92,.5)}
+.f-name{font-size:6.5vw;font-weight:800;margin-top:2.5vh;line-height:1;animation:rowin .5s .15s both}
+.f-score{font-size:2.8vw;color:var(--gold2);margin-top:1.2vh;animation:rowin .5s .3s both}
+.f-prev{position:relative;display:flex;gap:1.2vw;justify-content:center;margin-top:4vh;flex-wrap:wrap;max-width:90vw}
+.f-prev span{display:inline-flex;align-items:center;gap:.7vw;border:1px solid rgba(201,164,92,.35);border-radius:999px;padding:.8vh 1.4vw;font-size:1.7vw;background:rgba(20,16,8,.6)}
+.f-prev .av{width:4.5vh;height:4.5vh;font-size:2.6vh}
+.f-spot{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 28vw 62vh at 50% 46%,rgba(255,228,160,.24),transparent 70%),rgba(0,0,0,.55);animation:spot 1.6s ease-in-out infinite alternate}
+@keyframes spot{from{opacity:.7}to{opacity:1}}
+.f-win{position:relative;margin-top:-2vh}
+.f-win .av{width:36vh;height:36vh;font-size:21vh;box-shadow:0 0 0 .8vh var(--gold2),0 0 14vh rgba(255,215,120,.75);animation:winpop 1.1s cubic-bezier(.2,1.5,.35,1) both}
+.f-win::after{content:'';position:absolute;inset:-3vh;border-radius:50%;border:.4vh dashed rgba(255,215,120,.6);animation:spin 9s linear infinite}
+@keyframes winpop{0%{transform:scale(0) rotate(-25deg);opacity:0}100%{transform:none;opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.f-crown{font-size:14vh;line-height:1;position:relative;z-index:3;margin-bottom:-3vh;animation:crown 1s .7s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes crown{from{transform:translateY(-70vh) rotate(-35deg);opacity:0}to{transform:none;opacity:1}}
+.f-winname{font-size:9vw;font-weight:800;line-height:1;margin-top:3.5vh;background:linear-gradient(90deg,#b08a43,#fff3c4,#d9b46a,#fff3c4,#b08a43);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 2.5s linear infinite,rowin .6s .5s both}
+@keyframes shine{to{background-position:200% 0}}
+.f-suspense{font-size:2.4vw;color:var(--muted);margin-top:3.5vh;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:.35}}
+.f-heart{animation:heart .9s ease-in-out infinite}
+@keyframes heart{0%,100%{transform:scale(1)}15%{transform:scale(1.13)}30%{transform:scale(1)}45%{transform:scale(1.08)}}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.confetti i{position:absolute;top:-6vh;width:1vw;height:2vh;border-radius:.2vw;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(118vh) rotate(800deg)}}
+.e-podium.small .e-pod.p1 .blk{height:20vh}.e-podium.small .e-pod.p2 .blk{height:14vh}.e-podium.small .e-pod.p3 .blk{height:10vh}
+.e-podium.small .e-pod .av{width:11vh;height:11vh;font-size:6.5vh}
+.e-board.two{display:grid;grid-template-columns:1fr 1fr;column-gap:3vw;width:88vw}
+.e-board.two .e-row{font-size:2vw;padding:1vh 1.4vw}.e-board.two .e-row .rk{font-size:2.6vw}.e-board.two .e-row .av{width:4.6vh;height:4.6vh;font-size:2.8vh}
 .e-hint{position:fixed;bottom:1vh;right:1vw;font-size:12px;color:#444;z-index:2}
 
 /* ============ JOUEUR ============ */
@@ -2648,6 +2679,27 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .j-mv{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .j-mv span{border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;border:1px solid var(--line)}
 .j-mv .up{color:#8fe0aa;border-color:#2f6b45}.j-mv .down{color:#f0a59d;border-color:#7a3a33}.j-mv .fire{color:#ffb070;border-color:#7a4a20}
+.j-lbt{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:14px}
+.j-lb{width:100%;max-width:440px;display:flex;flex-direction:column;gap:6px}
+.j-lr{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:12px;background:#141417;border:1px solid var(--line);font-size:15px}
+.j-lr.me{border-color:var(--gold);background:#1f1a0e;box-shadow:0 0 14px rgba(201,164,92,.25)}
+.j-lr .rk{width:22px;font-weight:800;color:var(--gold);text-align:center}
+.j-lr .av{width:30px;height:30px;font-size:17px}
+.j-lr .nm{flex:1;min-width:0;text-align:left;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.j-lr .sc{font-weight:800;color:var(--gold2);min-width:24px;text-align:right}
+.j-lr .g{font-size:12px;font-weight:800;color:#8fe0aa;min-width:28px;text-align:right}
+.j-lr .g.neg{color:#f0a59d}
+.j-lr .mv{font-size:11px;font-weight:800;width:24px;text-align:center}
+.j-lr .mv.up{color:#8fe0aa}.j-lr .mv.down{color:#f0a59d}
+.j-lr .fl{font-size:12px;color:#ffb070;font-weight:800}
+.j-lb.anim .j-lr{animation:lrin .45s both}
+.j-lb.anim .j-lr .g{animation:gainpop .7s both}
+@keyframes lrin{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+.finsteps{list-style:none;padding:0;margin:12px 0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.finsteps li{padding:6px 10px;border-radius:8px;border:1px solid transparent;color:var(--muted);cursor:pointer}
+.finsteps li.done{color:#7d776c;text-decoration:line-through}
+.finsteps li.cur{border-color:var(--gold);color:var(--gold2);background:#1c170c;font-weight:700}
+.j-win{font-size:64px;animation:pop .7s cubic-bezier(.2,1.6,.4,1) both}
 .res-good{color:#8fe0aa}.res-bad{color:#f0a59d}
 </style>
 </head>
@@ -2663,7 +2715,8 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
       <div class="pill"><span id="netdot" class="dot"></span><span id="nettxt">…</span></div>
       <div class="pill">Code <b id="codeTxt"></b></div>
       <div class="pill"><b id="nconn" style="letter-spacing:0">0</b> téléphone(s)</div>
-      <button class="gold" data-act="startGame">▶ Démarrer la partie</button>
+      <button class="gold" data-act="startGame" id="startBtn">▶ Démarrer la partie</button>
+      <button class="bad hidden" data-act="stopGame" id="stopBtn" title="Arrêter la partie et lancer les résultats">⏹ Arrêter la partie</button>
       <button data-act="openScreen">Écran public ↗</button>
       <button class="ghost" data-act="testPlayer" title="Ouvre une page joueur de test dans un nouvel onglet">Tester joueur</button>
     </header>
@@ -3006,10 +3059,10 @@ function toast(msg) { const t = $('#toast'); if (!t) return; t.textContent = msg
 function initRegie() {
   const KEY = 'adq_regie_v1';
   const DEF = {
-    btPts: 1, qcmPts: 1, qcmDur: 20, sfx: true, vol: 80,
+    btPts: 1, btSplit: false, qcmPts: 1, qcmDur: 20, sfx: true, vol: 80,
     liveRank: true, autoBoard: true, boardDelay: 5, jokers: true, jokerTime: 20, jokerStock: 1, consolation: true,
     jk: { appel: true, choix4: true, choix2: true, vol: true, bonus: true, bloque: true },
-    sounds: { buzz: 'b:buzz', good: 'b:good', bad: 'b:bad', start: 'b:start', end: 'b:end', joker: 'b:joker', jokerPhase: 'b:suspense', reveal: 'none', roundEnd: 'b:fanfare', final: 'b:applause', board: 'none', leader: 'b:joker' }
+    sounds: { buzz: 'b:buzz', good: 'b:good', bad: 'b:bad', start: 'b:start', end: 'b:end', joker: 'b:joker', jokerPhase: 'b:suspense', reveal: 'none', roundEnd: 'b:fanfare', final: 'b:applause', board: 'none', leader: 'b:joker', finRoll: 'b:drum', finWin: 'b:fanfare', finCrowd: 'b:applause' }
   };
   let S = null;
   try { S = JSON.parse(ls(KEY)); } catch (e) {}
@@ -3155,7 +3208,7 @@ function initRegie() {
   /* ---------- Sons : synthèse + sons perso ---------- */
   const BUILTIN = { buzz: 'Buzzer', good: 'Bonne réponse', bad: 'Erreur', start: 'Top départ', end: 'Fin du temps', joker: 'Magie (joker)', drum: 'Roulement de tambour', fanfare: 'Fanfare', applause: 'Applaudissements', sad: 'Trombone triste', klaxon: 'Klaxon', suspense: 'Suspense' };
   const BOARD_BUILTINS = ['drum', 'fanfare', 'applause', 'sad', 'klaxon', 'suspense', 'joker', 'buzz'];
-  const EVENTS = { buzz: 'Une équipe buzze', good: 'Bonne réponse', bad: 'Mauvaise réponse', start: 'Lancement d\'un QCM', end: 'Fin du chrono QCM', jokerPhase: 'Ouverture du choix des jokers', joker: 'Jokers activés / appel à un ami', reveal: 'Révélation sans gagnant', board: 'Affichage du classement animé', leader: 'Nouveau leader au classement', roundEnd: 'Fin de manche', final: 'Classement final / podium' };
+  const EVENTS = { buzz: 'Une équipe buzze', good: 'Bonne réponse', bad: 'Mauvaise réponse', start: 'Lancement d\'un QCM', end: 'Fin du chrono QCM', jokerPhase: 'Ouverture du choix des jokers', joker: 'Jokers activés / appel à un ami', reveal: 'Révélation sans gagnant', finRoll: 'Finale : roulement avant chaque révélation', finWin: 'Finale : révélation du vainqueur', finCrowd: 'Finale : foule pour le vainqueur', board: 'Affichage du classement animé', leader: 'Nouveau leader au classement', roundEnd: 'Fin de manche', final: 'Classement final / podium' };
   let ac = null, master = null, noiseBuf = null;
   const playing = new Set();
   function actx() {
@@ -3300,7 +3353,7 @@ function initRegie() {
     addPts(tid, pts); return pts;
   }
   function consol(tid) {
-    if (!S.settings.consolation || G.consol[tid] || !S.teams[tid]) return;
+    if (!S.settings.jokers || !S.settings.consolation || G.consol[tid] || !S.teams[tid]) return;
     const pool = JK.filter(k => S.settings.jk[k]); if (!pool.length) return;
     const k = pool[Math.floor(Math.random() * pool.length)];
     const t = S.teams[tid]; t.jokers[k] = (t.jokers[k] || 0) + 1; G.consol[tid] = k;
@@ -3310,7 +3363,7 @@ function initRegie() {
   /* ---------- Logique de jeu ---------- */
   let qTimer = null, jTimer = null, boardT = null;
   function resetRound() {
-    Object.assign(G, { finalized: false, callouts: [], buzz: null, locked: [], answers: {}, startedAt: 0, endsAt: 0, result: null, picks: {}, active: {}, blocked: [], second: {}, appelNow: false, btOpts: null, btShow: {}, q2: {}, consol: {}, feed: [], jokerEnds: 0, lastWrong: null });
+    Object.assign(G, { finalized: false, callouts: [], found: { title: null, artist: null }, partial: {}, buzz: null, locked: [], answers: {}, startedAt: 0, endsAt: 0, result: null, picks: {}, active: {}, blocked: [], second: {}, appelNow: false, btOpts: null, btShow: {}, q2: {}, consol: {}, feed: [], jokerEnds: 0, lastWrong: null });
     clearInterval(qTimer); clearInterval(jTimer); clearTimeout(boardT);
   }
   resetRound();
@@ -3382,15 +3435,34 @@ function initRegie() {
     const q = cur(); const label = G.btOpts.labels[i];
     if (i === G.btOpts.correct) {
       spPause(); G.buzz = tid;
-      const pts = award(tid, q.pts);
-      G.result = { gains: { [tid]: pts }, via: label }; G.phase = 'bt_reveal';
+      const pts = award(tid, isSplit(q) ? remainingParts().reduce((a, p) => a + partPts(q, p), 0) : q.pts);
+      if (isSplit(q)) { G.found.title = G.found.title || tid; G.found.artist = G.found.artist || tid; }
+      G.result = G.result || { gains: {} }; G.result.gains[tid] = (G.result.gains[tid] || 0) + pts; G.result.via = label; G.phase = 'bt_reveal';
       sfx('good'); setTimeout(spResume, 400); onRevealed(); renderAll();
     } else {
       G.locked.push(tid); G.lastWrong = { name: tname(tid), label, at: Date.now() };
       consol(tid); sfx('bad'); renderAll();
     }
   }
+  const isSplit = q => !!(q && q.type === 'bt' && q.split);
+  const partPts = (q, p) => p === 'title' ? (q.ptsT ?? 1) : (q.ptsA ?? 1);
+  const remainingParts = () => ['title', 'artist'].filter(p => !G.found[p]);
+  const PART_NAME = { title: 'le titre', artist: 'l\'artiste' };
+  function btScore(parts) {
+    if (G.phase !== 'bt_buzzed' || !G.buzz) return;
+    const q = cur(); const tid = G.buzz;
+    parts = parts.filter(p => !G.found[p]); if (!parts.length) return;
+    const pts = award(tid, parts.reduce((a, p) => a + partPts(q, p), 0));
+    G.result = G.result || { gains: {} }; G.result.gains[tid] = (G.result.gains[tid] || 0) + pts;
+    parts.forEach(p => { G.found[p] = tid; });
+    G.appelNow = false;
+    if (G.found.title && G.found.artist) { G.phase = 'bt_reveal'; sfx('good'); spResume(); onRevealed(); renderAll(); return; }
+    G.partial[tid] = parts[0]; G.locked.push(tid); G.buzz = null; G.phase = 'bt_play';
+    G.feed.push(`🎵 ${tname(tid)} trouve ${PART_NAME[parts[0]]} (+${pts})`);
+    sfx('good'); spResume(); renderAll();
+  }
   function btGood() {
+    if (isSplit(cur())) return btScore(['title', 'artist']);
     if (G.phase !== 'bt_buzzed' || !G.buzz) return;
     const q = cur(); const tid = G.buzz;
     const pts = award(tid, q.pts);
@@ -3410,7 +3482,7 @@ function initRegie() {
     if (isBuzz(q)) {
       if (!['bt_play', 'bt_buzzed'].includes(G.phase)) return;
       if (G.phase === 'bt_buzzed') spResume();
-      G.buzz = null; G.appelNow = false; G.result = { gains: {} }; G.phase = 'bt_reveal'; sfx('reveal'); onRevealed(); renderAll();
+      G.buzz = null; G.appelNow = false; G.result = G.result || { gains: {} }; G.phase = 'bt_reveal'; sfx(Object.keys(G.result.gains).length ? 'good' : 'reveal'); onRevealed(); renderAll();
     } else {
       if (!['qcm_ask', 'qcm_closed'].includes(G.phase)) return;
       clearInterval(qTimer);
@@ -3458,6 +3530,13 @@ function initRegie() {
     if (G.callouts.some(c => c.k === 'leader')) setTimeout(() => sfx('leader'), 2100);
     renderAll();
   }
+  function lbView(tid) {
+    const now = rankMap(); const pr = G.finalized ? prevRankMap() : null; const q = cur();
+    const rows = teamsSorted().map(t => ({ id: t.id, name: t.name, av: t.av, score: t.score, rank: now[t.id], streak: t.streak || 0, gain: G.finalized ? t.score - prevScoreOf(t.id) : 0, mv: pr ? (pr[t.id] || now[t.id]) - now[t.id] : 0 }));
+    let out = rows.slice(0, 8); const mi = rows.findIndex(r => r.id === tid);
+    if (mi >= 8) out = [...rows.slice(0, 7), rows[mi]];
+    return { key: (q ? q.id : 'x') + (G.finalized ? 'f' : '') + ':' + rows.map(r => r.score).join(','), more: Math.max(0, rows.length - out.length), rows: out.map(r => ({ name: r.name, av: r.av, score: r.score, rank: r.rank, streak: r.streak, gain: r.gain, mv: r.mv, me: r.id === tid })) };
+  }
   function boardView() {
     const cur0 = teamsSorted(); const prevOrder = [...cur0].sort((a, b) => prevScoreOf(b.id) - prevScoreOf(a.id) || a.name.localeCompare(b.name));
     const now = rankMap(); const q = cur(); const rv = roundView();
@@ -3490,15 +3569,63 @@ function initRegie() {
   }
   const endsRound = () => { const n = S.bank[G.idx + 1]; return isQ(S.bank[G.idx]) && hasRounds() && (!n || n.type === 'round'); };
   function next() {
+    if (G.phase === 'finale') { finGo(1); return; }
     if (['bt_play', 'bt_buzzed', 'jokers', 'qcm_ask'].includes(G.phase) && !confirm('Passer cette question en cours ?')) return;
     if (G.phase !== 'round_end' && G.phase !== 'final' && endsRound()) { endRound(); return; }
     if (G.idx + 1 < S.bank.length) selectQ(G.idx + 1);
-    else if (G.phase !== 'final') finalScores();
+    else if (G.phase !== 'final' && G.phase !== 'finale') startFinale(false);
   }
+  let finT = null;
+  function finSteps() {
+    const steps = [{ k: 'intro' }];
+    if (hasRounds()) roundsInfo().forEach(r => { if (r.qs.some(i => G.played[S.bank[i].id])) steps.push({ k: 'round', rid: r.id }); });
+    const n = Math.min(5, Object.keys(S.teams).length);
+    if (n) { steps.push({ k: 'top5intro', n }); for (let k = n; k >= 1; k--) steps.push({ k: 'rank', n: k }); }
+    steps.push({ k: 'general' });
+    return steps;
+  }
+  function startFinale(early) {
+    resetRound(); spPause(); clearTimeout(finT);
+    if (G.phase !== 'finale') G.preFin = { idx: G.idx, rid: G.rid };
+    G.phase = 'finale'; G.screen = null; G.fin = { steps: finSteps(), i: 0, early: !!early, revealAt: 0 };
+    sfx('roundEnd'); renderAll();
+  }
+  function finGo(d) {
+    const F = G.fin; if (!F) return;
+    const ni = F.i + d; if (ni < 0 || ni >= F.steps.length) return;
+    F.i = ni; const st = F.steps[ni]; clearTimeout(finT); F.revealAt = 0;
+    if (st.k === 'rank' && d > 0) {
+      const dur = st.n === 1 ? 5200 : 2400; F.revealAt = Date.now() + dur;
+      if (S.settings.sfx !== false) {
+        if (st.n === 1) { playRef('b:suspense'); setTimeout(() => playRef(S.settings.sounds.finRoll), 3000); setTimeout(() => { playRef(S.settings.sounds.finWin); playRef(S.settings.sounds.finCrowd); }, dur); }
+        else { playRef(S.settings.sounds.finRoll); setTimeout(() => playRef('b:good'), dur); }
+      }
+      finT = setTimeout(renderAll, dur + 40);
+    }
+    if (st.k === 'general') sfx('final');
+    renderAll();
+  }
+  function finView() {
+    const F = G.fin; const st = F.steps[F.i]; const order = teamsSorted(); const N = Math.min(5, order.length);
+    const v = { kind: st.k, step: F.i, total: F.steps.length, early: F.early, N, stepId: F.i + ':' + (F.revealAt || 0), revealIn: F.revealAt ? Math.max(0, F.revealAt - Date.now()) : 0, nRounds: roundsInfo().length };
+    if (st.k === 'round') {
+      const r = roundsInfo().find(x => x.id === st.rid);
+      if (r) { v.num = r.num; v.name = r.name; v.played = r.qs.filter(i => G.played[S.bank[i].id]).length; v.top = Object.values(S.teams).map(t => ({ name: t.name, av: t.av, pts: rpts(t, r.id) })).sort((a, b) => b.pts - a.pts).slice(0, 3); }
+    }
+    if (st.k === 'top5intro') v.n = st.n;
+    if (st.k === 'rank') {
+      v.n = st.n; const t = order[st.n - 1];
+      if (t) v.team = { name: t.name, av: t.av, score: t.score, tie: (order[st.n - 2] && order[st.n - 2].score === t.score) || (order[st.n] && order[st.n].score === t.score) };
+      v.prev = order.slice(st.n, N).map((x, k) => ({ pos: st.n + 1 + k, name: x.name, av: x.av, score: x.score }));
+    }
+    return v;
+  }
+  const finLabel = st => st.k === 'intro' ? 'Introduction' : st.k === 'round' ? (r => r ? 'Récap · ' + r.label : 'Récap')(roundsInfo().find(x => x.id === st.rid)) : st.k === 'top5intro' ? `Annonce du Top ${st.n}` : st.k === 'rank' ? `${st.n === 1 ? '1ʳᵉ' : st.n + 'ᵉ'} place — ${(teamsSorted()[st.n - 1] || {}).name || '?'}` : 'Classement général';
   function endRound() { resetRound(); spPause(); G.phase = 'round_end'; G.screen = 'roundScores'; sfx('roundEnd'); renderAll(); }
   function finalScores() { resetRound(); spPause(); G.phase = 'final'; G.screen = 'final'; sfx('final'); renderAll(); }
   function primary() {
-    if (G.phase === 'round_intro' || G.phase === 'round_end') next();
+    if (G.phase === 'finale') finGo(1);
+    else if (G.phase === 'round_intro' || G.phase === 'round_end') next();
     else if (G.phase === 'ready') start();
     else if (G.phase === 'jokers') launch();
     else if (G.phase === 'bt_play' || G.phase === 'bt_reveal') spToggle();
@@ -3536,7 +3663,7 @@ function initRegie() {
       screen: G.screen, phase: G.phase, num: G.idx + 1, total: S.bank.length,
       q: q ? { type: q.type, title: q.title, artist: q.artist, cover: q.cover, text: q.text, answer: q.answer, img: q.img || null, oimg: q.oimg || null, options: q.options, correct: q.correct, dur: q.dur, pts: q.pts } : null,
       buzzName: G.buzz ? tname(G.buzz) : null, appelNow: G.appelNow,
-      lockedNames: G.locked.map(tname), blockedNames: G.blocked.map(tname),
+      lockedNames: G.locked.filter(t => !G.partial[t]).map(tname), found: isSplit(cur()) ? { title: G.found.title ? tname(G.found.title) : null, artist: G.found.artist ? tname(G.found.artist) : null } : null, blockedNames: G.blocked.map(tname),
       answered: Object.keys(G.answers).length, nTeams: Object.keys(S.teams).length,
       counts: optCounts(), endsAt: G.endsAt, jokerEnds: G.jokerEnds,
       ready: Object.keys(S.teams).map(t => ({ name: tname(t), av: S.teams[t].av, ok: !!G.picks[t] || !on.has(t) })),
@@ -3546,6 +3673,7 @@ function initRegie() {
       winners: Object.entries(gains).map(([t, p]) => ({ name: tname(t), av: S.teams[t] && S.teams[t].av, pts: p })),
       teams: teamsWithMoves(gains),
       board: G.screen === 'board' ? boardView() : null,
+      fin: G.phase === 'finale' && G.fin ? finView() : null,
       round: roundView(), multi: hasRounds(), liveRank: S.settings.liveRank !== false,
       joinUrl: joinUrlFor(S.code), code: S.code
     };
@@ -3560,6 +3688,9 @@ function initRegie() {
     if (G.blocked.includes(tid)) { v.blocked = true; const by = Object.entries(G.active).find(([, a]) => a.j === 'bloque' && a.target === tid); v.blockedBy = by ? tname(by[0]) : ''; }
     const stole = Object.entries(G.active).filter(([, a]) => a.j === 'vol' && a.target === tid).map(([x]) => tname(x)); if (stole.length) v.stolenBy = stole;
     if (G.consol[tid]) v.consol = G.consol[tid];
+    const finStep = ph === 'finale' && G.fin ? G.fin.steps[G.fin.i] : null;
+    if (!['jokers', 'bt_play', 'bt_buzzed', 'qcm_ask', 'qcm_closed'].includes(ph) && (!finStep || finStep.k === 'general') && Object.keys(S.teams).length) v.lb = lbView(tid);
+    if (finStep) { v.fin = { kind: finStep.k, n: finStep.n || 0, N: Math.min(5, Object.keys(S.teams).length), revealed: !G.fin.revealAt || G.fin.revealAt <= Date.now() }; v.myPos = teamsSorted().findIndex(x => x.id === tid) + 1; }
     if (G.finalized) { const pr = prevRankMap(); v.mvRank = (pr[tid] || v.rank) - v.rank; v.qgain = t.score - prevScoreOf(tid); v.streak = t.streak || 0; }
     if (ph === 'jokers' && q) {
       v.avail = availJ(tid, q); v.myPick = G.picks[tid] || null;
@@ -3568,6 +3699,7 @@ function initRegie() {
     }
     if (isBuzz(q)) {
       if (q.type === 'open' && ['bt_play', 'bt_buzzed', 'bt_reveal'].includes(ph)) v.text = q.text;
+      if (isSplit(q)) { v.found = { title: G.found.title ? tname(G.found.title) : null, artist: G.found.artist ? tname(G.found.artist) : null }; v.partial = G.partial[tid] || null; }
       v.locked = G.locked.includes(tid); v.iBuzzed = G.buzz === tid; v.appel = G.appelNow && G.buzz === tid;
       v.buzzName = G.buzz ? tname(G.buzz) : null; v.buzzAv = G.buzz && S.teams[G.buzz] ? S.teams[G.buzz].av : null;
       if (q.type === 'open' && q.img && ['bt_play', 'bt_buzzed', 'bt_reveal'].includes(ph)) v.img = q.img;
@@ -3606,6 +3738,8 @@ function initRegie() {
   function renderAll() { normalizeBank(); save(); renderTop(); renderBank(); renderLive(); renderTeams(); postDisplay(); sendPlayers(); }
 
   function renderTop() {
+    const inGame = G.idx >= 0 && G.phase !== 'finale';
+    $('#stopBtn').classList.toggle('hidden', !inGame); $('#startBtn').classList.toggle('hidden', inGame || G.phase === 'finale');
     $('#codeTxt').textContent = S.code;
     $('#nconn').textContent = connectedTids().size;
     $('#jkToggle').checked = !!S.settings.jokers;
@@ -3630,6 +3764,15 @@ function initRegie() {
   function renderLive() {
     const q = cur(); const el = $('#live');
     const nextIt = S.bank[G.idx + 1];
+    if (G.phase === 'finale' && G.fin) {
+      const F = G.fin; const nxt = F.steps[F.i + 1];
+      el.innerHTML = `<div class="meta">Finale · étape ${F.i + 1}/${F.steps.length}</div><h1 class="serif" style="font-size:40px;color:var(--gold2)">🏆 Les résultats</h1>
+        <div class="ctrl"><button class="ghost" data-act="finPrev" ${F.i ? '' : 'disabled'}>◀ Précédent</button>${nxt ? `<button class="gold" data-act="finNext">${esc(finLabel(nxt))} ▶</button>` : '<button disabled>Fin de la finale</button>'}</div>
+        <div class="kbd"><b>Espace</b> / <b>→</b> étape suivante · <b>←</b> précédente. Chaque place du Top 5 est révélée après un roulement de tambour, le 1ᵉʳ avec une animation spéciale.</div>
+        <ol class="finsteps">${F.steps.map((st, i) => `<li class="${i === F.i ? 'cur' : i < F.i ? 'done' : ''}" data-act="finTo" data-i="${i}">${i + 1}. ${esc(finLabel(st))}</li>`).join('')}</ol>
+        <div class="row" style="gap:8px"><button class="sm ghost" data-act="finResume">↩ Reprendre la partie</button><button class="sm ghost" data-act="scr" data-s="final">Podium</button><button class="sm ghost" data-act="finRestart">Recommencer la finale</button></div>`;
+      return;
+    }
     if (G.phase === 'round_intro') {
       const r = roundsInfo().find(x => x.id === G.rid);
       el.innerHTML = `<div class="meta">Manche ${r.num}/${roundsInfo().length}</div><h1 class="serif" style="font-size:44px;color:var(--gold2)">${esc(r.label)}</h1>
@@ -3641,7 +3784,7 @@ function initRegie() {
       const r = roundsInfo().find(x => x.id === G.rid);
       el.innerHTML = `<div class="meta">Fin de manche</div><h1 class="serif" style="font-size:40px;color:var(--gold2)">🏁 ${esc(r ? r.label : 'Manche terminée')}</h1>
         <div class="ctrl"><button class="${G.screen === 'roundScores' ? 'on' : ''}" data-act="scr" data-s="roundScores">Classement de la manche</button><button class="${G.screen === 'scores' ? 'on' : ''}" data-act="scr" data-s="scores">Classement général</button>
-        ${nextIt ? `<button class="gold" data-act="next">Manche suivante ▶</button>` : `<button class="gold" data-act="next">🏆 Podium final</button>`}</div>
+        ${nextIt ? `<button class="gold" data-act="next">Manche suivante ▶</button>` : `<button class="gold" data-act="next">🏆 Résultats finaux</button>`}</div>
         <div class="kbd"><b>Espace</b> ${nextIt ? 'manche suivante' : 'podium final'}</div>${r ? roundTable(r.id) : ''}`;
       return;
     }
@@ -3667,7 +3810,7 @@ function initRegie() {
       h += `<div class="meta">${num} · Question ouverte · ${plural(q.pts, 'pt')}</div><h1>${esc(q.text)}</h1>${q.img && getA(q.img) ? `<img class="qimg" src="${getA(q.img)}" alt="">` : ''}
         <div class="answerbox"><div><div class="muted" style="font-size:12px">Réponse attendue</div><div class="t">${esc(q.answer || '(non renseignée)')}</div></div></div>`;
     } else if (q.type === 'bt') {
-      h += `<div class="meta">${num} · Blind test · ${plural(q.pts, 'pt')}</div>${q.uri ? '' : `<div class="hint" style="margin:8px 0;color:#e0a85a">⚠ Pas de lien Spotify : lance le morceau depuis ton logiciel DJ, ou <a href="https://open.spotify.com/search/${encodeURIComponent(btLabel(q).replace(' — ', ' '))}" target="_blank" rel="noopener" style="color:var(--gold2)">cherche-le sur Spotify ↗</a> et ajoute le lien avec ✎.</div>`}
+      h += `<div class="meta">${num} · Blind test · ${isSplit(q) ? `${plural(q.ptsT ?? 1, 'pt')} titre + ${plural(q.ptsA ?? 1, 'pt')} artiste` : plural(q.pts, 'pt')}</div>${q.uri ? '' : `<div class="hint" style="margin:8px 0;color:#e0a85a">⚠ Pas de lien Spotify : lance le morceau depuis ton logiciel DJ, ou <a href="https://open.spotify.com/search/${encodeURIComponent(btLabel(q).replace(' — ', ' '))}" target="_blank" rel="noopener" style="color:var(--gold2)">cherche-le sur Spotify ↗</a> et ajoute le lien avec ✎.</div>`}
         <div class="answerbox" style="margin-top:10px">${q.cover ? `<img src="${esc(q.cover)}" alt="">` : ''}<div><div class="t">${esc(q.title || '(titre non renseigné)')}</div><div class="muted">${esc(q.artist || '')}</div>${q.start ? `<div class="muted" style="font-size:12px">Démarre à ${q.start}s</div>` : ''}</div></div>`;
     } else {
       h += `<div class="meta">${num} · QCM · ${plural(q.pts, 'pt')}${q.bonus ? ' + bonus rapidité' : ''} · ${q.dur}s</div><h1>${esc(q.text)}</h1>${q.img && getA(q.img) ? `<img class="qimg" src="${getA(q.img)}" alt="">` : ''}`;
@@ -3693,7 +3836,7 @@ function initRegie() {
     if (isBuzz(q)) {
       if (ph === 'bt_play') {
         h += `<div class="ctrl">${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button data-act="reveal">Révéler la réponse</button><button class="ghost" data-act="next">Passer ▶</button></div>
-          <div class="muted">🔔 Buzzers ouverts — en attente d'un buzz…</div>`;
+          <div class="muted">🔔 Buzzers ouverts — en attente d'un buzz…</div>${isSplit(q) && (G.found.title || G.found.artist) ? `<div class="anslist">${['title', 'artist'].map(p => G.found[p] ? `<span class="chip good">✓ ${p === 'title' ? 'Titre' : 'Artiste'} : ${esc(tname(G.found[p]))}</span>` : `<span class="chip">? ${p === 'title' ? 'Titre' : 'Artiste'} à trouver</span>`).join('')}</div>` : ''}`;
         const chips = [...G.locked.map(t => `<span class="chip bad">${esc(tname(t))} hors-jeu</span>`), ...G.blocked.map(t => `<span class="chip bad">⛔ ${esc(tname(t))} bloquée</span>`), ...Object.keys(G.btShow).filter(t => !G.locked.includes(t)).map(t => `<span class="chip jk">${JOKERS[G.active[t].j].icon} ${esc(tname(t))} choisit sur son tél.</span>`)];
         if (chips.length) h += `<div class="anslist">${chips.join('')}</div>`;
         h += `<div class="kbd" style="margin-top:12px"><b>Espace</b> pause/lecture · <b>R</b> révéler</div>`;
@@ -3701,12 +3844,12 @@ function initRegie() {
       if (ph === 'bt_buzzed') {
         const appelAvail = G.active[G.buzz] && G.active[G.buzz].j === 'appel' && !G.second[G.buzz];
         h += `<div class="bigbuzz"><div class="muted">${G.appelNow ? '📞 Appel à un ami — 2ᵉ chance' : 'A buzzé en premier'}</div><div class="who">${esc(tname(G.buzz))}</div>${G.active[G.buzz] ? `<div class="gold-t" style="margin-top:6px">${JOKERS[G.active[G.buzz].j].icon} ${esc(JOKERS[G.active[G.buzz].j].name)}</div>` : ''}</div>
-          <div class="ctrl"><button class="ok" data-act="good">✓ Bonne réponse (+${q.pts + (G.active[G.buzz] && G.active[G.buzz].j === 'bonus' ? 2 : 0)})</button><button class="bad" data-act="bad">${appelAvail ? '✗ Faux → 📞 Appel à un ami' : '✗ Mauvaise – relancer'}</button><button class="ghost" data-act="reveal">Révéler sans points</button></div>
-          <div class="kbd"><b>B</b> bonne · <b>F</b> faux · <b>R</b> révéler</div>`;
+          <div class="ctrl">${isSplit(q) ? (() => { const rem = remainingParts(); const bon = G.active[G.buzz] && G.active[G.buzz].j === 'bonus' ? 2 : 0; return (rem.length === 2 ? `<button class="ok" data-act="good">✓ Titre + artiste (+${partPts(q, 'title') + partPts(q, 'artist') + bon})</button><button class="ok" data-act="part" data-p="title" style="filter:saturate(.6)">✓ Titre seulement (+${partPts(q, 'title') + bon})</button><button class="ok" data-act="part" data-p="artist" style="filter:saturate(.6)">✓ Artiste seulement (+${partPts(q, 'artist') + bon})</button>` : `<button class="ok" data-act="good">✓ ${rem[0] === 'title' ? 'Titre' : 'Artiste'} trouvé (+${partPts(q, rem[0]) + bon})</button>`); })() : `<button class="ok" data-act="good">✓ Bonne réponse (+${q.pts + (G.active[G.buzz] && G.active[G.buzz].j === 'bonus' ? 2 : 0)})</button>`}<button class="bad" data-act="bad">${appelAvail ? '✗ Faux → 📞 Appel à un ami' : '✗ Mauvaise – relancer'}</button><button class="ghost" data-act="reveal">Révéler sans points</button></div>
+          <div class="kbd"><b>B</b> ${isSplit(q) ? 'tout bon' : 'bonne'} ·${isSplit(q) && remainingParts().length === 2 ? ' <b>T</b> titre seul · <b>A</b> artiste seul ·' : ''} <b>F</b> faux · <b>R</b> révéler${isSplit(q) && remainingParts().length === 2 ? '<br>Titre ou artiste seul : l\'équipe marque, puis la main passe aux autres équipes pour la partie manquante.' : ''}</div>`;
       }
       if (ph === 'bt_reveal') {
         const w = Object.entries((G.result && G.result.gains) || {});
-        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button>${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}
+        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Résultats finaux')}</button>${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}
           <div class="muted">${w.length ? 'Points : ' + w.map(([t, p]) => esc(tname(t)) + ' +' + p).join(', ') : 'Personne n\'a trouvé.'}</div>`;
       }
     } else {
@@ -3715,7 +3858,7 @@ function initRegie() {
           <div class="ctrl"><button data-act="close">Clore maintenant</button><button data-act="reveal">Révéler</button></div>`;
       }
       if (ph === 'qcm_closed') h += `<div class="ctrl"><button class="gold" data-act="reveal">Révéler la bonne réponse</button></div><div class="kbd"><b>R</b> révéler</div>`;
-      if (ph === 'qcm_reveal') h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button><button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}`;
+      if (ph === 'qcm_reveal') h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Résultats finaux')}</button><button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}`;
       if (['qcm_ask', 'qcm_closed', 'qcm_reveal'].includes(ph)) {
         const ans = Object.entries(G.answers);
         h += `<div class="anslist">${ans.map(([t, a]) => {
@@ -3750,7 +3893,7 @@ function initRegie() {
 
   /* ---------- Modales ---------- */
   let ED = null, MODAL = null;
-  const newBT = o => Object.assign({ id: uid(), type: 'bt', uri: '', title: '', artist: '', cover: '', start: 0, pts: S.settings.btPts }, o);
+  const newBT = o => Object.assign({ id: uid(), type: 'bt', uri: '', title: '', artist: '', cover: '', start: 0, pts: S.settings.btPts, split: !!S.settings.btSplit, ptsT: 1, ptsA: 1 }, o);
   const newOpen = o => Object.assign({ id: uid(), type: 'open', text: '', answer: '', pts: S.settings.qcmPts }, o);
   const newQCM = o => Object.assign({ id: uid(), type: 'qcm', text: '', options: ['', '', '', ''], correct: 0, dur: S.settings.qcmDur, pts: S.settings.qcmPts, bonus: false }, o);
   function modal(html, kind) { MODAL = kind || null; $('#mbox').innerHTML = html; $('#modal').classList.remove('hidden'); const f = $('#mbox input:not([type=checkbox]):not([type=range]), #mbox textarea'); if (f && kind !== 'settings' && kind !== 'sounds' && kind !== 'tjk') f.focus(); }
@@ -3774,6 +3917,8 @@ function initRegie() {
         <div class="row"><input id="f-uri" placeholder="https://open.spotify.com/track/…" value="${esc(q.uri ? 'https://open.spotify.com/track/' + q.uri.split(':')[2] : '')}"><button data-act="autofill">Auto-remplir</button><button class="ghost" data-act="spSearch" title="Chercher le titre sur Spotify">🔍 Spotify</button></div>
         <div class="g2"><div><label class="f">Titre</label><input id="f-title" value="${esc(q.title)}"></div><div><label class="f">Artiste</label><input id="f-artist" value="${esc(q.artist)}"></div></div>
         <div class="g3"><div><label class="f">Démarrer à (secondes)</label><input id="f-start" type="number" min="0" value="${q.start || 0}"></div><div><label class="f">Points</label><input id="f-pts" type="number" min="0" value="${q.pts}"></div><div></div></div>
+        <label class="row" style="gap:8px;margin-top:12px;font-size:14px"><input type="checkbox" id="f-split" ${q.split ? 'checked' : ''}> Points séparés : titre et artiste comptent chacun</label>
+        <div class="g3" id="f-splitpts" style="${q.split ? '' : 'display:none'}"><div><label class="f">Points titre</label><input id="f-ptsT" type="number" min="0" value="${q.ptsT ?? 1}"></div><div><label class="f">Points artiste</label><input id="f-ptsA" type="number" min="0" value="${q.ptsA ?? 1}"></div><div></div></div>
         <div class="hint">Dans Spotify : clic droit sur le titre → Partager → Copier le lien du titre. « Auto-remplir » récupère le titre et la pochette ; l'artiste est à saisir. Sans lien, tu lances le morceau depuis ton logiciel DJ.<br>Les jokers « 2 / 4 propositions » piochent les fausses réponses parmi les autres morceaux de ton programme : renseigne bien titre et artiste.</div>
         <div class="mact"><button class="ghost" data-act="mclose">Annuler</button><button class="gold" data-act="msave">Enregistrer</button></div>`, 'edit');
     } else if (q.type === 'open') {
@@ -3813,6 +3958,7 @@ function initRegie() {
     const it = [...(e.clipboardData ? e.clipboardData.items : [])].find(x => x.type.startsWith('image/'));
     if (it) { e.preventDefault(); setEdImage(it.getAsFile(), 'q'); toast('Image collée'); }
   });
+  document.addEventListener('change', e => { if (e.target && e.target.id === 'f-split') { const g = $('#f-splitpts'); if (g) g.style.display = e.target.checked ? '' : 'none'; } });
   async function autofill() {
     const uri = spUri($('#f-uri').value);
     if (!uri) { toast('Lien Spotify invalide'); return; }
@@ -3832,6 +3978,7 @@ function initRegie() {
       if (ED.coverFor !== uri) q.cover = '';
       q.uri = uri; q.title = $('#f-title').value.trim(); q.artist = $('#f-artist').value.trim();
       q.start = Math.max(0, parseInt($('#f-start').value) || 0); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0);
+      q.split = $('#f-split').checked; q.ptsT = Math.max(0, parseInt($('#f-ptsT').value) || 0); q.ptsA = Math.max(0, parseInt($('#f-ptsA').value) || 0);
     } else if (q.type === 'open') {
       q.text = $('#f-text').value.trim(); q.answer = $('#f-answer').value.trim(); q.pts = Math.max(0, parseInt($('#f-pts').value) || 0);
       if (!q.text) { toast('Écris la question'); return; }
@@ -4041,6 +4188,8 @@ Réponse : Thomas, à Venise
       <div class="setrow"><span class="grow">Afficher le classement en direct entre les questions</span><input type="checkbox" data-set="liveRank" ${s.liveRank !== false ? 'checked' : ''}></div>
       <h4>Valeurs par défaut des nouvelles questions</h4>
       <div class="setrow"><span class="grow">Points blind test</span><input type="number" min="0" data-set="btPts" value="${s.btPts}"></div>
+      <div class="setrow"><span class="grow">🎵 Blind test : 1 pt pour le titre + 1 pt pour l'artiste (nouveaux morceaux)</span><input type="checkbox" data-set="btSplit" ${s.btSplit ? 'checked' : ''}></div>
+      <div class="row" style="margin:6px 0 0;gap:6px"><button class="sm" data-act="splitAll" data-v="1">Appliquer titre + artiste à tous les blind tests</button><button class="sm ghost" data-act="splitAll" data-v="0">Repasser tous en point unique</button></div>
       <div class="setrow"><span class="grow">Points QCM</span><input type="number" min="0" data-set="qcmPts" value="${s.qcmPts}"></div>
       <div class="setrow"><span class="grow">Durée QCM (secondes)</span><input type="number" min="5" data-set="qcmDur" value="${s.qcmDur}"></div>
       <div class="mact"><button class="gold" data-act="mclose">Fermer</button></div>`, 'settings');
@@ -4082,6 +4231,13 @@ Réponse : Thomas, à Venise
     copyScreen: () => { navigator.clipboard && navigator.clipboard.writeText(location.origin + location.pathname + '?ecran=' + S.code).then(() => toast('Lien copié')); },
     board: () => { if (G.screen === 'board') { G.screen = null; renderAll(); } else showBoard(); },
     stayAnswer: () => { clearTimeout(boardT); toast('Le classement ne s\'affichera pas pour cette question'); },
+    part: d => btScore([d.p]),
+    splitAll: d => { const v = d.v === '1'; let n = 0; S.bank.forEach(q => { if (q.type === 'bt') { q.split = v; q.ptsT = q.ptsT ?? 1; q.ptsA = q.ptsA ?? 1; n++; } }); save(); renderAll(); toast(plural(n, 'blind test') + (v ? ' en titre + artiste' : ' en point unique')); },
+    stopGame: () => { if (!confirm('Arrêter la partie maintenant et lancer les résultats (récap des manches, Top 5, classement) ?')) return; startFinale(true); },
+    finNext: () => finGo(1), finPrev: () => finGo(-1),
+    finTo: d => { if (!G.fin) return; const i = +d.i; if (i === G.fin.i) return; G.fin.i = i - 1; finGo(1); },
+    finRestart: () => { if (!G.fin) return; G.fin.steps = finSteps(); G.fin.i = 0; G.fin.revealAt = 0; renderAll(); },
+    finResume: () => { const pf = G.preFin || { idx: -1 }; G.fin = null; clearTimeout(finT); if (pf.idx >= 0) selectQ(pf.idx); else { G.phase = 'idle'; G.idx = -1; renderAll(); } toast('Partie reprise'); },
     newBT: () => openEditor('bt'), newQCM: () => openEditor('qcm'), newRound: () => openEditor('round'), newOpen: () => openEditor('open'),
     spSearch: () => { const t = [$('#f-title') && $('#f-title').value, $('#f-artist') && $('#f-artist').value].filter(Boolean).join(' '); window.open('https://open.spotify.com/search/' + encodeURIComponent(t), '_blank', 'noopener'); },
     showRound: d => { G.rid = d.r; G.screen = 'roundScores'; renderAll(); }, bulk: () => openImport(), impFile: () => $('#impIn').click(), impParse: () => doParse($('#imp-txt').value), impBack: () => openImport(IMP && IMP.text), impGo: importGo, impTemplate: downloadTemplate,
@@ -4324,11 +4480,14 @@ Réponse : Thomas, à Venise
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key.toLowerCase();
     if (e.key === 'Delete' && SEL.size) { A.selDel(); return; }
+    if (e.key === 'ArrowLeft' && G.phase === 'finale') { finGo(-1); return; }
     if (e.key === 'Escape' && SEL.size) { SEL.clear(); renderBank(); return; }
     if (e.code === 'Space') { e.preventDefault(); primary(); }
     else if (e.key === 'ArrowRight') next();
     else if (k === 'c') { if (G.screen === 'board') { G.screen = null; renderAll(); } else showBoard(); }
     else if (k === 'b') btGood();
+    else if (k === 't' && isSplit(cur())) btScore(['title']);
+    else if (k === 'a' && isSplit(cur())) btScore(['artist']);
     else if (k === 'f') btBad();
     else if (k === 'r') reveal();
     else if (/^[0-9]$/.test(e.key)) { const i = e.key === '0' ? 9 : +e.key - 1; const it = boardItems()[i]; if (it) playRef(it.ref); }
@@ -4413,6 +4572,46 @@ function initEcran() {
       requestAnimationFrame(step);
     });
   }
+  const ordF = n => n === 1 ? '1ʳᵉ' : n + 'ᵉ';
+  let finLocal = { id: null, at: 0, fx: null }, finTimer = null;
+  function finaleHtml(F) {
+    if (finLocal.id !== F.stepId) {
+      finLocal = { id: F.stepId, at: Date.now() + (F.revealIn || 0), fx: null };
+      clearTimeout(finTimer); if (F.revealIn > 0) finTimer = setTimeout(() => { lastKey = ''; render(); }, F.revealIn + 30);
+    }
+    const suspense = F.kind === 'rank' && Date.now() < finLocal.at;
+    const pts = n => n + ' pt' + (n > 1 ? 's' : '');
+    const prev = (F.prev || []).length ? `<div class="f-prev">${F.prev.map(p => `<span>${ordF(p.pos)} ${AV(p.av)} ${esc(p.name)} · ${p.score}</span>`).join('')}</div>` : '';
+    if (F.kind === 'intro') return `<div class="e-kicker">${F.early ? 'Partie terminée' : 'Fin de la partie'}</div><div class="e-title" style="font-size:8vw">🏁 Place aux résultats !</div><div class="e-sub">${F.nRounds > 1 ? 'Le récap des manches, puis le Top 5…' : 'Le Top 5 arrive…'}</div>`;
+    if (F.kind === 'round') {
+      const t = F.top || []; const any = t.some(x => x.pts > 0); const pod = [t[1], t[0], t[2]];
+      return `<div class="e-kicker">Récap · Manche ${F.num} / ${F.nRounds}</div><div class="e-title" style="font-size:5.5vw;margin-bottom:1vh">${esc(F.name || 'Manche ' + F.num)}</div><div class="e-sub">${F.played} question${F.played > 1 ? 's' : ''} jouée${F.played > 1 ? 's' : ''}${any ? ' · les meilleurs de la manche' : ''}</div>
+        ${any ? `<div class="e-podium small">${pod.map((x, k) => x ? `<div class="e-pod p${[2, 1, 3][k]}" style="animation-delay:${[0.6, 1.1, 0.2][k]}s">${AV(x.av)}<div class="nm">${esc(x.name)}</div><div class="pt">+${pts(x.pts)}</div><div class="blk">${[2, 1, 3][k]}</div></div>` : '').join('')}</div>` : '<div class="e-sub muted" style="margin-top:4vh">Aucun point marqué dans cette manche</div>'}`;
+    }
+    if (F.kind === 'top5intro') return `<div class="e-kicker">Le moment tant attendu</div><div class="e-title f-heart" style="font-size:12vw;color:var(--gold2);margin:3vh 0">TOP ${F.n}</div><div class="e-sub">Qui montera sur la plus haute marche ?</div>`;
+    if (F.kind === 'rank' && F.n === 1) {
+      if (suspense) return `<div class="f-spot"></div><div class="e-kicker" style="position:relative">Et le grand gagnant est…</div><div class="f-q f-heart" style="width:36vh;height:36vh;font-size:20vh;margin-top:3vh;position:relative">?</div><div class="f-suspense" style="position:relative">🥁 🥁 🥁</div>`;
+      const t = F.team || { name: '?', score: 0 };
+      return `<div class="f-spot"></div><div class="f-crown">👑</div><div class="f-win">${AV(t.av)}</div><div class="f-winname">${esc(t.name)}</div><div class="f-score" style="position:relative">${pts(t.score)}${t.tie ? ' · ex æquo' : ''} · Grand vainqueur !</div>${prev}`;
+    }
+    if (F.kind === 'rank') {
+      const t = F.team || { name: '?', score: 0 };
+      return `<div class="e-kicker">Top ${F.N}</div><div class="f-place">${ordF(F.n)} place</div>
+        ${suspense ? `<div class="f-q" style="margin-top:3vh">?</div><div class="f-suspense">Roulement de tambour…</div>` : `<div class="f-card" style="margin-top:3vh">${AV(t.av)}</div><div class="f-name">${esc(t.name)}</div><div class="f-score">${pts(t.score)}${t.tie ? ' · ex æquo' : ''}</div>`}${prev}`;
+    }
+    return `<div class="e-kicker">Partie terminée</div><div class="e-title" style="font-size:4.6vw">Classement général · Merci à tous ! 🎉</div><div class="e-board ${D.teams.length > 10 ? 'two' : ''}">${board(D.teams, 30, t => t.score, false)}</div>`;
+  }
+  function finaleFx(F) {
+    if (F.kind !== 'rank' || F.n !== 1 || Date.now() < finLocal.at || finLocal.fx === F.stepId) return;
+    finLocal.fx = F.stepId;
+    const burst = delay => setTimeout(() => {
+      const c = document.createElement('div'); c.className = 'confetti';
+      const cols = ['#e9d29b', '#c9a45c', '#fff3c4', '#b08a43', '#ffffff', '#f0c870', '#d9b46a'];
+      for (let i = 0; i < 160; i++) { const p = document.createElement('i'); p.style.left = Math.random() * 100 + 'vw'; p.style.background = cols[i % cols.length]; p.style.animationDuration = (2.8 + Math.random() * 3) + 's'; p.style.animationDelay = (Math.random() * 1.2) + 's'; p.style.transform = `rotate(${Math.random() * 360}deg)`; if (i % 3 === 0) { p.style.width = '.7vw'; p.style.height = '.7vw'; p.style.borderRadius = '50%'; } c.appendChild(p); }
+      document.body.appendChild(c); setTimeout(() => c.remove(), 8000);
+    }, delay);
+    burst(300); burst(1800); burst(3600);
+  }
   const mvHtml = m => m > 0 ? `<span class="e-mv up">▲${m}</span>` : m < 0 ? `<span class="e-mv down">▼${-m}</span>` : `<span class="e-mv eq">•</span>`;
   function board(list, max, val, moves, extra) {
     if (!list.length) return '<div class="e-sub">Aucune équipe</div>';
@@ -4431,9 +4630,10 @@ function initEcran() {
     const prevPhase = lastKey ? JSON.parse(lastKey).phase : null; lastKey = key;
     $('#e-footr').textContent = D.screen === 'lobby' ? '' : 'Rejoindre : ' + D.joinUrl.replace(/^https?:\/\//, '');
     const q = D.q; let h = '';
-    const scr = D.screen || ({ idle: 'pause', round_end: 'roundScores', final: 'final' })[D.phase] || null;
+    const scr = D.fin ? 'finale' : (D.screen || ({ idle: 'pause', round_end: 'roundScores', final: 'final' })[D.phase] || null);
     const strip = D.feed && D.feed.length ? `<div class="e-jstrip">${D.feed.map(f => `<span>${esc(f)}</span>`).join('')}</div>` : '';
-    if (scr === 'lobby') {
+    if (scr === 'finale') h = finaleHtml(D.fin);
+    else if (scr === 'lobby') {
       h = `<div class="e-kicker">Blind test &amp; Quiz</div><div class="e-title">Rejoignez la partie</div>
         <div class="e-lobby"><div class="qrbox">${qrSvg(D.joinUrl)}</div>
         <div style="text-align:left"><div class="e-sub">Scannez le QR code<br>ou allez sur</div><div class="e-sub gold-t" style="font-size:2vw;margin:1.5vh 0">${esc(D.joinUrl.replace(/^https?:\/\//, '').replace(/\?.*$/, ''))}</div><div class="e-sub">Code de la partie</div><div class="e-code">${esc(D.code)}</div></div></div>
@@ -4475,7 +4675,7 @@ function initEcran() {
       else if (ph === 'jokers') h = `${ring(D.jokerEnds, Math.max(1, Math.round((D.jokerEnds - Date.now()) / 1000)))}<div class="e-kicker">${kick}</div><div style="font-size:12vh;margin-top:2vh">🃏</div><div class="e-title" style="font-size:6vw">Jouez vos jokers !</div><div class="e-sub">Choisissez sur votre téléphone · ${D.ready.filter(r => r.ok).length}/${D.ready.length} équipes prêtes</div>
           <div class="e-chips">${D.ready.map(r => `<span class="${r.ok ? 'ready' : ''}">${AV(r.av)}${r.ok ? '✓ ' : ''}${esc(r.name)}</span>`).join('')}</div>`;
       else if (ph === 'bt_play' && q.type === 'open') h = `<div class="e-kicker">${kick}</div>${q.img && getA(q.img) ? `<img class="e-qimg" src="${getA(q.img)}" alt="">` : ''}<div class="e-q ${q.img ? 'small' : ''}" style="margin:2vh 0 3vh">${esc(q.text)}</div><div class="e-title" style="font-size:4vw;color:var(--gold2)">🔔 Buzzez pour répondre !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${strip}`;
-      else if (ph === 'bt_play') h = `<div class="e-kicker">${kick}</div><div class="eq">${Array.from({ length: 22 }, (_, i) => `<i style="animation-delay:${(i * 137 % 900) / 1000}s;animation-duration:${0.6 + (i * 53 % 50) / 100}s"></i>`).join('')}</div><div class="e-title" style="font-size:5vw">À vos buzzers !</div>${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${D.lastWrong ? `<div class="e-wrong">✗ ${esc(D.lastWrong.name)} : « ${esc(D.lastWrong.label)} »</div>` : ''}${strip}`;
+      else if (ph === 'bt_play') h = `<div class="e-kicker">${kick}</div><div class="eq">${Array.from({ length: 22 }, (_, i) => `<i style="animation-delay:${(i * 137 % 900) / 1000}s;animation-duration:${0.6 + (i * 53 % 50) / 100}s"></i>`).join('')}</div><div class="e-title" style="font-size:5vw">${D.found && (D.found.title || D.found.artist) ? `Qui trouve ${D.found.title ? 'l\'artiste' : 'le titre'} ?` : 'À vos buzzers !'}</div>${D.found ? `<div class="e-chips" style="margin-top:1vh">${[['title', 'Titre'], ['artist', 'Artiste']].map(([p, l]) => D.found[p] ? `<span class="ready">✓ ${l} · ${esc(D.found[p])}</span>` : `<span>? ${l}</span>`).join('')}</div>` : ''}${D.lockedNames.length ? `<div class="e-sub muted" style="font-size:1.8vw">Hors-jeu : ${D.lockedNames.map(esc).join(', ')}</div>` : ''}${D.lastWrong ? `<div class="e-wrong">✗ ${esc(D.lastWrong.name)} : « ${esc(D.lastWrong.label)} »</div>` : ''}${strip}`;
       else if (ph === 'bt_buzzed') h = D.appelNow
         ? `<div class="e-kicker">${kick}</div><div style="font-size:12vh">📞</div><div class="e-title" style="font-size:6vw;margin:1vh 0">Appel à un ami !</div>${AV(D.buzzAv, 'e-bigav')}<div class="e-big" style="font-size:6vw">${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a droit à une 2ᵉ chance</div>${strip}`
         : `<div class="e-kicker">${kick}</div>${AV(D.buzzAv, 'e-bigav')}<div class="e-big">🔔 ${esc(D.buzzName)}</div><div class="e-sub" style="margin-top:2vh">a buzzé ! Votre réponse ?</div>${strip}`;
@@ -4494,8 +4694,10 @@ function initEcran() {
     } else h = `<div class="e-title" style="color:var(--gold2)">AD EVENTS</div>`;
     if (scr !== 'board') boardKeyShown = null;
     stage.innerHTML = h;
+    if (scr === 'finale') finaleFx(D.fin);
+    if (!(scr === 'finale' && D.fin.kind === 'rank' && D.fin.n === 1)) document.querySelectorAll('.confetti').forEach(c => c.remove());
     if (scr === 'board') animateBoard();
-    const pg = $('#e-prog'); const showProg = D.prog && !scr && !['round_end', 'final', 'idle'].includes(D.phase) && !(D.phase === 'ready' && D.liveRank && D.teams.some(t => t.score !== 0));
+    const pg = $('#e-prog'); const showProg = D.prog && !scr && !['round_end', 'final', 'idle', 'finale'].includes(D.phase) && !(D.phase === 'ready' && D.liveRank && D.teams.some(t => t.score !== 0));
     pg.innerHTML = showProg ? (D.prog.rounds.length > 1 ? D.prog.rounds.map(r => `<span class="rp ${r.cur ? 'cur' : ''} ${r.done && !r.cur ? 'done' : ''}">${r.done && !r.cur ? '✓ ' : ''}Manche ${r.num}${r.cur && r.name ? ' · ' + esc(r.name) : ''}</span>`).join('') : '') + (D.prog.dots.length ? `<span class="e-dots">${D.prog.dots.map(x => `<i class="${x === 2 ? 'cur' : x === 1 ? 'done' : ''}"></i>`).join('')}</span>` : '') : '';
     stage.classList.remove('flash');
     if (D.phase === 'bt_buzzed' && !D.screen && prevPhase !== 'bt_buzzed') { void stage.offsetWidth; stage.classList.add('flash'); }
@@ -4596,6 +4798,13 @@ function initJoueur() {
   }
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (!conn || !conn.open)) connect(); });
 
+  let lastLbKey = null, lastWinVib = null;
+  function lbHtml(lb, max, title = true) {
+    const anim = lb.key !== lastLbKey; lastLbKey = lb.key;
+    const solo = lb.rows.filter(r => r.rank === 1).length === 1;
+    let rows = lb.rows; if (rows.length > max) { const me = rows.find(r => r.me); rows = rows.slice(0, max); if (me && !rows.includes(me)) rows[rows.length - 1] = me; }
+    return `${title ? '<div class="j-lbt">Classement</div>' : '<div style="height:6px"></div>'}<div class="j-lb ${anim ? 'anim' : ''}">${rows.map((r, i) => `<div class="j-lr ${r.me ? 'me' : ''}" style="animation-delay:${i * 0.07}s"><span class="rk">${r.rank === 1 && r.score > 0 && solo ? '👑' : r.rank}</span>${AVP(r.av)}<span class="nm">${esc(r.name)}${r.streak >= 2 ? ` <span class="fl">🔥${r.streak}</span>` : ''}</span><span class="mv ${r.mv > 0 ? 'up' : r.mv < 0 ? 'down' : ''}">${r.mv > 0 ? '▲' + r.mv : r.mv < 0 ? '▼' + -r.mv : ''}</span><span class="g ${r.gain < 0 ? 'neg' : ''}" style="animation-delay:${0.4 + i * 0.07}s">${r.gain ? (r.gain > 0 ? '+' : '−') + Math.abs(r.gain) : ''}</span><span class="sc">${r.score}</span></div>`).join('')}</div>${lb.more > 0 && rows.length >= lb.rows.length ? `<div class="j-txt muted" style="font-size:13px">… et ${lb.more} autre${lb.more > 1 ? 's' : ''}</div>` : ''}`;
+  }
   const jName = k => JOKERS[k] ? JOKERS[k].icon + ' ' + JOKERS[k].name : '';
   const invHtml = inv => { const e = Object.entries(inv || {}); return e.length ? `<div class="j-inv">${e.map(([k, n]) => `<span>${JOKERS[k].icon} ${esc(JOKERS[k].name)}${n > 1 ? ' ×' + n : ''}</span>`).join('')}</div>` : ''; };
   function render() {
@@ -4632,7 +4841,16 @@ function initJoueur() {
     const consolHtml = st.consol ? `<div class="j-active">🎁 Joker gagné : ${esc(jName(st.consol))}</div>` : '';
     const stolen = st.stolenBy && st.stolenBy.length ? `<div class="j-txt res-bad">🗡️ ${st.stolenBy.map(esc).join(', ')} vous retire 1 point !</div>` : '';
     const ord = n => n + (n === 1 ? 'er' : 'e');
-    if (ph === 'final' || (scr === 'final' && !live)) {
+    if (ph === 'finale' && st.fin) {
+      const F = st.fin, me = st.myPos;
+      const mine = F.kind === 'rank' && me <= F.N && (me > F.n || (me === F.n && F.revealed));
+      if (F.kind === 'general') h = `<div style="font-size:56px">${st.rank <= 3 ? ['🥇', '🥈', '🥉'][st.rank - 1] : '🏁'}</div><div class="j-txt muted">Classement final</div><div class="j-score">${ord(st.rank)}</div><div class="j-txt">sur ${st.nTeams} équipes · <b class="gold-t">${st.score} pt${st.score > 1 ? 's' : ''}</b></div><div class="j-txt muted">Merci d'avoir joué !</div>`;
+      else if (mine && me === 1) h = `<div class="j-win">🏆</div><div class="j-title gold-t" style="font-size:46px">VICTOIRE !</div><div class="j-txt">Vous remportez la partie avec <b class="gold-t">${st.score} pt${st.score > 1 ? 's' : ''}</b> 🎉</div>`;
+      else if (mine) h = `<div class="j-win">${me <= 3 ? ['🥇', '🥈', '🥉'][me - 1] : '🎉'}</div><div class="j-txt muted">Top ${F.N}</div><div class="j-score">${ord(me)}</div><div class="j-txt">avec <b class="gold-t">${st.score} pt${st.score > 1 ? 's' : ''}</b></div>`;
+      else if (F.kind === 'rank' && me === F.n && !F.revealed) h = `<div class="j-win f-heart">🥁</div><div class="j-title">Et à la ${F.n === 1 ? '1ʳᵉ' : F.n + 'ᵉ'} place…</div><div class="j-txt muted">Regardez l'écran 👀</div>`;
+      else h = `<div class="j-win">🥁</div><div class="j-title">Les résultats arrivent…</div><div class="j-txt muted">Regardez l'écran 👀${F.kind === 'rank' && me > F.N ? '<br>Votre place sera dévoilée au classement général.' : ''}</div>`;
+      if (st.fin.kind === 'rank' && st.fin.revealed && me === st.fin.n && lastWinVib !== st.fin.n) { lastWinVib = st.fin.n; vib([120, 60, 120, 60, 300]); }
+    } else if (ph === 'final' || (scr === 'final' && !live)) {
       h = `<div style="font-size:56px">${st.rank <= 3 ? ['🥇', '🥈', '🥉'][st.rank - 1] : '🏁'}</div><div class="j-txt muted">Classement final</div><div class="j-score">${ord(st.rank)}</div><div class="j-txt">sur ${st.nTeams} équipes · <b class="gold-t">${st.score} pts</b></div><div class="j-txt muted">Merci d'avoir joué !</div>`;
     } else if ((ph === 'round_end' || scr === 'roundScores') && !live && st.round) {
       h = `<div class="j-txt muted">Fin de la ${esc(st.round.label)}</div><div class="j-score">${ord(st.rRank)}</div><div class="j-txt">de la manche · <b class="gold-t">+${st.rPts} pt${st.rPts > 1 ? 's' : ''}</b></div><div class="j-txt muted">Classement général : ${ord(st.rank)} · ${st.score} pt${st.score > 1 ? 's' : ''}</div>`;
@@ -4665,10 +4883,11 @@ function initJoueur() {
     } else if (st.blocked && ['bt_play', 'bt_buzzed', 'qcm_ask', 'qcm_closed'].includes(ph)) {
       h = `<div style="font-size:64px">⛔</div><div class="j-title res-bad">Bloqués ce tour !</div><div class="j-txt">${st.blockedBy ? esc(st.blockedBy) + ' vous a bloqués avec un joker.' : ''}</div><div class="j-txt muted">Vous rejouez à la prochaine question.</div>${stolen}`;
     } else if (ph === 'bt_play') {
-      if (st.locked) h = `<div class="j-title res-bad">Hors-jeu</div><div class="j-txt">${st.wrongLabel ? '« ' + esc(st.wrongLabel) + ' » n\'était pas la bonne réponse.' : (st.qtype === 'open' ? 'Mauvaise réponse — vous ne pouvez plus jouer sur cette question.' : 'Mauvaise réponse — vous ne pouvez plus jouer sur ce morceau.')}</div>${consolHtml}`;
+      if (st.partial) h = `<div style="font-size:56px">🎵</div><div class="j-title res-good">${st.partial === 'title' ? 'Titre trouvé !' : 'Artiste trouvé !'}</div><div class="j-txt">Bien joué ! La main passe aux autres équipes pour ${st.partial === 'title' ? 'l\'artiste' : 'le titre'}.</div>`;
+      else if (st.locked) h = `<div class="j-title res-bad">Hors-jeu</div><div class="j-txt">${st.wrongLabel ? '« ' + esc(st.wrongLabel) + ' » n\'était pas la bonne réponse.' : (st.qtype === 'open' ? 'Mauvaise réponse — vous ne pouvez plus jouer sur cette question.' : 'Mauvaise réponse — vous ne pouvez plus jouer sur ce morceau.')}</div>${consolHtml}`;
       else if (pendingBuzz || pendingPick) h = `<div class="j-title">Envoyé…</div>`;
       else if (st.choices) h = `${activeBadge}<div class="j-title" style="font-size:30px">C'est quel titre ?</div><div class="j-txt muted" style="font-size:14px">Une seule tentative — le plus rapide gagne</div><div class="j-opts">${st.choices.map(c => `<button class="j-choice" data-bp="${c.i}">${esc(c.label)}</button>`).join('')}</div>`;
-      else h = `${activeBadge}<div class="j-txt muted">${TYPE_NAME[st.qtype]} · ${pos}</div>${st.img && getA(st.img) ? `<img class="j-qimg" src="${getA(st.img)}" alt="">` : ''}${st.text ? `<div class="j-q">${esc(st.text)}</div>` : ''}<button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
+      else h = `${activeBadge}<div class="j-txt muted">${TYPE_NAME[st.qtype]} · ${pos}</div>${st.found && (st.found.title || st.found.artist) ? `<div class="j-active">${st.found.title ? '✓ Titre trouvé par ' + esc(st.found.title) + ' — à vous l\'artiste !' : '✓ Artiste trouvé par ' + esc(st.found.artist) + ' — à vous le titre !'}</div>` : ''}${st.img && getA(st.img) ? `<img class="j-qimg" src="${getA(st.img)}" alt="">` : ''}${st.text ? `<div class="j-q">${esc(st.text)}</div>` : ''}<button class="buzz" id="bz">BUZZ</button><div class="j-txt muted">Appuyez dès que vous reconnaissez !</div>${stolen}`;
     } else if (ph === 'bt_buzzed') {
       if (st.appel) h = `<div style="font-size:60px">📞</div><div class="j-title gold-t">Appel à un ami !</div><div class="j-txt">Vous avez une 2ᵉ chance : demandez de l'aide autour de vous et redonnez une réponse à l'animateur.</div>`;
       else h = st.iBuzzed ? `<div style="font-size:60px">🎤</div><div class="j-title gold-t">Vous avez la main !</div><div class="j-txt">Donnez votre réponse à l'animateur.</div>${activeBadge}`
@@ -4689,6 +4908,8 @@ function initJoueur() {
       h = (st.myChoice == null ? `<div class="j-title">Pas de réponse</div>` : (ok ? `<div class="j-title res-good">Bonne réponse ! +${st.gain}</div>` : `<div class="j-title res-bad">Raté…</div>`)) + (st.streak >= 2 ? `<div class="j-mv"><span class="fire">🔥 ${st.streak} d'affilée</span></div>` : '');
       h += `<div class="j-txt muted">La bonne réponse était</div><div class="j-opt" style="background:${COLORS[st.correct]};width:100%;max-width:460px"><span class="s">${SHAPES[st.correct]}</span>${esc(st.options[st.correct])}</div>${consolHtml}`;
     }
+    const lbOk = st.lb && st.lb.rows.length && (['bt_reveal', 'qcm_reveal', 'final'].includes(ph) || (ph === 'finale' && st.fin && st.fin.kind === 'general') || (['board', 'scores', 'final'].includes(scr) && !live) || (ph === 'ready' && st.lb.rows.some(r => r.score !== 0)));
+    if (lbOk) h += lbHtml(st.lb, ph === 'ready' && !scr ? 5 : 10, !(['board', 'scores'].includes(scr) && !live));
     body.innerHTML = h;
     const bz = $('#bz');
     if (bz) bz.addEventListener('pointerdown', e => { e.preventDefault(); if (send({ t: 'buzz' })) { pendingBuzz = true; vib(90); render(); } else setStatus('Pas connecté – reconnexion…'); });
