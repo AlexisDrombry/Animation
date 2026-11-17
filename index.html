@@ -2578,6 +2578,21 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .e-dots i{width:.9vw;height:.9vw;border-radius:50%;background:#2a2a2f}
 .e-dots i.done{background:var(--gold3)}
 .e-dots i.cur{background:var(--gold2);box-shadow:0 0 1vw var(--gold)}
+.e-board.anim .e-row{opacity:1;animation:none;will-change:transform;border-radius:1.2vh}
+.e-row.mv-up{background:rgba(127,211,156,.10);box-shadow:inset 0 0 0 2px rgba(127,211,156,.45)}
+.e-row.mv-down{background:rgba(240,165,157,.07);box-shadow:inset 0 0 0 2px rgba(240,165,157,.3)}
+.e-row.lead{background:linear-gradient(90deg,rgba(201,164,92,.18),transparent)}
+.e-gain{font-weight:800;color:#9fe0b6;font-size:2vw;margin-left:1vw;min-width:5vw;text-align:left;opacity:0;animation:gainpop .7s .45s both}
+.e-gain.neg{color:#f0a59d}
+@keyframes gainpop{0%{opacity:0;transform:scale(.3) translateY(1.5vh)}60%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:none}}
+.e-streak{display:inline-block;font-size:1.6vw;margin-left:.9vw;padding:.2vh .8vw;border-radius:999px;background:rgba(255,120,40,.16);color:#ffb070;font-weight:800;animation:flame .9s ease-in-out infinite alternate}
+.e-streak.big{background:rgba(255,90,30,.3);color:#ffd0a0;box-shadow:0 0 2vh rgba(255,120,40,.45)}
+@keyframes flame{from{transform:rotate(-5deg)}to{transform:rotate(5deg) scale(1.1)}}
+.e-crown{font-size:3vh;margin-right:.3vw;animation:pop .6s 2.1s cubic-bezier(.2,1.6,.4,1) both}
+.e-callouts{display:flex;flex-wrap:wrap;justify-content:center;gap:1.2vh 1.2vw;margin:2vh 0 2.5vh;min-height:5.5vh;max-width:90vw}
+.e-callout{font-size:2.1vw;font-weight:700;padding:1vh 2vw;border-radius:999px;background:rgba(201,164,92,.14);border:1px solid rgba(201,164,92,.5);color:var(--gold2);opacity:0;animation:callin .6s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes callin{from{opacity:0;transform:translateY(-2vh) scale(.8)}to{opacity:1;transform:none}}
+.e-more{font-size:1.6vw;color:var(--muted);margin-top:1.5vh}
 .e-hint{position:fixed;bottom:1vh;right:1vw;font-size:12px;color:#444;z-index:2}
 
 /* ============ JOUEUR ============ */
@@ -2630,6 +2645,9 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .j-inv{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:460px}
 .j-inv span{border:1px solid var(--gold3);border-radius:999px;padding:5px 10px;font-size:13px;color:var(--gold2)}
 .j-active{border:1px solid var(--gold);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--gold2);background:#1f1a0e}
+.j-mv{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.j-mv span{border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;border:1px solid var(--line)}
+.j-mv .up{color:#8fe0aa;border-color:#2f6b45}.j-mv .down{color:#f0a59d;border-color:#7a3a33}.j-mv .fire{color:#ffb070;border-color:#7a4a20}
 .res-good{color:#8fe0aa}.res-bad{color:#f0a59d}
 </style>
 </head>
@@ -2654,6 +2672,7 @@ button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
     <span class="lbl">Écran public</span>
     <button class="sm" data-act="scr" data-s="lobby">QR d'accès</button>
     <button class="sm" data-act="scr" data-s="">Jeu</button>
+    <button class="sm" data-act="board">📊 Classement animé</button>
     <button class="sm" data-act="scr" data-s="roundScores">Classement manche</button>
     <button class="sm" data-act="scr" data-s="scores">Classement général</button>
     <button class="sm" data-act="scr" data-s="final">Podium final</button>
@@ -2988,9 +3007,9 @@ function initRegie() {
   const KEY = 'adq_regie_v1';
   const DEF = {
     btPts: 1, qcmPts: 1, qcmDur: 20, sfx: true, vol: 80,
-    liveRank: true, jokers: true, jokerTime: 20, jokerStock: 1, consolation: true,
+    liveRank: true, autoBoard: true, boardDelay: 5, jokers: true, jokerTime: 20, jokerStock: 1, consolation: true,
     jk: { appel: true, choix4: true, choix2: true, vol: true, bonus: true, bloque: true },
-    sounds: { buzz: 'b:buzz', good: 'b:good', bad: 'b:bad', start: 'b:start', end: 'b:end', joker: 'b:joker', jokerPhase: 'b:suspense', reveal: 'none', roundEnd: 'b:fanfare', final: 'b:applause' }
+    sounds: { buzz: 'b:buzz', good: 'b:good', bad: 'b:bad', start: 'b:start', end: 'b:end', joker: 'b:joker', jokerPhase: 'b:suspense', reveal: 'none', roundEnd: 'b:fanfare', final: 'b:applause', board: 'none', leader: 'b:joker' }
   };
   let S = null;
   try { S = JSON.parse(ls(KEY)); } catch (e) {}
@@ -3136,7 +3155,7 @@ function initRegie() {
   /* ---------- Sons : synthèse + sons perso ---------- */
   const BUILTIN = { buzz: 'Buzzer', good: 'Bonne réponse', bad: 'Erreur', start: 'Top départ', end: 'Fin du temps', joker: 'Magie (joker)', drum: 'Roulement de tambour', fanfare: 'Fanfare', applause: 'Applaudissements', sad: 'Trombone triste', klaxon: 'Klaxon', suspense: 'Suspense' };
   const BOARD_BUILTINS = ['drum', 'fanfare', 'applause', 'sad', 'klaxon', 'suspense', 'joker', 'buzz'];
-  const EVENTS = { buzz: 'Une équipe buzze', good: 'Bonne réponse', bad: 'Mauvaise réponse', start: 'Lancement d\'un QCM', end: 'Fin du chrono QCM', jokerPhase: 'Ouverture du choix des jokers', joker: 'Jokers activés / appel à un ami', reveal: 'Révélation sans gagnant', roundEnd: 'Fin de manche', final: 'Classement final / podium' };
+  const EVENTS = { buzz: 'Une équipe buzze', good: 'Bonne réponse', bad: 'Mauvaise réponse', start: 'Lancement d\'un QCM', end: 'Fin du chrono QCM', jokerPhase: 'Ouverture du choix des jokers', joker: 'Jokers activés / appel à un ami', reveal: 'Révélation sans gagnant', board: 'Affichage du classement animé', leader: 'Nouveau leader au classement', roundEnd: 'Fin de manche', final: 'Classement final / podium' };
   let ac = null, master = null, noiseBuf = null;
   const playing = new Set();
   function actx() {
@@ -3289,10 +3308,10 @@ function initRegie() {
   }
 
   /* ---------- Logique de jeu ---------- */
-  let qTimer = null, jTimer = null;
+  let qTimer = null, jTimer = null, boardT = null;
   function resetRound() {
-    Object.assign(G, { buzz: null, locked: [], answers: {}, startedAt: 0, endsAt: 0, result: null, picks: {}, active: {}, blocked: [], second: {}, appelNow: false, btOpts: null, btShow: {}, q2: {}, consol: {}, feed: [], jokerEnds: 0, lastWrong: null });
-    clearInterval(qTimer); clearInterval(jTimer);
+    Object.assign(G, { finalized: false, callouts: [], buzz: null, locked: [], answers: {}, startedAt: 0, endsAt: 0, result: null, picks: {}, active: {}, blocked: [], second: {}, appelNow: false, btOpts: null, btShow: {}, q2: {}, consol: {}, feed: [], jokerEnds: 0, lastWrong: null });
+    clearInterval(qTimer); clearInterval(jTimer); clearTimeout(boardT);
   }
   resetRound();
   function selectQ(i) {
@@ -3321,7 +3340,7 @@ function initRegie() {
   function launch() {
     const q = cur(); if (!q) return;
     clearInterval(jTimer);
-    G.prevRanks = rankMap();
+    G.prevRanks = rankMap(); G.prevScores = Object.fromEntries(Object.entries(S.teams).map(([id, t]) => [id, t.score]));
     let anyJ = false;
     for (const [tid, p] of Object.entries(G.picks)) {
       if (!p || p.j === 'none' || !S.teams[tid] || !canUse(tid, p.j, q)) continue;
@@ -3365,7 +3384,7 @@ function initRegie() {
       spPause(); G.buzz = tid;
       const pts = award(tid, q.pts);
       G.result = { gains: { [tid]: pts }, via: label }; G.phase = 'bt_reveal';
-      sfx('good'); setTimeout(spResume, 400); renderAll();
+      sfx('good'); setTimeout(spResume, 400); onRevealed(); renderAll();
     } else {
       G.locked.push(tid); G.lastWrong = { name: tname(tid), label, at: Date.now() };
       consol(tid); sfx('bad'); renderAll();
@@ -3375,7 +3394,7 @@ function initRegie() {
     if (G.phase !== 'bt_buzzed' || !G.buzz) return;
     const q = cur(); const tid = G.buzz;
     const pts = award(tid, q.pts);
-    G.result = { gains: { [tid]: pts } }; G.appelNow = false; G.phase = 'bt_reveal'; sfx('good'); spResume(); renderAll();
+    G.result = { gains: { [tid]: pts } }; G.appelNow = false; G.phase = 'bt_reveal'; sfx('good'); spResume(); onRevealed(); renderAll();
   }
   function btBad() {
     if (G.phase !== 'bt_buzzed' || !G.buzz) return;
@@ -3391,7 +3410,7 @@ function initRegie() {
     if (isBuzz(q)) {
       if (!['bt_play', 'bt_buzzed'].includes(G.phase)) return;
       if (G.phase === 'bt_buzzed') spResume();
-      G.buzz = null; G.appelNow = false; G.result = { gains: {} }; G.phase = 'bt_reveal'; sfx('reveal'); renderAll();
+      G.buzz = null; G.appelNow = false; G.result = { gains: {} }; G.phase = 'bt_reveal'; sfx('reveal'); onRevealed(); renderAll();
     } else {
       if (!['qcm_ask', 'qcm_closed'].includes(G.phase)) return;
       clearInterval(qTimer);
@@ -3404,8 +3423,51 @@ function initRegie() {
           G.result.gains[tid] = award(tid, base);
         } else consol(tid);
       }
-      sfx(Object.keys(G.result.gains).length ? 'good' : 'reveal'); renderAll();
+      sfx(Object.keys(G.result.gains).length ? 'good' : 'reveal'); onRevealed(); renderAll();
     }
+  }
+  const prevScoreOf = tid => (G.prevScores && G.prevScores[tid] != null) ? G.prevScores[tid] : (S.teams[tid] ? S.teams[tid].score : 0);
+  function prevRankMap() { const ids = Object.keys(S.teams); const m = {}; for (const id of ids) m[id] = 1 + ids.filter(o => prevScoreOf(o) > prevScoreOf(id)).length; return m; }
+  function onRevealed() {
+    if (G.finalized) return; G.finalized = true;
+    const q = cur(); const gains = (G.result && G.result.gains) || {};
+    for (const [tid, t] of Object.entries(S.teams)) {
+      if ((gains[tid] || 0) > 0) t.streak = (t.streak || 0) + 1;
+      else if (!G.blocked.includes(tid)) t.streak = 0;
+      t.best = Math.max(t.best || 0, t.streak || 0);
+    }
+    // annonces
+    const ids = Object.keys(S.teams); const now = rankMap(), prev = prevRankMap(); const cs = [];
+    const leaders = ids.filter(id => now[id] === 1), prevLeaders = ids.filter(id => prev[id] === 1);
+    if (leaders.length === 1 && S.teams[leaders[0]].score > 0 && !(prevLeaders.length === 1 && prevLeaders[0] === leaders[0])) { cs.push({ i: '👑', t: `${tname(leaders[0])} prend la tête du classement !`, k: 'leader' }); }
+    let best = null; for (const id of ids) { const d = (prev[id] || 0) - now[id]; if (d >= 2 && (!best || d > best.d)) best = { id, d }; }
+    if (best) cs.push({ i: '🚀', t: `${tname(best.id)} grimpe de ${best.d} places !` });
+    const hot = ids.filter(id => (S.teams[id].streak || 0) >= 3).sort((a, b) => S.teams[b].streak - S.teams[a].streak)[0];
+    if (hot) cs.push({ i: '🔥', t: `${tname(hot)} enchaîne ${S.teams[hot].streak} bonnes réponses !` });
+    const big = ids.map(id => ({ id, g: S.teams[id].score - prevScoreOf(id) })).sort((a, b) => b.g - a.g)[0];
+    if (big && big.g >= 3) cs.push({ i: '💥', t: `+${big.g} points d'un coup pour ${tname(big.id)} !` });
+    const playing = ids.filter(id => !G.blocked.includes(id));
+    if (q && q.type === 'qcm' && playing.length > 1 && playing.every(id => (gains[id] || 0) > 0)) cs.push({ i: '🎯', t: 'Tout le monde a trouvé !' });
+    if (!Object.keys(gains).length) cs.push({ i: '🧊', t: 'Personne n\'a marqué sur cette question' });
+    G.callouts = cs.slice(0, 3);
+    clearTimeout(boardT);
+    if (S.settings.autoBoard !== false && ids.length) boardT = setTimeout(() => { if (['bt_reveal', 'qcm_reveal'].includes(G.phase) && !G.screen) showBoard(); }, Math.max(1, S.settings.boardDelay || 5) * 1000);
+  }
+  function showBoard() {
+    clearTimeout(boardT); G.screen = 'board'; sfx('board');
+    if (G.callouts.some(c => c.k === 'leader')) setTimeout(() => sfx('leader'), 2100);
+    renderAll();
+  }
+  function boardView() {
+    const cur0 = teamsSorted(); const prevOrder = [...cur0].sort((a, b) => prevScoreOf(b.id) - prevScoreOf(a.id) || a.name.localeCompare(b.name));
+    const now = rankMap(); const q = cur(); const rv = roundView();
+    const uniqueLead = cur0.length && cur0[0].score > 0 && (cur0.length < 2 || cur0[1].score < cur0[0].score);
+    return {
+      key: (q ? q.id : 'x') + ':' + cur0.map(t => t.id.slice(-4) + t.score).join(','),
+      title: q ? (rv && hasRounds() ? `Manche ${rv.num} · ` : '') + `après la question ${rv ? rv.qn : G.idx + 1}` : 'Classement',
+      rows: cur0.map((t, i) => ({ name: t.name, av: t.av, score: t.score, prev: prevScoreOf(t.id), rank: now[t.id], from: prevOrder.findIndex(x => x.id === t.id), to: i, streak: t.streak || 0, lead: i === 0 && uniqueLead })),
+      callouts: G.callouts || []
+    };
   }
   function qClose() {
     clearInterval(qTimer);
@@ -3464,7 +3526,7 @@ function initRegie() {
   }
   function teamsWithMoves(gains = {}) {
     const now = rankMap();
-    return teamsSorted().map(t => ({ name: t.name, av: t.av, score: t.score, gain: gains[t.id] || 0, rank: now[t.id], mv: G.prevRanks[t.id] ? G.prevRanks[t.id] - now[t.id] : 0 }));
+    return teamsSorted().map(t => ({ name: t.name, av: t.av, score: t.score, gain: gains[t.id] || 0, rank: now[t.id], streak: t.streak || 0, mv: G.prevRanks[t.id] ? G.prevRanks[t.id] - now[t.id] : 0 }));
   }
   function displayView() {
     const q = cur();
@@ -3483,6 +3545,7 @@ function initRegie() {
       lastWrong: G.lastWrong && Date.now() - G.lastWrong.at < 6000 ? G.lastWrong : null,
       winners: Object.entries(gains).map(([t, p]) => ({ name: tname(t), av: S.teams[t] && S.teams[t].av, pts: p })),
       teams: teamsWithMoves(gains),
+      board: G.screen === 'board' ? boardView() : null,
       round: roundView(), multi: hasRounds(), liveRank: S.settings.liveRank !== false,
       joinUrl: joinUrlFor(S.code), code: S.code
     };
@@ -3497,6 +3560,7 @@ function initRegie() {
     if (G.blocked.includes(tid)) { v.blocked = true; const by = Object.entries(G.active).find(([, a]) => a.j === 'bloque' && a.target === tid); v.blockedBy = by ? tname(by[0]) : ''; }
     const stole = Object.entries(G.active).filter(([, a]) => a.j === 'vol' && a.target === tid).map(([x]) => tname(x)); if (stole.length) v.stolenBy = stole;
     if (G.consol[tid]) v.consol = G.consol[tid];
+    if (G.finalized) { const pr = prevRankMap(); v.mvRank = (pr[tid] || v.rank) - v.rank; v.qgain = t.score - prevScoreOf(tid); v.streak = t.streak || 0; }
     if (ph === 'jokers' && q) {
       v.avail = availJ(tid, q); v.myPick = G.picks[tid] || null;
       v.targets = Object.keys(S.teams).filter(x => x !== tid).map(x => ({ id: x, name: tname(x), av: S.teams[x].av }));
@@ -3642,7 +3706,7 @@ function initRegie() {
       }
       if (ph === 'bt_reveal') {
         const w = Object.entries((G.result && G.result.gains) || {});
-        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button>${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button class="ghost" data-act="scr" data-s="scores">Afficher le classement</button></div>
+        h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button>${hasMusic() ? '<button data-act="toggle">⏯ Pause / lecture</button>' : ''}<button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}
           <div class="muted">${w.length ? 'Points : ' + w.map(([t, p]) => esc(tname(t)) + ' +' + p).join(', ') : 'Personne n\'a trouvé.'}</div>`;
       }
     } else {
@@ -3651,7 +3715,7 @@ function initRegie() {
           <div class="ctrl"><button data-act="close">Clore maintenant</button><button data-act="reveal">Révéler</button></div>`;
       }
       if (ph === 'qcm_closed') h += `<div class="ctrl"><button class="gold" data-act="reveal">Révéler la bonne réponse</button></div><div class="kbd"><b>R</b> révéler</div>`;
-      if (ph === 'qcm_reveal') h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button><button class="ghost" data-act="scr" data-s="scores">Afficher le classement</button></div>`;
+      if (ph === 'qcm_reveal') h += `<div class="ctrl"><button class="gold" data-act="next">${endsRound() ? '🏁 Fin de la manche' : (nextIt ? 'Question suivante ▶' : '🏆 Podium final')}</button><button class="${G.screen === 'board' ? 'on' : ''}" data-act="board">📊 Classement animé (C)</button></div>${S.settings.autoBoard !== false && !G.screen ? `<div class="kbd">Le classement animé s'affichera automatiquement dans ${S.settings.boardDelay || 5}s · <a href="#" data-act="stayAnswer" style="color:var(--gold2)">rester sur la réponse</a></div>` : ''}`;
       if (['qcm_ask', 'qcm_closed', 'qcm_reveal'].includes(ph)) {
         const ans = Object.entries(G.answers);
         h += `<div class="anslist">${ans.map(([t, a]) => {
@@ -3972,6 +4036,8 @@ Réponse : Thomas, à Venise
       <div class="setrow"><span class="grow">Volume des effets</span><input type="range" min="0" max="100" data-set="vol" value="${s.vol}" style="width:220px"></div>
       ${Object.entries(EVENTS).map(([e, n]) => `<div class="setrow"><span class="grow">${esc(n)}</span><select data-snd="${e}">${soundOptions(s.sounds[e])}</select><button class="sm ghost" data-act="tsnd" data-e="${e}">▶</button></div>`).join('')}
       <h4>Écran public</h4>
+      <div class="setrow"><span class="grow">📊 Classement animé automatiquement après chaque réponse</span><input type="checkbox" data-set="autoBoard" ${s.autoBoard !== false ? 'checked' : ''}></div>
+      <div class="setrow"><span class="grow">… affiché combien de secondes après la révélation</span><input type="number" min="1" max="60" data-set="boardDelay" value="${s.boardDelay ?? 5}"></div>
       <div class="setrow"><span class="grow">Afficher le classement en direct entre les questions</span><input type="checkbox" data-set="liveRank" ${s.liveRank !== false ? 'checked' : ''}></div>
       <h4>Valeurs par défaut des nouvelles questions</h4>
       <div class="setrow"><span class="grow">Points blind test</span><input type="number" min="0" data-set="btPts" value="${s.btPts}"></div>
@@ -4014,6 +4080,8 @@ Réponse : Thomas, à Venise
       <div class="hint">Ne partage pas ce lien avec les joueurs : il affiche les réponses au moment de la révélation, comme l'écran public.</div>
       <div class="mact"><button class="gold" data-act="mclose">Fermer</button></div>`, 'remote'); },
     copyScreen: () => { navigator.clipboard && navigator.clipboard.writeText(location.origin + location.pathname + '?ecran=' + S.code).then(() => toast('Lien copié')); },
+    board: () => { if (G.screen === 'board') { G.screen = null; renderAll(); } else showBoard(); },
+    stayAnswer: () => { clearTimeout(boardT); toast('Le classement ne s\'affichera pas pour cette question'); },
     newBT: () => openEditor('bt'), newQCM: () => openEditor('qcm'), newRound: () => openEditor('round'), newOpen: () => openEditor('open'),
     spSearch: () => { const t = [$('#f-title') && $('#f-title').value, $('#f-artist') && $('#f-artist').value].filter(Boolean).join(' '); window.open('https://open.spotify.com/search/' + encodeURIComponent(t), '_blank', 'noopener'); },
     showRound: d => { G.rid = d.r; G.screen = 'roundScores'; renderAll(); }, bulk: () => openImport(), impFile: () => $('#impIn').click(), impParse: () => doParse($('#imp-txt').value), impBack: () => openImport(IMP && IMP.text), impGo: importGo, impTemplate: downloadTemplate,
@@ -4037,7 +4105,7 @@ Réponse : Thomas, à Venise
     mans: d => onAnswer(d.t, +d.i),
     tjk: d => openTeamJokers(d.t),
     tjkd: d => { const t = S.teams[d.t]; if (!t) return; t.jokers[d.k] = Math.max(0, (t.jokers[d.k] || 0) + +d.d); save(); openTeamJokers(d.t); },
-    resetScores: () => { if (!confirm('Nouvelle partie : scores à 0 et jokers remis au stock de départ ?')) return; for (const t of Object.values(S.teams)) { t.score = 0; t.rounds = {}; t.jokers = freshJokers(); } G.played = {}; G.prevRanks = {}; renderAll(); },
+    resetScores: () => { if (!confirm('Nouvelle partie : scores à 0 et jokers remis au stock de départ ?')) return; for (const t of Object.values(S.teams)) { t.score = 0; t.rounds = {}; t.streak = 0; t.best = 0; t.jokers = freshJokers(); } G.played = {}; G.prevRanks = {}; G.prevScores = {}; renderAll(); },
     refillJ: () => { if (!confirm('Redonner le stock de départ de jokers à toutes les équipes ?')) return; for (const t of Object.values(S.teams)) t.jokers = freshJokers(); save(); toast('Jokers redistribués'); },
     clearTeams: () => { if (!confirm('Supprimer toutes les équipes ?')) return; S.teams = {}; renderAll(); },
     newCode: () => { if (!confirm('Générer un nouveau code ? Les téléphones devront rescanner le QR code.')) return; S.code = newCode(); save(); retries = 0; startPeer(); renderAll(); },
@@ -4259,6 +4327,7 @@ Réponse : Thomas, à Venise
     if (e.key === 'Escape' && SEL.size) { SEL.clear(); renderBank(); return; }
     if (e.code === 'Space') { e.preventDefault(); primary(); }
     else if (e.key === 'ArrowRight') next();
+    else if (k === 'c') { if (G.screen === 'board') { G.screen = null; renderAll(); } else showBoard(); }
     else if (k === 'b') btGood();
     else if (k === 'f') btBad();
     else if (k === 'r') reveal();
@@ -4323,6 +4392,27 @@ function initEcran() {
   document.addEventListener('click', () => { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); });
   render();
 
+  const streakHtml = n => n >= 2 ? `<span class="e-streak ${n >= 4 ? 'big' : ''}">🔥 ${n}</span>` : '';
+  let boardKeyShown = null;
+  function animateBoard() {
+    const rows = [...stage.querySelectorAll('.e-board.anim .e-row')]; if (!rows.length) return;
+    const h = rows[0].offsetHeight || 60;
+    rows.forEach(r => { const d = (+r.dataset.from - +r.dataset.to); r.style.transform = `translateY(${d * h}px)`; if (+r.dataset.from >= rows.length) r.style.opacity = '0'; });
+    void stage.offsetWidth;
+    setTimeout(() => rows.forEach(r => {
+      const d = +r.dataset.from - +r.dataset.to;
+      if (d > 0) r.classList.add('mv-up'); else if (d < 0) r.classList.add('mv-down');
+      r.style.transition = 'transform 1.2s cubic-bezier(.25,.9,.25,1), opacity .8s, background .6s, box-shadow .6s';
+      r.style.transform = ''; r.style.opacity = '';
+    }), 1100);
+    setTimeout(() => rows.forEach(r => r.classList.remove('mv-up', 'mv-down')), 4200);
+    stage.querySelectorAll('.e-board.anim .pt[data-from]').forEach(el => {
+      const a = +el.dataset.from, b = +el.dataset.to; if (a === b) return;
+      el.textContent = a; const t0 = performance.now() + 1100, dur = 1200;
+      const step = now => { const k = Math.min(1, Math.max(0, (now - t0) / dur)); el.textContent = Math.round(a + (b - a) * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+  }
   const mvHtml = m => m > 0 ? `<span class="e-mv up">▲${m}</span>` : m < 0 ? `<span class="e-mv down">▼${-m}</span>` : `<span class="e-mv eq">•</span>`;
   function board(list, max, val, moves, extra) {
     if (!list.length) return '<div class="e-sub">Aucune équipe</div>';
@@ -4330,7 +4420,7 @@ function initEcran() {
     let rank = 0, prev = null;
     return list.slice(0, max).map((t, i) => {
       const v = val(t); if (v !== prev) { rank = i + 1; prev = v; }
-      return `<div class="e-row ${i === 0 ? 'top1' : ''}" style="animation-delay:${(n - i) * 0.1}s"><span class="rk">${rank}</span>${moves ? mvHtml(t.mv || 0) : ''}${AV(t.av)}<span class="nm">${esc(t.name)}</span><span class="pt">${v}</span>${t.gain ? `<span class="gain">+${t.gain}</span>` : ''}${extra ? extra(t) : ''}</div>`;
+      return `<div class="e-row ${i === 0 ? 'top1' : ''}" style="animation-delay:${(n - i) * 0.1}s"><span class="rk">${rank}</span>${moves ? mvHtml(t.mv || 0) : ''}${AV(t.av)}<span class="nm">${esc(t.name)}${streakHtml(t.streak || 0)}</span><span class="pt">${v}</span>${t.gain ? `<span class="gain">+${t.gain}</span>` : ''}${extra ? extra(t) : ''}</div>`;
     }).join('');
   }
   const ring = (ends, dur) => `<div class="e-timer" data-ends="${ends}" data-dur="${dur}"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#2a2a2f" stroke-width="7"/><circle class="ring" cx="50" cy="50" r="44" fill="none" stroke="var(--gold)" stroke-width="7" stroke-linecap="round" stroke-dasharray="276.5" stroke-dashoffset="0"/></svg><div class="num">${dur}</div></div>`;
@@ -4348,6 +4438,15 @@ function initEcran() {
         <div class="e-lobby"><div class="qrbox">${qrSvg(D.joinUrl)}</div>
         <div style="text-align:left"><div class="e-sub">Scannez le QR code<br>ou allez sur</div><div class="e-sub gold-t" style="font-size:2vw;margin:1.5vh 0">${esc(D.joinUrl.replace(/^https?:\/\//, '').replace(/\?.*$/, ''))}</div><div class="e-sub">Code de la partie</div><div class="e-code">${esc(D.code)}</div></div></div>
         ${D.teams.length ? `<div class="e-chips">${D.teams.map(t => `<span>${AV(t.av)}${esc(t.name)}</span>`).join('')}</div>` : ''}`;
+    } else if (scr === 'board' && D.board) {
+      const B = D.board;
+      if (B.key === boardKeyShown) return;
+      boardKeyShown = B.key;
+      const rows = B.rows.slice(0, 10); const n = rows.length;
+      h = `<div class="e-kicker">Classement · ${esc(B.title)}</div>
+        <div class="e-callouts">${B.callouts.map((c, i) => `<span class="e-callout" style="animation-delay:${2.4 + i * 0.5}s">${c.i} ${esc(c.t)}</span>`).join('')}</div>
+        <div class="e-board anim">${rows.map(r => { const g = r.score - r.prev; return `<div class="e-row ${r.lead ? 'lead' : ''}" data-from="${Math.min(r.from, n)}" data-to="${r.to}"><span class="rk">${r.lead ? '<span class="e-crown">👑</span>' : r.rank}</span>${AV(r.av)}<span class="nm">${esc(r.name)}${streakHtml(r.streak)}</span><span class="pt" data-from="${r.prev}" data-to="${r.score}">${r.score}</span><span class="e-gain ${g < 0 ? 'neg' : ''}">${g ? (g > 0 ? '+' : '−') + Math.abs(g) : ''}</span></div>`; }).join('')}</div>
+        ${B.rows.length > 10 ? `<div class="e-more">… et ${B.rows.length - 10} autre${B.rows.length - 10 > 1 ? 's' : ''} équipe${B.rows.length - 10 > 1 ? 's' : ''}</div>` : ''}`;
     } else if (scr === 'scores') {
       h = `<div class="e-kicker">${D.phase === 'final' ? 'Partie terminée' : 'Classement'}</div><div class="e-title" style="font-size:5vw">${D.phase === 'final' ? 'Classement final' : 'Classement général'}</div>
         <div class="e-board">${board(D.teams, 10, t => t.score, true)}</div>`;
@@ -4393,7 +4492,9 @@ function initEcran() {
           ${rev ? `<div class="e-sub" style="margin-top:4vh">${D.winners.length ? '🏆 ' + winners(D.winners) : 'Aucune bonne réponse !'}</div>` : ''}${strip}`;
       }
     } else h = `<div class="e-title" style="color:var(--gold2)">AD EVENTS</div>`;
+    if (scr !== 'board') boardKeyShown = null;
     stage.innerHTML = h;
+    if (scr === 'board') animateBoard();
     const pg = $('#e-prog'); const showProg = D.prog && !scr && !['round_end', 'final', 'idle'].includes(D.phase) && !(D.phase === 'ready' && D.liveRank && D.teams.some(t => t.score !== 0));
     pg.innerHTML = showProg ? (D.prog.rounds.length > 1 ? D.prog.rounds.map(r => `<span class="rp ${r.cur ? 'cur' : ''} ${r.done && !r.cur ? 'done' : ''}">${r.done && !r.cur ? '✓ ' : ''}Manche ${r.num}${r.cur && r.name ? ' · ' + esc(r.name) : ''}</span>`).join('') : '') + (D.prog.dots.length ? `<span class="e-dots">${D.prog.dots.map(x => `<i class="${x === 2 ? 'cur' : x === 1 ? 'done' : ''}"></i>`).join('')}</span>` : '') : '';
     stage.classList.remove('flash');
@@ -4537,6 +4638,10 @@ function initJoueur() {
       h = `<div class="j-txt muted">Fin de la ${esc(st.round.label)}</div><div class="j-score">${ord(st.rRank)}</div><div class="j-txt">de la manche · <b class="gold-t">+${st.rPts} pt${st.rPts > 1 ? 's' : ''}</b></div><div class="j-txt muted">Classement général : ${ord(st.rank)} · ${st.score} pt${st.score > 1 ? 's' : ''}</div>`;
     } else if (ph === 'round_intro' && st.round) {
       h = `<div class="j-txt muted">C'est parti pour la</div><div class="j-title gold-t" style="font-size:46px">${esc(st.round.label)}</div><div class="j-txt muted">${st.round.nq} question${st.round.nq > 1 ? 's' : ''} · vous êtes ${ord(st.rank)} au général</div>${Object.keys(st.inv || {}).length ? invHtml(st.inv) : ''}`;
+    } else if (scr === 'board' && !live) {
+      const m = st.mvRank || 0;
+      h = `<div class="j-txt muted">Classement</div><div class="j-score">${ord(st.rank)}</div><div class="j-txt">sur ${st.nTeams} équipes · <b class="gold-t">${st.score} pt${st.score > 1 ? 's' : ''}</b></div>
+        <div class="j-mv">${m > 0 ? `<span class="up">▲ ${m} place${m > 1 ? 's' : ''}</span>` : m < 0 ? `<span class="down">▼ ${-m} place${-m > 1 ? 's' : ''}</span>` : ''}${st.qgain ? `<span class="${st.qgain > 0 ? 'up' : 'down'}">${st.qgain > 0 ? '+' : '−'}${Math.abs(st.qgain)} pt${Math.abs(st.qgain) > 1 ? 's' : ''}</span>` : ''}${st.streak >= 2 ? `<span class="fire">🔥 ${st.streak} d'affilée</span>` : ''}</div>`;
     } else if (scr === 'scores' && !live) {
       h = `<div class="j-txt muted">Classement</div><div class="j-score">${st.rank}${st.rank === 1 ? 'er' : 'e'}</div><div class="j-txt">sur ${st.nTeams} équipes · <b class="gold-t">${st.score} pts</b></div>${invHtml(st.inv)}`;
     } else if (ph === 'idle' || (scr && !live)) {
@@ -4569,7 +4674,7 @@ function initJoueur() {
       else h = st.iBuzzed ? `<div style="font-size:60px">🎤</div><div class="j-title gold-t">Vous avez la main !</div><div class="j-txt">Donnez votre réponse à l'animateur.</div>${activeBadge}`
                           : `<div class="j-buzzav">${AVP(st.buzzAv)}</div><div class="j-title">🔔 ${esc(st.buzzName || '')}</div><div class="j-txt muted">a buzzé en premier…</div>`;
     } else if (ph === 'bt_reveal') {
-      h = (st.gain ? `<div class="j-title res-good">Bravo ! +${st.gain}</div>` : '') + `<div class="j-txt muted">La réponse</div>${st.qtype === 'open' ? `<div class="j-q">${esc(st.text || '')}</div><div class="j-title gold-t">${esc(st.answer || '—')}</div>` : `<div class="j-title">${esc(st.title || '—')}</div><div class="j-txt gold-t">${esc(st.artist || '')}</div>`}${consolHtml}`;
+      h = (st.gain ? `<div class="j-title res-good">Bravo ! +${st.gain}</div>` : '') + `${st.streak >= 2 ? `<div class="j-mv"><span class="fire">🔥 ${st.streak} bonnes réponses d'affilée</span></div>` : ''}<div class="j-txt muted">La réponse</div>${st.qtype === 'open' ? `<div class="j-q">${esc(st.text || '')}</div><div class="j-title gold-t">${esc(st.answer || '—')}</div>` : `<div class="j-title">${esc(st.title || '—')}</div><div class="j-txt gold-t">${esc(st.artist || '')}</div>`}${consolHtml}`;
     } else if (ph === 'qcm_ask' || ph === 'qcm_closed') {
       const chosen = st.myChoice != null ? st.myChoice : pendingChoice;
       h = `${activeBadge}<div class="j-txt muted">Quiz · ${pos}${ph === 'qcm_ask' ? ' · <b class="gold-t" id="jt"></b>' : ''}</div>${st.img && getA(st.img) ? `<img class="j-qimg" src="${getA(st.img)}" alt="">` : ''}<div class="j-q">${esc(st.text)}</div>`;
@@ -4581,7 +4686,7 @@ function initJoueur() {
       else h += `<div class="j-title res-bad">Temps écoulé</div><div class="j-txt muted">Pas de réponse pour cette question</div>`;
     } else if (ph === 'qcm_reveal') {
       const ok = st.myChoice === st.correct || st.myChoice2 === st.correct;
-      h = st.myChoice == null ? `<div class="j-title">Pas de réponse</div>` : (ok ? `<div class="j-title res-good">Bonne réponse ! +${st.gain}</div>` : `<div class="j-title res-bad">Raté…</div>`);
+      h = (st.myChoice == null ? `<div class="j-title">Pas de réponse</div>` : (ok ? `<div class="j-title res-good">Bonne réponse ! +${st.gain}</div>` : `<div class="j-title res-bad">Raté…</div>`)) + (st.streak >= 2 ? `<div class="j-mv"><span class="fire">🔥 ${st.streak} d'affilée</span></div>` : '');
       h += `<div class="j-txt muted">La bonne réponse était</div><div class="j-opt" style="background:${COLORS[st.correct]};width:100%;max-width:460px"><span class="s">${SHAPES[st.correct]}</span>${esc(st.options[st.correct])}</div>${consolHtml}`;
     }
     body.innerHTML = h;
