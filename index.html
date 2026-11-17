@@ -2390,6 +2390,15 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
 .team .nm{min-width:70px}
 .team .ed{display:none;gap:3px}
 .team:hover .ed{display:flex}
+.qi .qsel{margin:0;opacity:.25;cursor:pointer}
+.qi:hover .qsel,.qi .qsel:checked,#bank.selmode .qsel{opacity:1}
+.qi.sel{background:#1d1a12;border-color:#5a4826}
+.qi.dragging{opacity:.4}
+.qi.drop-b{box-shadow:inset 0 2px 0 var(--gold2)}
+.qi.drop-a{box-shadow:inset 0 -2px 0 var(--gold2)}
+.selbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 14px 8px;padding:8px 10px;border:1px solid var(--gold3);border-radius:10px;background:#16130b;font-size:12px}
+.selbar select{width:auto;padding:4px 6px;font-size:12px;max-width:170px}
+button.sm.bad{background:var(--bad);border-color:var(--bad);color:#fff}
 .qi .n{width:22px;text-align:right;color:var(--muted);font-size:12px}
 .qi .lbl{flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qi .qa{display:none;gap:2px}
@@ -2622,6 +2631,7 @@ label.f{font-size:11px;color:var(--muted);display:block;margin:12px 0 5px;letter
         <button class="sm" data-act="newRound">+ Manche</button>
         <button class="sm gold" data-act="bulk">📄 Importer (PDF, Word, texte)</button>
       </div>
+      <div id="selbar" class="selbar hidden"></div>
       <div id="bank" class="scroll"></div>
       <div class="colf">
         <button class="sm ghost" data-act="exportJSON">Exporter</button>
@@ -2839,7 +2849,7 @@ function parseProgram(raw) {
     if (parts.length >= 4 && /^[A-Da-d]$/.test(parts[parts.length - 1])) {
       flush(); lastBT = null;
       const opts = parts.slice(1, -1); const c = 'ABCD'.indexOf(parts[parts.length - 1].toUpperCase());
-      items.push({ type: 'qcm', text: parts[0], options: opts.slice(0, 4), correct: c < opts.length ? c : 0, warn: c >= opts.length ? 'Bonne réponse non trouvée' : '' });
+      items.push({ type: 'qcm', text: parts[0].replace(/^(?:q(?:uestion)?\s*)?\d{1,3}\s*[.)\-:–]\s*/i, ''), options: opts.slice(0, 4), correct: c < opts.length ? c : 0, warn: c >= opts.length ? 'Bonne réponse non trouvée' : '' });
       continue;
     }
     // Réponse
@@ -3404,7 +3414,7 @@ function initRegie() {
       safeSend(conn, playerView(tid));
     }
   }
-  function renderAll() { save(); renderTop(); renderBank(); renderLive(); renderTeams(); postDisplay(); sendPlayers(); }
+  function renderAll() { normalizeBank(); save(); renderTop(); renderBank(); renderLive(); renderTeams(); postDisplay(); sendPlayers(); }
 
   function renderTop() {
     $('#codeTxt').textContent = S.code;
@@ -3414,27 +3424,7 @@ function initRegie() {
     const url = joinUrlFor(S.code);
     if ($('#joinUrl').textContent !== url) { $('#joinUrl').textContent = url; $('#qrSmall').innerHTML = qrSvg(url); }
   }
-  function renderBank() {
-    { const nq = S.bank.filter(isQ).length, nr = roundsInfo().length; $('#bankn').textContent = nq ? '· ' + plural(nq, 'question') + (hasRounds() ? ' · ' + plural(nr, 'manche') : '') : ''; }
-    if (!S.bank.length) { $('#bank').innerHTML = '<div class="empty">Aucune question.<br>Ajoute des blind tests et des QCM, ou utilise <b>Import en masse</b> pour coller une playlist Spotify.</div>'; return; }
-    const rs = roundsInfo(); const multi = hasRounds();
-    const num = {}; rs.forEach(r => r.qs.forEach((qi, k) => num[qi] = k + 1));
-    const lead = multi && rs[0] && rs[0].idx === -1 ? `<div class="qi round" style="cursor:default"><span class="rtag">MANCHE 1</span><span class="lbl"></span></div>` : '';
-    $('#bank').innerHTML = lead + S.bank.map((q, i) => {
-      if (q.type === 'round') {
-        const r = rs.find(x => x.idx === i);
-        return `<div class="qi round ${i === G.idx ? 'on' : ''}" data-act="sel" data-i="${i}"><span class="rtag">MANCHE ${r.num}</span><span class="lbl">${esc(q.name || '')}</span><span class="muted" style="font-size:11px">${plural(r.qs.length, 'question')}</span>
-          <span class="qa"><button data-act="up" data-i="${i}" title="Monter">↑</button><button data-act="down" data-i="${i}" title="Descendre">↓</button><button data-act="edit" data-i="${i}" title="Renommer">✎</button><button data-act="del" data-i="${i}" title="Supprimer la manche (garde les questions)">✕</button></span></div>`;
-      }
-      const lbl = q.type === 'bt' ? (q.title ? btLabel(q) : '(titre à compléter)') : (q.text || '(question vide)');
-      const wn = q.type === 'bt' && !q.uri ? '<span class="wn" title="Pas de lien Spotify : tu joueras le morceau depuis ton logiciel DJ">⚠</span>' : '';
-      return `<div class="qi ${i === G.idx ? 'on' : ''} ${G.played[q.id] && i !== G.idx ? 'done' : ''}" data-act="sel" data-i="${i}">
-        <span class="n">${num[i] || i + 1}</span><span class="badge ${q.type}">${({ bt: '♪ BT', qcm: 'QCM', open: '? Q' })[q.type]}</span>
-        <span class="lbl">${esc(lbl)}</span>${wn}
-        <span class="qa"><button data-act="up" data-i="${i}" title="Monter">↑</button><button data-act="down" data-i="${i}" title="Descendre">↓</button><button data-act="edit" data-i="${i}" title="Modifier">✎</button><button data-act="del" data-i="${i}" title="Supprimer">✕</button></span>
-      </div>`;
-    }).join('');
-  }
+  const A_SEL = {};
   function manualJokerSelect(tid, q) {
     const opts = availJ(tid, q).filter(k => k !== 'choix4' && k !== 'choix2');
     const others = Object.keys(S.teams).filter(x => x !== tid);
@@ -3895,9 +3885,171 @@ Réponse : Thomas, à Venise
     sadd: () => $('#sndIn').click(),
     sdel: async d => { const c = CUSTOM.find(x => x.id === d.id); if (!c || !confirm('Supprimer le son « ' + c.name + ' » ?')) return; await IDB.del(d.id); for (const [e, r] of Object.entries(S.settings.sounds)) if (r === 'c:' + d.id) S.settings.sounds[e] = 'none'; save(); await loadCustom(); openSounds(); }
   };
+  /* ---------- Programme : sélection multiple, glisser-déposer ---------- */
+  const SEL = new Set(); let lastSel = null, dragIds = null;
+  function normalizeBank() {
+    if (!hasRounds() || !S.bank.length || S.bank[0].type === 'round') return;
+    const r = { id: uid(), type: 'round', name: '' };
+    S.bank.unshift(r);
+    if (G.idx >= 0) G.idx++;
+    if (G.rid === '_lead') G.rid = r.id;
+    for (const t of Object.values(S.teams)) if (t.rounds && t.rounds._lead != null) { t.rounds[r.id] = t.rounds._lead; delete t.rounds._lead; }
+  }
+  function keepCur(fn) {
+    const curId = S.bank[G.idx] ? S.bank[G.idx].id : null;
+    fn();
+    if (curId) {
+      G.idx = S.bank.findIndex(x => x.id === curId);
+      if (G.idx < 0) { G.phase = 'idle'; resetRound(); G.rid = null; spPause(); }
+      else { const r = roundAt(G.idx); G.rid = r ? r.id : null; }
+    }
+    for (const id of [...SEL]) if (!S.bank.some(x => x.id === id)) SEL.delete(id);
+    normalizeBank(); renderAll();
+  }
+  const roundItems = id => { const i = S.bank.findIndex(x => x.id === id); const out = [id]; for (let k = i + 1; k < S.bank.length && S.bank[k].type !== 'round'; k++) out.push(S.bank[k].id); return out; };
+  function selBlocks() { const out = []; let c = null; S.bank.forEach((x, i) => { if (SEL.has(x.id)) { if (!c) { c = { s: i, e: i }; out.push(c); } else c.e = i; } else c = null; }); return out; }
+  const selOrdered = () => S.bank.filter(x => SEL.has(x.id)).map(x => x.id);
+  function moveIds(ids, targetId, after) {
+    keepCur(() => {
+      const set = new Set(ids);
+      const moving = S.bank.filter(x => set.has(x.id));
+      const rest = S.bank.filter(x => !set.has(x.id));
+      let at = targetId == null ? (after ? rest.length : 0) : rest.findIndex(x => x.id === targetId) + (after ? 1 : 0);
+      if (targetId != null && at < (after ? 1 : 0)) return;
+      if (after && targetId != null) { const t = rest[at - 1]; if (t && t.type === 'round' && moving.some(m => m.type === 'round')) { while (at < rest.length && rest[at].type !== 'round') at++; } }
+      rest.splice(at, 0, ...moving); S.bank = rest;
+    });
+  }
+  function moveTargets() {
+    const rs = roundsInfo();
+    if (!hasRounds()) return [['start', 'Début du programme'], ['end', 'Fin du programme']];
+    return rs.flatMap(r => [['in:' + r.id, 'Début de ' + r.label], ['end:' + r.id, 'Fin de ' + r.label]]).concat([['end', 'Tout à la fin']]);
+  }
+  function selMoveTo(v) {
+    const ids = selOrdered(); if (!ids.length || !v) return;
+    if (v === 'start') return moveIds(ids, null, false);
+    if (v === 'end') return moveIds(ids, null, true);
+    const [kind, rid] = v.split(':');
+    if (ids.includes(rid)) { toast('La manche de destination fait partie de la sélection'); return; }
+    const its = roundItems(rid).filter(x => !ids.includes(x));
+    if (kind === 'in') moveIds(ids, rid, true);
+    else moveIds(ids, its[its.length - 1], true);
+  }
+  function renderBank() {
+    normalizeBank();
+    { const nq = S.bank.filter(isQ).length, nr = roundsInfo().length; $('#bankn').textContent = nq ? '· ' + plural(nq, 'question') + (hasRounds() ? ' · ' + plural(nr, 'manche') : '') : ''; }
+    $('#bank').classList.toggle('selmode', SEL.size > 0);
+    const bar = $('#selbar');
+    if (SEL.size) {
+      bar.classList.remove('hidden');
+      bar.innerHTML = `<span class="gold-t" style="font-weight:700">${SEL.size} sélectionné${SEL.size > 1 ? 's' : ''}</span>
+        <button class="sm" data-act="selUp" title="Monter">↑</button><button class="sm" data-act="selDown" title="Descendre">↓</button>
+        <select id="selMove"><option value="">Déplacer vers…</option>${moveTargets().map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join('')}</select>
+        <button class="sm" data-act="selRound" title="Regrouper la sélection dans une nouvelle manche">+ Manche</button>
+        <button class="sm bad" data-act="selDel">🗑 Supprimer</button>
+        <button class="sm ghost" data-act="selAll">Tout</button><button class="sm ghost" data-act="selNone">✕</button>`;
+    } else bar.classList.add('hidden');
+    if (!S.bank.length) { $('#bank').innerHTML = '<div class="empty">Aucune question.<br>Ajoute des blind tests et des QCM, ou utilise <b>📄 Importer</b> pour charger un fichier ou coller une playlist Spotify.</div>'; return; }
+    const rs = roundsInfo();
+    const num = {}; rs.forEach(r => r.qs.forEach((qi, k) => num[qi] = k + 1));
+    const cb = q => `<input type="checkbox" class="qsel" data-act="tsel" data-id="${q.id}" ${SEL.has(q.id) ? 'checked' : ''} title="Sélectionner (Maj+clic pour une plage)">`;
+    $('#bank').innerHTML = S.bank.map((q, i) => {
+      if (q.type === 'round') {
+        const r = rs.find(x => x.idx === i);
+        return `<div class="qi round ${i === G.idx ? 'on' : ''} ${SEL.has(q.id) ? 'sel' : ''}" draggable="true" data-id="${q.id}" data-act="sel" data-i="${i}">${cb(q)}<span class="rtag">MANCHE ${r.num}</span><span class="lbl">${esc(q.name || '')}</span><span class="muted" style="font-size:11px">${plural(r.qs.length, 'question')}</span>
+          <span class="qa"><button data-act="edit" data-i="${i}" title="Renommer">✎</button><button data-act="del" data-i="${i}" title="Supprimer la manche (garde les questions)">✕</button></span></div>`;
+      }
+      const lbl = q.type === 'bt' ? (q.title ? btLabel(q) : '(titre à compléter)') : (q.text || '(question vide)');
+      const wn = q.type === 'bt' && !q.uri ? '<span class="wn" title="Pas de lien Spotify : tu joueras le morceau depuis ton logiciel DJ">⚠</span>' : '';
+      return `<div class="qi ${i === G.idx ? 'on' : ''} ${G.played[q.id] && i !== G.idx ? 'done' : ''} ${SEL.has(q.id) ? 'sel' : ''}" draggable="true" data-id="${q.id}" data-act="sel" data-i="${i}">
+        ${cb(q)}<span class="n">${num[i] || i + 1}</span><span class="badge ${q.type}">${({ bt: '♪ BT', qcm: 'QCM', open: '? Q' })[q.type]}</span>
+        <span class="lbl">${esc(lbl)}</span>${wn}
+        <span class="qa"><button data-act="up" data-i="${i}" title="Monter">↑</button><button data-act="down" data-i="${i}" title="Descendre">↓</button><button data-act="edit" data-i="${i}" title="Modifier">✎</button><button data-act="del" data-i="${i}" title="Supprimer">✕</button></span>
+      </div>`;
+    }).join('');
+  }
+  // glisser-déposer
+  const bankEl = $('#bank');
+  const clearDrop = () => bankEl.querySelectorAll('.drop-b,.drop-a').forEach(x => x.classList.remove('drop-b', 'drop-a'));
+  bankEl.addEventListener('dragstart', e => {
+    const it = e.target.closest('.qi[data-id]'); if (!it) return;
+    const id = it.dataset.id; const item = S.bank.find(x => x.id === id);
+    dragIds = SEL.has(id) ? selOrdered() : (item && item.type === 'round' ? roundItems(id) : [id]);
+    e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', id); } catch (x) {}
+    it.classList.add('dragging');
+  });
+  bankEl.addEventListener('dragend', () => { dragIds = null; clearDrop(); bankEl.querySelectorAll('.dragging').forEach(x => x.classList.remove('dragging')); });
+  bankEl.addEventListener('dragover', e => {
+    if (!dragIds) return; const it = e.target.closest('.qi[data-id]'); if (!it) return;
+    e.preventDefault(); clearDrop();
+    const r = it.getBoundingClientRect(); it.classList.add(e.clientY < r.top + r.height / 2 ? 'drop-b' : 'drop-a');
+  });
+  bankEl.addEventListener('drop', e => {
+    if (!dragIds) return; const it = e.target.closest('.qi[data-id]'); if (!it) return;
+    e.preventDefault(); const after = it.classList.contains('drop-a'); clearDrop();
+    const tid = it.dataset.id; const ids = dragIds; dragIds = null;
+    if (ids.includes(tid)) return;
+    moveIds(ids, tid, after);
+  });
+  $('#selbar').addEventListener('change', e => { if (e.target.id === 'selMove') selMoveTo(e.target.value); });
+  Object.assign(A_SEL, {
+    tsel: (d, e) => {
+      const id = d.id; const item = S.bank.find(x => x.id === id); if (!item) return;
+      const on = !SEL.has(id);
+      let ids = item.type === 'round' ? roundItems(id) : [id];
+      if (e && e.shiftKey && lastSel && S.bank.some(x => x.id === lastSel)) {
+        const a = S.bank.findIndex(x => x.id === lastSel), b = S.bank.findIndex(x => x.id === id);
+        ids = S.bank.slice(Math.min(a, b), Math.max(a, b) + 1).map(x => x.id);
+      }
+      ids.forEach(x => on ? SEL.add(x) : SEL.delete(x)); lastSel = id; renderBank();
+    },
+    selAll: () => { S.bank.forEach(x => SEL.add(x.id)); renderBank(); },
+    selNone: () => { SEL.clear(); renderBank(); },
+    selDel: () => {
+      const n = SEL.size; if (!n) return;
+      const nq = S.bank.filter(x => SEL.has(x.id) && isQ(x)).length, nr = n - nq;
+      if (!confirm(`Supprimer ${[nq && plural(nq, 'question'), nr && plural(nr, 'manche')].filter(Boolean).join(' et ')} ?`)) return;
+      keepCur(() => { S.bank = S.bank.filter(x => !SEL.has(x.id)); }); SEL.clear(); renderBank();
+      toast('Supprimé');
+    },
+    selUp: () => keepCur(() => {
+      for (const bl of selBlocks()) {
+        if (bl.s === 0) continue;
+        const items = S.bank.slice(bl.s, bl.e + 1); let to = bl.s - 1;
+        if (items[0].type === 'round') while (to > 0 && S.bank[to].type !== 'round') to--;
+        S.bank.splice(bl.s, items.length); S.bank.splice(to, 0, ...items);
+      }
+    }),
+    selDown: () => keepCur(() => {
+      for (const bl of selBlocks().reverse()) {
+        const items = S.bank.slice(bl.s, bl.e + 1);
+        if (bl.e + 1 >= S.bank.length) continue;
+        let to;
+        if (items[0].type === 'round') {
+          if (S.bank[bl.e + 1].type !== 'round') continue;
+          let m = bl.e + 2; while (m < S.bank.length && S.bank[m].type !== 'round') m++;
+          to = m - items.length;
+        } else to = bl.s + 1;
+        S.bank.splice(bl.s, items.length); S.bank.splice(to, 0, ...items);
+      }
+    }),
+    selRound: () => {
+      const ids = selOrdered().filter(id => isQ(S.bank.find(x => x.id === id))); if (!ids.length) { toast('Sélectionne au moins une question'); return; }
+      const n = prompt('Nom de la nouvelle manche :', ''); if (n === null) return;
+      keepCur(() => {
+        const first = S.bank.findIndex(x => x.id === ids[0]);
+        const moving = S.bank.filter(x => ids.includes(x.id));
+        const before = S.bank.slice(0, first).filter(x => !ids.includes(x.id));
+        const after = S.bank.slice(first).filter(x => !ids.includes(x.id));
+        S.bank = [...before, { id: uid(), type: 'round', name: n.trim().slice(0, 40) }, ...moving, ...after];
+      });
+      SEL.clear(); renderBank(); toast('Manche créée');
+    }
+  });
+  Object.assign(A, A_SEL);
   $('#regie').addEventListener('click', e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
-    const f = A[b.dataset.act]; if (f) { e.stopPropagation(); if (b.tagName === 'A') e.preventDefault(); f(b.dataset); }
+    const f = A[b.dataset.act]; if (f) { e.stopPropagation(); if (b.tagName === 'A') e.preventDefault(); f(b.dataset, e); }
   });
   $('#regie').addEventListener('change', async e => {
     const el = e.target;
@@ -3939,6 +4091,8 @@ Réponse : Thomas, à Venise
     if (e.target.matches('input,textarea,select') || !$('#modal').classList.contains('hidden')) { if (e.key === 'Escape') A.mclose(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key.toLowerCase();
+    if (e.key === 'Delete' && SEL.size) { A.selDel(); return; }
+    if (e.key === 'Escape' && SEL.size) { SEL.clear(); renderBank(); return; }
     if (e.code === 'Space') { e.preventDefault(); primary(); }
     else if (e.key === 'ArrowRight') next();
     else if (k === 'b') btGood();
